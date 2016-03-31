@@ -31,6 +31,8 @@ echo "AWS_DEFAULT_REGION=$K1_AWS_DEFAULT_REGION" >> ~/.aws/config
 
 echo ""
 
+#echo $AWS_ACCESS_KEY_ID
+
 #Create Docker Consul VM 
 docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION SPAWN-CONSUL
 
@@ -58,46 +60,36 @@ echo ----
 
 echo ""
 echo "$(tput setaf 2) Launching a Receiver Instance $(tput sgr 0)"
-#Create Docker Receiver Instance on AWS
-#docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION SPAWN-RECEIVER
+
+
 
 #Create Docker Receiver Instance in GCE
 #gcloud auth login
 gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-docker-machine create -d google --google-project $K2_GOOGLE_PROJECT SPAWN-RECEIVER
+docker-machine create -d google --google-project $K2_GOOGLE_PROJECT spawn-receiver
 
+#
+#Open port for Receiver on GCE
+gcloud compute firewall-rules create swarm-machines --allow tcp:$ReceiverPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
 
-#Opens Firewall Port for RECEIVER (61116) AWS
-aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 61116 --cidr 0.0.0.0/0
-
-#Opens Firewall Port for RECEIVER (61116) GCE
 
 #Connects to remote VM
 
-docker-machine env SPAWN-RECEIVER > /home/ec2-user/SPAWN-RECEIVER
-. /home/ec2-user/SPAWN-RECEIVER
+docker-machine env spawn-receiver > /home/ec2-user/spawn-receiver
+. /home/ec2-user/spawn-receiver
 
-publicipSPAWN-RECEIVER=$(docker-machine ip SPAWN-RECEIVER)
+publicipspawn-receiver=$(docker-machine ip spawn-receiver)
 
 
 
 #Builds the Receiver Container
-cd /home/ec2-user/ProjectSpawnSwarmtc/receiver
+#git clone https://github.com/FabioChiodini/ProjectSpawnSwarmtc.git
+#cd ~/ProjectSpawnSwarmtc/receiver
 
-docker build -t kiodo/tc:receiver .
+#docker build -t kiodo/tc:receiver .
 
-#Launches a Receiver Instance in a Container
-
-#docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
-
-
-echo ----
-echo Receiver RUNNING ON $publicipSPAWN-RECEIVER
-echo publicipSPAWN-RECEIVER=$publicipSPAWN-RECEIVER
-echo ----
-
-
+docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK kiodo/tc:receiverv1
 
 
 #Jonas Style Launch Swarm
@@ -223,9 +215,9 @@ git clone https://github.com/mcowger/titaniumcrucible.git
 
 #Builds Honeypots
 
-#Sets variables for docker (to be incorporated in launch file)
-LOG_HOST=fabiochiodini.ddns.com
-LOG_PORT=61116
+#Sets variables for launching honeypots that will connect to the receiver
+LOG_HOST=$publicipspawn-receiver
+LOG_PORT=$ReceiverPortK
 
 
 i=0
@@ -235,7 +227,9 @@ do
     UUIDK=$(cat /proc/sys/kernel/random/uuid)
     echo Provisioning Container $i
     #docker run -d --name www-$i -p 80:80 nginx
-    docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
+    #docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
+    #Launches Honeypots
+    docker run -d --name honeypot-$i -p #HoneypotPortK:HoneypotPortK kiodo/honeypot:v1
     true $(( i++ ))
 done
 
