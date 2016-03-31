@@ -153,6 +153,8 @@ if [ $GCEKProvision -eq 1 ]; then
   gcloud compute firewall-rules create swarm-machines --allow tcp:3376 --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   #Opens AppPortK for Docker machine on GCE
   gcloud compute firewall-rules create http80-machines --allow tcp:$AppPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
+  #Opens HoneypotPortK for Docker machine on GCE
+  gcloud compute firewall-rules create http80-machines --allow tcp:$HoneypotPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   
   #Loops for creating Swarm nodes
   j=0
@@ -180,6 +182,10 @@ fi
 
 
 #Starts #VM-InstancesK VMs on AWS using Docker machine and connects them to Swarm
+
+#Opens Firewall Port for Honeypots
+aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port $HoneypotPortK --cidr 0.0.0.0/0
+
 i=0
 while [ $i -lt $VM_InstancesK ]
 do
@@ -229,7 +235,7 @@ do
     #docker run -d --name www-$i -p 80:80 nginx
     #docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
     #Launches Honeypots
-    docker run -d --name honeypot-$i -p #HoneypotPortK:HoneypotPortK kiodo/honeypot:v1
+    docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK kiodo/honeypot:v1
     true $(( i++ ))
 done
 
