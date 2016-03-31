@@ -54,13 +54,15 @@ echo Consul RUNNING ON $publicipCONSULK
 echo publicipCONSULK=$publicipCONSULK
 echo ----
 
+
+
 echo ""
 echo "$(tput setaf 2) Launching a Receiver Instance $(tput sgr 0)"
 #Create Docker Receiver Instance 
 docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION SPAWN-RECEIVER
 
-#Opens Firewall Port for RECEIVER
-aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 8500 --cidr 0.0.0.0/0
+#Opens Firewall Port for RECEIVER (61116)
+aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 61116 --cidr 0.0.0.0/0
 
 #Connects to remote VM
 
@@ -72,7 +74,9 @@ publicipSPAWN-RECEIVER=$(docker-machine ip SPAWN-RECEIVER)
 
 
 #Builds the Receiver Container
+cd /home/ec2-user/ProjectSpawnSwarmtc/receiver
 
+docker build -t "receiver:Dockerfile" .
 
 #Launches a Receiver Instance in a Container
 
