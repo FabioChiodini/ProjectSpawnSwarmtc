@@ -31,8 +31,6 @@ echo "AWS_DEFAULT_REGION=$K1_AWS_DEFAULT_REGION" >> ~/.aws/config
 
 echo ""
 
-#echo $AWS_ACCESS_KEY_ID
-
 #Create Docker Consul VM 
 docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION SPAWN-CONSUL
 
@@ -55,6 +53,39 @@ echo ----
 echo Consul RUNNING ON $publicipCONSULK
 echo publicipCONSULK=$publicipCONSULK
 echo ----
+
+echo ""
+echo "$(tput setaf 2) Launching a Receiver Instance $(tput sgr 0)"
+#Create Docker Receiver Instance 
+docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION SPAWN-RECEIVER
+
+#Opens Firewall Port for RECEIVER
+aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 8500 --cidr 0.0.0.0/0
+
+#Connects to remote VM
+
+docker-machine env SPAWN-RECEIVER > /home/ec2-user/SPAWN-RECEIVER
+. /home/ec2-user/SPAWN-RECEIVER
+
+publicipSPAWN-RECEIVER=$(docker-machine ip SPAWN-RECEIVER)
+
+
+
+#Builds the Receiver Container
+
+
+#Launches a Receiver Instance in a Container
+
+#docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
+
+
+echo ----
+echo Receiver RUNNING ON $publicipSPAWN-RECEIVER
+echo publicipSPAWN-RECEIVER=$publicipSPAWN-RECEIVER
+echo ----
+
+
+
 
 #Jonas Style Launch Swarm
 
