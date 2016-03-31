@@ -91,6 +91,10 @@ publicipspawn-receiver=$(docker-machine ip spawn-receiver)
 
 docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK kiodo/tc:receiverv1
 
+echo ----
+echo "$(tput setaf 2) Receiver RUNNING ON $publicipspawn-receiver $(tput sgr 0)"
+echo publicipspawn-receiver=$publicipspawn-receiver
+echo ----
 
 #Jonas Style Launch Swarm
 
