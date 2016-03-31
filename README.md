@@ -94,7 +94,7 @@ To spawn VMs to GCE you need to Install the GCE SDK on AMI:
 - exec -l $SHELL
 - gcloud init
 
-You also need to set up an account, following are the high level steps:
+You also need to propely set up your GCE account, following are the high level steps:
 
 - Enable the Compute Engine API
 
