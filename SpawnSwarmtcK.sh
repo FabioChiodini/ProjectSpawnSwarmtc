@@ -89,7 +89,7 @@ publicipspawn-receiver=$(docker-machine ip spawn-receiver)
 
 #docker build -t kiodo/tc:receiver .
 
-docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK kiodo/tc:receiverv1
+docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
 echo ----
 echo "$(tput setaf 2) Receiver RUNNING ON $publicipspawn-receiver $(tput sgr 0)"
@@ -215,15 +215,9 @@ done
 
 #Launches $instancesK Containers using SWARM
 
-
+#Connects to Swarm
 eval $(docker-machine env --swarm swarm-master)
 
-#Downloads Honeypots Docker file
-
-git clone https://github.com/mcowger/titaniumcrucible.git
-
-
-#Builds Honeypots
 
 #Sets variables for launching honeypots that will connect to the receiver
 LOG_HOST=$publicipspawn-receiver
@@ -239,7 +233,7 @@ do
     #docker run -d --name www-$i -p 80:80 nginx
     #docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
     #Launches Honeypots
-    docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK kiodo/honeypot:v1
+    docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
     true $(( i++ ))
 done
 
