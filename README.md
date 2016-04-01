@@ -7,6 +7,12 @@ To install the prerequisites on an AMI image use this piece of code:
 
 https://github.com/FabioChiodini/AWSDockermachine
 
+## Configuration Files
+To run this script you have to prepare two configuration files
+- Cloud1 see below for syntax
+- GCEkeyfile.json (optional) used for GCE authentication
+
+
 ## Script Flow
 
 This script creates (leveraging Docker-Machine):
@@ -14,7 +20,7 @@ This script creates (leveraging Docker-Machine):
 - one VM in AWS with Consul in Docker (used also to prepare docker Discovery)
 
 - One VM on GCE hosting the receiver application in a container
--
+
 - One VM in AWS hosting the Docker swarm in a Docker container
 
 - A number of VMs in AWS (specified in the variable export VM_InstancesK) as "slaves"
