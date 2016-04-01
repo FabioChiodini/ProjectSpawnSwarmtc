@@ -52,7 +52,7 @@ docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul 
 
 
 echo ----
-echo Consul RUNNING ON $publicipCONSULK
+echo Consul RUNNING ON $publicipCONSULK:8500
 echo publicipCONSULK=$publicipCONSULK
 echo ----
 
@@ -79,7 +79,7 @@ gcloud compute firewall-rules create swarm-machines --allow tcp:$ReceiverPortK -
 docker-machine env spawn-receiver > /home/ec2-user/spawn-receiver
 . /home/ec2-user/spawn-receiver
 
-publicipspawn-receiver=$(docker-machine ip spawn-receiver)
+publicipspawnreceiver=$(docker-machine ip spawn-receiver)
 
 
 
@@ -92,8 +92,8 @@ publicipspawn-receiver=$(docker-machine ip spawn-receiver)
 docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
 echo ----
-echo "$(tput setaf 2) Receiver RUNNING ON $publicipspawn-receiver $(tput sgr 0)"
-echo publicipspawn-receiver=$publicipspawn-receiver
+echo "$(tput setaf 2) Receiver RUNNING ON $publicipspawnreceiver  Port $ReceiverPortK $(tput sgr 0)"
+echo publicipspawnreceiver=$publicipspawnreceiver
 echo ----
 
 #Jonas Style Launch Swarm
@@ -220,7 +220,7 @@ eval $(docker-machine env --swarm swarm-master)
 
 
 #Sets variables for launching honeypots that will connect to the receiver
-LOG_HOST=$publicipspawn-receiver
+LOG_HOST=$publicipspawnreceiver
 LOG_PORT=$ReceiverPortK
 
 
