@@ -260,9 +260,8 @@ echo ----
 #KILLS SWARM (Testing purposes cleanup)
 docker-machine rm swarm-master
 docker-machine rm SPAWN-CONSUL
+docker-machine rm SPAWN-receiver
 docker-machine rm SPAWN-FigureITOUT
-
-
 
 
 #Displays Public IP
