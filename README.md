@@ -104,19 +104,18 @@ Here are the details on how these variables are used:
 
 - HoneypotPortK and HoneypotImageK are the port used and the docker image for the honeypot Applications to launch via Docker swarm
 
-The code also uses another file: GCEkeyfile.json 
-- This contains data that is used for GCE authentication ((Service account keys type in JSON format))
-
 
 ![Alt text](Cloud1.png "Cloud1")
 
+The code also uses another file: GCEkeyfile.json 
+- This contains data that is used for GCE authentication (Service account keys type in JSON format)
 
 ## NOTES ON Spawning to GCE
 
-To spawn VMs to GCE you need to Install the GCE SDK on AMI:
+To spawn VMs to GCE you need to Install the GCE SDK on your AMI image:
 - curl https://sdk.cloud.google.com | bash
 - exec -l $SHELL
-- gcloud init
+- gcloud init (this will start an interactive setup/configuration)
 
 You also need to propely set up your GCE account, following are the high level steps:
 
