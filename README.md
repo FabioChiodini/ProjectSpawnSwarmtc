@@ -62,6 +62,12 @@ export K2_GOOGLE_PROJECT=XXXXXX
 export GOOGLE_APPLICATION_CREDENTIALS="/home/ec2-user/GCEkeyfile.json"
 
 export AppPortK=80
+
+export ReceiverPortK=61116
+export ReceiverImageK=kiodo/receiver:latest
+export HoneypotPortK=8080
+export HoneypotImageK=kiodo/honeypot:latest
+
 ```
 
 here are the details on how these variables are used:
@@ -83,6 +89,12 @@ here are the details on how these variables are used:
 - GOOGLE_APPLICATION_CREDENTIALS maps to a file containing the Service account keys for your GCE login
 
 - AppPortK is the application (launched via Docker Swarm) this is usde to launch the application and open the relevant firewall port on GCE and AWS
+
+- ReceiverPortK and ReceiverImageK are the port used and the docker image for the receiver Application
+
+- HoneypotPortK and HoneypotImageK are the port used and the docker image for the honeypot Applications to launch via Docker swarm
+
+
 
 ![Alt text](Cloud1.png "Cloud1")
 
