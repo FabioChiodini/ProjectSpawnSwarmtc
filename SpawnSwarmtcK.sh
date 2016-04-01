@@ -196,10 +196,15 @@ fi
 echo ""
 echo "$(tput setaf 2) Creating swarm Nodes on AWS $(tput sgr 0)"
 echo ""
+
 #Starts #VM-InstancesK VMs on AWS using Docker machine and connects them to Swarm
 
+echo ----
+echo "Opening Firewall ports for Honeypots"
+echo ----
 #Opens Firewall Port for Honeypots
 aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port $HoneypotPortK --cidr 0.0.0.0/0
+
 
 i=0
 while [ $i -lt $VM_InstancesK ]
@@ -242,23 +247,20 @@ LOG_HOST=$publicipspawnreceiver
 LOG_PORT=$ReceiverPortK
 
 
+
 i=0
 while [ $i -lt $Container_InstancesK ]
 do
     echo "output: $i"
     UUIDK=$(cat /proc/sys/kernel/random/uuid)
     echo Provisioning Container $i
-    #docker run -d --name www-$i -p 80:80 nginx
-    #docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
+    
     #Launches Honeypots
     docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
     true $(( i++ ))
 done
 
-#Opens Firewall Port $AppPortK for all docker Machines on AWS
-aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port $AppPortK --cidr 0.0.0.0/0
 
-aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 8080 --cidr 0.0.0.0/0
 
 
 #Outputs final status
