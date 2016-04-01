@@ -266,14 +266,27 @@ stringk=$(eval $(docker-machine env --swarm swarm-master))
 
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
-echo "$(tput setaf 1) run eval $(docker-machine env --swarm swarm-master) TO connect to the cluster $(tput sgr 0)"
-echo THEN run "docker info" TO check swarm status
-echo RUN "docker ps" TO check which containers are running
+echo "$(tput setaf 1) run eval $(tput sgr 0)"
+echo "$(tput setaf 1) $(docker-machine env --swarm swarm-master) $(tput sgr 0)"
+echo "TO connect to the cluster "
+echo THEN run 
+echo "docker info" 
+echo TO check swarm status
+echo ----
+echo RUN 
+echo "docker ps"
+echo TO check which containers are running
 echo ----
 echo "$(tput setaf 1) Check swarm token on https://discovery.hub.docker.com/v1/clusters/$SwarmTokenK $(tput sgr 0)"
 echo ----
+echo ----
+echo ----
+echo "$(tput setaf 7) Receiver RUNNING ON $publicipspawnreceiver  Port $ReceiverPortK $(tput sgr 0)"
+echo ----
+
 
 #Optionally close all non useful ports
+#Still TBI
 
 echo ""
 echo "$(tput setaf 2) Preparing for Clean UP $(tput sgr 0)"
