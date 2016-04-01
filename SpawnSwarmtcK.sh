@@ -33,6 +33,9 @@ echo ""
 
 #echo $AWS_ACCESS_KEY_ID
 
+echo ""
+echo "$(tput setaf 2) Creating CONSUL VM $(tput sgr 0)"
+
 #Create Docker Consul VM 
 docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION SPAWN-CONSUL
 
@@ -98,6 +101,9 @@ echo ----
 
 #Jonas Style Launch Swarm
 
+echo ""
+echo "$(tput setaf 2) Creating Docker Swarm VM $(tput sgr 0)"
+
 #Launches another temporary container
 
 #docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION localK
@@ -138,6 +144,9 @@ echo Consul RUNNING ON $publicipCONSULK
 echo ----
 
 #Loops for creating Swarm nodes
+
+echo ""
+echo "$(tput setaf 2) Creating Swarm Nodes $(tput sgr 0)"
 
 #Starts #GCEVM-InstancesK VMs on GCE using Docker machine and connects them to Swarm
 # Spawns to GCE
@@ -184,7 +193,9 @@ if [ $GCEKProvision -eq 1 ]; then
 fi
 
 
-
+echo ""
+echo "$(tput setaf 2) Creating swarm Nodes on AWS $(tput sgr 0)"
+echo ""
 #Starts #VM-InstancesK VMs on AWS using Docker machine and connects them to Swarm
 
 #Opens Firewall Port for Honeypots
@@ -214,6 +225,10 @@ done
 
 
 #Launches $instancesK Containers using SWARM
+
+echo ""
+echo "$(tput setaf 2) Launching Honeypots instances via Docker Swarm $(tput sgr 0)"
+echo ""
 
 #Connects to Swarm
 eval $(docker-machine env --swarm swarm-master)
@@ -256,6 +271,10 @@ echo "$(tput setaf 1) Check swarm token on https://discovery.hub.docker.com/v1/c
 echo ----
 
 #Optionally close all non useful ports
+
+echo ""
+echo "$(tput setaf 2) Preparing for Clean UP $(tput sgr 0)"
+echo ""
 
 #KILLS SWARM (Testing purposes cleanup)
 docker-machine rm swarm-master
