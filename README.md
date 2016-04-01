@@ -7,10 +7,12 @@ To install the prerequisites on an AMI image use this piece of code:
 
 https://github.com/FabioChiodini/AWSDockermachine
 
+[the script is run in the context of ec2-user account]
+
 ## Configuration Files
-To run this script you have to prepare two configuration files
+To run this script you have to prepare two configuration files (in /home/ec2-user)
 - Cloud1 see below for syntax
-- GCEkeyfile.json (optional) used for GCE authentication
+- GCEkeyfile.json used for GCE authentication
 
 
 ## Script Flow
