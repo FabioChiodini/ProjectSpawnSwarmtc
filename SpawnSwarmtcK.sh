@@ -206,7 +206,10 @@ while [ $i -lt $VM_InstancesK ]
 do
     echo "output: $i"
     UUIDK=$(cat /proc/sys/kernel/random/uuid)
-    echo Provisioning VM SPAWN$i-$UUIDK
+    #echo Provisioning VM SPAWN$i-$UUIDK
+    echo ""
+    echo "$(tput setaf 1) Provisioning VM SPAWN$i-$UUIDK $(tput sgr 0)"
+    echo ""
     docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION --swarm --swarm-discovery token://$SwarmTokenK SPAWN$i-$UUIDK
 
     #Stores ip of the VM
