@@ -11,16 +11,18 @@ https://github.com/FabioChiodini/AWSDockermachine
 
 This script creates (leveraging Docker-Machine):
 
-- one VM with Consul in Docker (used also to prepare docker Discovery)
+- one VM in AWS with Consul in Docker (used also to prepare docker Discovery)
 
-- One VM hosting the Docker swarm in a Docker container
+- One VM on GCE hosting the receiver application in a container
+-
+- One VM in AWS hosting the Docker swarm in a Docker container
 
 - A number of VMs in AWS (specified in the variable export VM_InstancesK) as "slaves"
 
 - A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" 
 
 
-It then starts many Docker Containers (honeypots) via Docker Swarm (the number of instances is specified in the variable export InstancesK)
+It then starts many Docker Containers (honeypots) via Docker Swarm (the number of instances is specified in the variable InstancesK in the main configuraion file
 
 It also opens up all required port on AWS Security Groups and on GCE
 
