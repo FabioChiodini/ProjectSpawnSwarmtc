@@ -30,11 +30,11 @@ This script creates (leveraging Docker-Machine):
 - A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" 
 
 
-It then starts many Docker Containers (honeypots) via Docker Swarm (the number of instances is specified in the variable InstancesK in the main configuraion file
+It then starts many Docker Containers (honeypots) via Docker Swarm (the number of instances is specified in the variable InstancesK in the main configuration file)
 
 It also opens up all required port on AWS Security Groups and on GCE
 
-Currently it opens all ports for Docker Swarm /machine and SSH plus port 80 (to test the Docker application nginx)
+Currently it opens all ports for Docker Swarm, Docker Machine and SSH plus ports specified in the configuration fiels for dockerized applications.
 
 Here's an high level diagram: 
 
@@ -80,7 +80,7 @@ export HoneypotImageK=kiodo/honeypot:latest
 
 ```
 
-here are the details on how these variables are used:
+Here are the details on how these variables are used:
 
 - The first five variable are used by the docker-machine command and are related to your AWS account
 
@@ -104,6 +104,8 @@ here are the details on how these variables are used:
 
 - HoneypotPortK and HoneypotImageK are the port used and the docker image for the honeypot Applications to launch via Docker swarm
 
+The code also uses another file: GCEkeyfile.json 
+- This contains data that is used for GCE authentication ((Service account keys type in JSON format))
 
 
 ![Alt text](Cloud1.png "Cloud1")
