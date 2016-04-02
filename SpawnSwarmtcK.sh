@@ -76,6 +76,7 @@ docker-machine create -d google --google-project $K2_GOOGLE_PROJECT spawn-receiv
 #Open port for Receiver on GCE
 gcloud compute firewall-rules create swarm-machines --allow tcp:$ReceiverPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
 
+gcloud compute firewall-rules list docker-machine
 
 #Connects to remote VM
 
@@ -270,7 +271,7 @@ echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
 echo ""
 echo "$(tput setaf 1) run $(tput sgr 0)"
-echo eval $(docker-machine env --swarm swarm-master)
+echo " eval $(docker-machine env --swarm swarm-master)"
 echo "TO connect to the cluster "
 echo THEN run 
 echo "docker info" 
