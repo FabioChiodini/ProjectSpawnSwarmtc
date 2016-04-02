@@ -35,7 +35,7 @@ echo ""
 
 echo ""
 echo "$(tput setaf 2) Creating CONSUL VM $(tput sgr 0)"
-
+echo ""
 #Create Docker Consul VM 
 docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION SPAWN-CONSUL
 
@@ -63,7 +63,7 @@ echo ----
 
 echo ""
 echo "$(tput setaf 2) Launching a Receiver Instance $(tput sgr 0)"
-
+echo ""
 
 
 #Create Docker Receiver Instance in GCE
