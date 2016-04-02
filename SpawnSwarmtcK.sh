@@ -258,6 +258,8 @@ do
     
     #Launches Honeypots
     docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
+    #launches nginx (test)
+    docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
     true $(( i++ ))
 done
 
