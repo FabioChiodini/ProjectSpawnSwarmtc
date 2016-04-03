@@ -29,6 +29,8 @@ This script creates (leveraging Docker-Machine):
 
 - A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" that will host honeypots containers
 
+- [in the code there's a commented line to deploya dockerized nginx via DockerSwarm and opening the relevant port]  
+
 
 It then starts many Docker Containers (honeypots) via Docker Swarm (the number of instances is specified in the variable InstancesK in the main configuration file)
 
