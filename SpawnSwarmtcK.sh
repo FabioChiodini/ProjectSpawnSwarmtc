@@ -144,7 +144,7 @@ publicipSWARMK=$(docker-machine ip swarm-master)
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
 echo publicipSWARMK=$publicipSWARMK
-echo Consul RUNNING ON $publicipCONSULK
+echo Consul RUNNING ON $publicipCONSULK:8500
 echo ----
 
 #Loops for creating Swarm nodes
@@ -277,6 +277,7 @@ stringk=$(eval $(docker-machine env --swarm swarm-master))
 
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
+echo "$(tput setaf 1) Consul RUNNING ON $publicipCONSULK:8500 $(tput sgr 0)"
 echo ""
 echo "$(tput setaf 1) run $(tput sgr 0)"
 echo " eval $(docker-machine env --swarm swarm-master)"
