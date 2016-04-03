@@ -76,7 +76,7 @@ docker-machine create -d google --google-project $K2_GOOGLE_PROJECT spawn-receiv
 #Open port for Receiver on GCE
 gcloud compute firewall-rules create swarm-machines --allow tcp:$ReceiverPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
 
-gcloud compute firewall-rules list docker-machine
+#gcloud compute firewall-rules list docker-machine
 
 #Connects to remote VM
 
@@ -257,7 +257,8 @@ do
     echo Provisioning Container $i
     
     #Launches Honeypots
-    docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
+    #docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
+    docker run -d --name honeypot-$i -e LOG_HOST=$publicipspawnreceiver -e LOG_PORT=$ReceiverPortK -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK 
     #launches nginx (test)
     docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
     true $(( i++ ))
