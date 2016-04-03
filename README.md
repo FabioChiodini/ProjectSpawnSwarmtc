@@ -1,5 +1,5 @@
 # ProjectSpawnSwarmtc
-Project to Spawn a titanium crucible installation in an automated way accross different Clouds (AWS and optionally GCE) using Docker Machine, Docker Swarm and Docker Discovery (Consul still TBI)
+Project to Spawn a titanium crucible (receiver + multiple honeypots) installation in an automated way accross different Clouds (AWS and optionally GCE) using Docker Machine, Docker Swarm and Docker Discovery (Consul still TBI)
 
 Tested on a t1.micro AMI
 
@@ -25,16 +25,16 @@ This script creates (leveraging Docker-Machine):
 
 - One VM in AWS hosting the Docker swarm in a Docker container
 
-- A number of VMs in AWS (specified in the variable export VM_InstancesK) as "slaves"
+- A number of VMs in AWS (specified in the variable export VM_InstancesK) as "slaves" that will host honeypots containers
 
-- A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" 
+- A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" that will host honeypots containers
 
 
 It then starts many Docker Containers (honeypots) via Docker Swarm (the number of instances is specified in the variable InstancesK in the main configuration file)
 
-It also opens up all required port on AWS Security Groups and on GCE
+It also opens up all required port on AWS Security Groups and on GCE Firewall
 
-Currently it opens all ports for Docker Swarm, Docker Machine and SSH plus ports specified in the configuration fiels for dockerized applications.
+Currently it opens all ports for Docker Swarm, Docker Machine and SSH plus ports specified in the configuration files for dockerized applications (AppPortK, ReceiverPortK and HoneypotPortK).
 
 Here's an high level diagram: 
 
@@ -127,7 +127,7 @@ You also need to propely set up your GCE account, following are the high level s
 
 Then you need to perform these configurations in the /home/ec2-user/Cloud1 file:
 
-- Populate the configuration file with your account details
+- Populate the configuration file with your GCE account details
 - Enable the flag to provision to GCE
 - Indicate a number of VMs to provision to GCE
 
