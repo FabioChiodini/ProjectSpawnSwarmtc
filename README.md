@@ -40,7 +40,7 @@ Currently it opens all ports for Docker Swarm, Docker Machine and SSH plus ports
 
 Here's an high level diagram: 
 
-![Alt text](SpawnKOverview.png "SpawnKOverview")
+![Alt text](Main.png "Main")
 
 ## Environment Variables
 
