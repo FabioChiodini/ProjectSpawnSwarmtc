@@ -100,7 +100,7 @@ Here are the details on how these variables are used:
 
 - GOOGLE_APPLICATION_CREDENTIALS maps to a file containing the Service account keys for your GCE login
 
-- AppPortK is the application (launched via Docker Swarm) this is usde to launch the application and open the relevant firewall port on GCE and AWS
+- [AppPortK is the port that is opened for (optional) dockerized nginx instances launched via docker swarm]
 
 - ReceiverPortK and ReceiverImageK are the port used and the docker image for the receiver Application
 
