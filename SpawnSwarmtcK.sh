@@ -77,7 +77,7 @@ docker-machine create -d google --google-project $K2_GOOGLE_PROJECT spawn-receiv
 
 #
 #Open port for Receiver on GCE
-gcloud compute firewall-rules create swarm-machines --allow tcp:$ReceiverPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
+gcloud compute firewall-rules create httphoneypot-machines --allow tcp:$ReceiverPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
 
 #gcloud compute firewall-rules list docker-machine
 
@@ -171,7 +171,7 @@ if [ $GCEKProvision -eq 1 ]; then
   #Opens AppPortK for Docker machine on GCE
   gcloud compute firewall-rules create http80-machines --allow tcp:$AppPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   #Opens HoneypotPortK for Docker machine on GCE
-  gcloud compute firewall-rules create http80-machines --allow tcp:$HoneypotPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
+  gcloud compute firewall-rules create httphoneypot-machines --allow tcp:$HoneypotPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   
   #Loops for creating Swarm nodes
   j=0
