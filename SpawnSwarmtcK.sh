@@ -264,8 +264,8 @@ do
     #Launches Honeypots
     #docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
     docker run -d --name honeypot-$i -e LOG_HOST=$publicipspawnreceiver -e LOG_PORT=$ReceiverPortK -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK 
-    #launches nginx (test)
-    docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
+    #launches nginx (optional)
+    #docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
     true $(( i++ ))
 done
 
@@ -297,7 +297,10 @@ echo "$(tput setaf 6) Receiver RUNNING ON $publicipspawnreceiver  Port $Receiver
 echo ----
 echo ----
 echo ----
-echo "$(tput setaf 6) Honeypots RUNNING ON TBI  Port $HoneypotPortK $(tput sgr 0)"
+echo "$(tput setaf 6) Honeypots RUNNING ON $(tput sgr 0)"
+echo "$(</home/ec2-user/ProvisionedK )"
+echo "$publicipSWARMK"
+echo "$(tput setaf 6) Port $HoneypotPortK $(tput sgr 0)"
 echo ----
 echo "******************************************"
 
