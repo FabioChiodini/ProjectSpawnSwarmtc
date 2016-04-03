@@ -189,7 +189,7 @@ if [ $GCEKProvision -eq 1 ]; then
    . /home/ec2-user/Docker$j
   
    publicipKGCE=$(docker-machine ip env-crate-$j)
-   $publicipKGCE >> /home/ec2-user/ProvisionedK
+   echo $publicipKGCE >> /home/ec2-user/ProvisionedK
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
    echo ----
@@ -227,7 +227,7 @@ do
     . /home/ec2-user/Docker$i
 
     publicipK=$(docker-machine ip SPAWN$i-$UUIDK)
-    $publicipK >> /home/ec2-user/ProvisionedK
+    echo $publicipK >> /home/ec2-user/ProvisionedK
     echo ----
     echo "$(tput setaf 1) Machine $publicipK connected to SWARM $(tput sgr 0)"
     echo ----
