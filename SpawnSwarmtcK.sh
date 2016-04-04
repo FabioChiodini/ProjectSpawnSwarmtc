@@ -3,8 +3,8 @@
 #using /home/ec2-user/Cloud1
 #source /home/ec2-user/Cloud1
 . /home/ec2-user/Cloud1
-
-
+echo "loaded Config file"
+echo ""
 echo "$(tput setaf 2) Starting $VM_InstancesK Instances in AWS $(tput sgr 0)"
 if [ $GCEKProvision -eq 1 ]; then
   echo "$(tput setaf 2) Starting $GCEVM_InstancesK Instances in GCE $(tput sgr 0)"
