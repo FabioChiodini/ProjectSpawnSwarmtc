@@ -31,7 +31,7 @@ echo "AWS_DEFAULT_REGION=$K1_AWS_DEFAULT_REGION" >> ~/.aws/config
 
 echo ""
 
-rm -rf /home/ec2-user/ProvisionedK
+rm -rf /home/ec2-user/KProvisionedK
 rm -rf /home/ec2-user/DMListK
 
 
@@ -193,7 +193,7 @@ if [ $GCEKProvision -eq 1 ]; then
    . /home/ec2-user/Docker$j
   
    publicipKGCE=$(docker-machine ip env-crate-$j)
-   echo $publicipKGCE >> /home/ec2-user/ProvisionedK
+   echo $publicipKGCE >> /home/ec2-user/KProvisionedK
    echo env-crate-$j >> /home/ec2-user/DMListK
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
@@ -232,7 +232,7 @@ do
     . /home/ec2-user/Docker$i
 
     publicipK=$(docker-machine ip SPAWN$i-$UUIDK)
-    echo $publicipK >> /home/ec2-user/ProvisionedK
+    echo $publicipK >> /home/ec2-user/KProvisionedK
     echo SPAWN$i-$UUIDK >> /home/ec2-user/DMListK
     echo ----
     echo "$(tput setaf 1) Machine $publicipK connected to SWARM $(tput sgr 0)"
@@ -305,7 +305,7 @@ echo ----
 echo ----
 echo ----
 echo "$(tput setaf 6) Honeypots RUNNING ON $(tput sgr 0)"
-echo "$(</home/ec2-user/ProvisionedK )"
+echo "$(</home/ec2-user/KProvisionedK )"
 echo "$publicipSWARMK"
 echo "$(tput setaf 6) Port $HoneypotPortK $(tput sgr 0)"
 echo ----
