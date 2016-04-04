@@ -86,25 +86,25 @@ Here are the details on how these variables are used:
 
 - The first five variable are used by the docker-machine command and are related to your AWS account
 
-- *AWS_DEFAULT_REGION* variable is used by AWS cli (to edit the security group) 
+- **AWS_DEFAULT_REGION** variable is used by AWS cli (to edit the security group) 
 
-- *VM_InstancesK* is used to determine the number of VM that will be spawned on AWS 
-- *Container_InstancesK* is used to state how many Containers instances will be run
+- **VM_InstancesK** is used to determine the number of VM that will be spawned on AWS 
+- **Container_InstancesK** is used to state how many Containers instances will be run
 
-- *GCEKProvision* is a flag to enable provisioning on GCE
+- **GCEKProvision** is a flag to enable provisioning on GCE
 - *GCEVM_InstancesK* is used to determine the number of VM that will be spawned on GCE
 
-- *K2_GOOGLE_AUTH_EMAIL* contains the google account email for your GCE project (shown in the manage service accounts panel, this is NOT your google email :P)
+- **K2_GOOGLE_AUTH_EMAIL** contains the google account email for your GCE project (shown in the manage service accounts panel, this is NOT your google email :P)
 
-- *K2_GOOGLE_PROJECT* contains the project to targte for GCE
+- **K2_GOOGLE_PROJECT** contains the project to targte for GCE
 
-- *GOOGLE_APPLICATION_CREDENTIALS* maps to a file containing the Service account keys for your GCE login
+- **GOOGLE_APPLICATION_CREDENTIALS** maps to a file containing the Service account keys for your GCE login
 
-- [*AppPortK* is the port that is opened for (optional) dockerized nginx instances launched via docker swarm]
+- [**AppPortK** is the port that is opened for (optional/code commented out) dockerized nginx instances launched via docker swarm]
 
-- *ReceiverPortK* and *ReceiverImageK* are the port used and the docker image for the receiver Application
+- **ReceiverPortK** and **ReceiverImageK** are the port used and the docker image for the receiver Application
 
-- *HoneypotPortK* and *HoneypotImageK* are the port used and the docker image for the honeypot Applications to launch via Docker swarm
+- **HoneypotPortK** and **HoneypotImageK** are the port used and the docker image for the honeypot Applications to launch via Docker swarm
 
 
 ![Alt text](Cloud1.png "Cloud1")
