@@ -179,6 +179,7 @@ if [ $GCEKProvision -eq 1 ]; then
   while [ $j -lt $GCEVM_InstancesK ]
   do
    UUIDK=$(cat /proc/sys/kernel/random/uuid)
+   # Makes sure the UUID is lowercase for GCE provisioning
    UUIDKL=${UUIDK,,}
    echo ""
    echo Provisioning VM SPAWN-GCE$j-K
