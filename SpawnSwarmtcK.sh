@@ -179,8 +179,10 @@ if [ $GCEKProvision -eq 1 ]; then
   while [ $j -lt $GCEVM_InstancesK ]
   do
    UUIDK=$(cat /proc/sys/kernel/random/uuid)
+   UUIDKL=${UUIDK,,}
    echo ""
    echo Provisioning VM SPAWN-GCE$j-K
+   echo $UUIDKL
    echo ""
   
    #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-image ubuntu-1510-wily-v20151114 --swarm --swarm-discovery token://$SwarmTokenK SPAWN-GCE$j-K
