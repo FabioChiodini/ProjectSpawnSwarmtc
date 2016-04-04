@@ -115,11 +115,15 @@ The code also uses another file: GCEkeyfile.json
 
 ## Service Discovery
 
-All the items created by the code are registered in the KV store of Consul to allw for further manipulation.
+All the items created by the code are registered in the KV store of Consul to allow for further manipulation.
 
-Here are some examples of the notation used:
+Following are some examples of the notation used.
+
+Main KV tree:
 
 ![Alt text](ConsulRegistration.png "ConsulRegistration")
+
+Example entry (with IP) for a Swarm "slave":
 
 ![Alt text](ConsulRegistration-2.png "ConsulRegistration-2")
 
