@@ -93,7 +93,7 @@ Here are the details on how these variables are used:
 - **Container_InstancesK** is used to state how many Containers instances will be run
 
 - **GCEKProvision** is a flag to enable provisioning on GCE
-- *GCEVM_InstancesK* is used to determine the number of VM that will be spawned on GCE
+- **GCEVM_InstancesK** is used to determine the number of VM that will be spawned on GCE
 
 - **K2_GOOGLE_AUTH_EMAIL** contains the google account email for your GCE project (shown in the manage service accounts panel, this is NOT your google email :P)
 
