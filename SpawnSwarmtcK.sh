@@ -59,9 +59,9 @@ docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul 
 
 
 #Register the tasks for this run in Consul
-curl -X PUT -d 'Total Slaves in AWS' http://$publicipCONSULK:8500/v1/kv/tc/AWSVMs/$VM_InstancesK/key?flags=1
-curl -X PUT -d 'Total Slaves in GCE' http://$publicipCONSULK:8500/v1/kv/tc/GCEVMs/$GCEVM_InstancesK/key?flags=1
-curl -X PUT -d 'Total Honeypots' http://$publicipCONSULK:8500/v1/kv/tc/TotalHoneypots/$Container_InstancesK/key?flags=1
+curl -X PUT -d '$VM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/awsvms/key
+curl -X PUT -d '$GCEVM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/gcevms/key
+curl -X PUT -d '$Container_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots/key
 
 echo ----
 echo Consul RUNNING ON $publicipCONSULK:8500
