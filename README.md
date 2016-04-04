@@ -1,5 +1,6 @@
 # ProjectSpawnSwarmtc
-Project to Spawn a titanium crucible (receiver + multiple honeypots) installation in an automated way accross different Clouds (AWS and optionally GCE) using Docker Machine, Docker Swarm and Docker Discovery (Consul still TBI)
+Project to Spawn a titanium crucible (receiver + multiple honeypots) installation in an automated way accross different Clouds (AWS and optionally GCE) using Docker Machine, Docker Swarm and Docker Discovery. 
+A dockerized Consul instance is used to store variables in a KV store.
 
 Tested on a t1.micro AMI
 
