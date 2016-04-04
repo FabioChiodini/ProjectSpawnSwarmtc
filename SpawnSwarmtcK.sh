@@ -64,58 +64,74 @@ echo publicipCONSULK=$publicipCONSULK
 echo ----
 
 
+if [ $GCEKProvision -eq 1 ];
 
-echo ""
-echo "$(tput setaf 2) Launching a Receiver Instance $(tput sgr 0)"
-echo ""
-
-
-#Create Docker Receiver Instance in GCE
-#gcloud auth login
-gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
-
-docker-machine create -d google --google-project $K2_GOOGLE_PROJECT spawn-receiver
-
-#
-#Open port for Receiver on GCE
-gcloud compute firewall-rules create receiver-machines --allow tcp:$ReceiverPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
-
-#gcloud compute firewall-rules list docker-machine
-
-#Connects to remote VM
-
-docker-machine env spawn-receiver > /home/ec2-user/spawn-receiver
-. /home/ec2-user/spawn-receiver
-
-publicipspawnreceiver=$(docker-machine ip spawn-receiver)
+  echo ""
+  echo "$(tput setaf 2) Launching a Receiver Instance in GCE $(tput sgr 0)"
+  echo ""
 
 
+  #Create Docker Receiver Instance in GCE
+  #gcloud auth login
+  gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-#Builds the Receiver Container
-#git clone https://github.com/FabioChiodini/ProjectSpawnSwarmtc.git
-#cd ~/ProjectSpawnSwarmtc/receiver
+  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT spawn-receiver
 
-#docker build -t kiodo/tc:receiver .
+  #
+  #Open port for Receiver on GCE
+  gcloud compute firewall-rules create receiver-machines --allow tcp:$ReceiverPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
 
-docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
+  #gcloud compute firewall-rules list docker-machine
 
-echo ----
-echo "$(tput setaf 2) Receiver RUNNING ON $publicipspawnreceiver  Port $ReceiverPortK $(tput sgr 0)"
-echo publicipspawnreceiver=$publicipspawnreceiver
-echo ----
+  #Connects to remote VM
+
+  docker-machine env spawn-receiver > /home/ec2-user/spawn-receiver
+  . /home/ec2-user/spawn-receiver
+
+  publicipspawnreceiver=$(docker-machine ip spawn-receiver)
+
+  docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
+
+  echo ----
+  echo "$(tput setaf 2) Receiver RUNNING ON $publicipspawnreceiver  Port $ReceiverPortK ON GCE $(tput sgr 0)"
+  echo publicipspawnreceiver=$publicipspawnreceiver
+  echo ----
+
+else
+	
+  echo ""
+  echo "$(tput setaf 2) Launching a Receiver Instance in AWS $(tput sgr 0)"
+  echo ""
+
+
+  #Create Docker Receiver Instance in AWS
+  docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION spawn-receiver
+
+  echo "$(tput setaf 2) Opening Ports for Receiver on AWS $(tput sgr 0)"
+  #Opens Firewall Port for Receiver on AWS
+  aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port $ReceiverPortK --cidr 0.0.0.0/0
+
+  #Connects to remote VM
+
+  docker-machine env spawn-receiver > /home/ec2-user/spawn-receiver
+  . /home/ec2-user/spawn-receiver
+
+  publicipspawnreceiver=$(docker-machine ip spawn-receiver)
+
+  docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
+
+  echo ----
+  echo "$(tput setaf 2) Receiver RUNNING ON $publicipspawnreceiver  Port $ReceiverPortK ON AWS $(tput sgr 0)"
+  echo publicipspawnreceiver=$publicipspawnreceiver
+  echo ----
+
+fi
+
 
 #Jonas Style Launch Swarm
 
 echo ""
 echo "$(tput setaf 2) Creating Docker Swarm VM $(tput sgr 0)"
-
-#Launches another temporary container
-
-#docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION localK
-
-#Connects to Container
-#docker-machine env localK > /home/ec2-user/localK
-#. /home/ec2-user/localK
 
 #Creates swarm ID and stores it into file and variable
 docker run swarm create > /home/ec2-user/kiodo1
