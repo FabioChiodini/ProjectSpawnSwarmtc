@@ -122,7 +122,10 @@ else
   publicipspawnreceiver=$(docker-machine ip spawn-receiver)
   
   #registers receiver in Consul
-  curl -X PUT -d 'spawn-receiver' http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/$publicipspawnreceiver/key?flags=1
+  curl -X PUT -d 'spawn-receiver' http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/name
+  curl -X PUT -d '$publicipspawnreceiver' http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/ip
+  curl -X PUT -d '$ReceiverPortK' http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/port
+  
 
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
@@ -135,9 +138,9 @@ fi
 
 #Register the tasks for this run in Consul
 #Postponed as Consul takes some time to start up
-curl -X PUT -d '$VM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/awsvms/key
-curl -X PUT -d '$GCEVM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/gcevms/key
-curl -X PUT -d '$Container_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots/key
+curl -X PUT -d '$VM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/awsvms
+curl -X PUT -d '$GCEVM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/gcevms
+curl -X PUT -d '$Container_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots
 
 
 #Jonas Style Launch Swarm
@@ -170,7 +173,11 @@ docker-machine env swarm-master > /home/ec2-user/SWARM1
 publicipSWARMK=$(docker-machine ip swarm-master)
 
 #registers Swarm master in Consul
-curl -X PUT -d 'swarm-master' http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/$publicipSWARMK/key?flags=1
+curl -X PUT -d 'swarm-master' http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/name
+curl -X PUT -d '$publicipSWARMK' http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/ip
+curl -X PUT -d '8333' http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/port
+curl -X PUT -d '$SwarmTokenK' http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/token
+
 
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
@@ -226,7 +233,9 @@ if [ $GCEKProvision -eq 1 ]; then
    echo env-crate-$j >> /home/ec2-user/DMListK
    
    #registers Swarm Slave in Consul
-   curl -X PUT -d 'env-crate-$j' http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/$publicipKGCE/key?flags=$j
+   curl -X PUT -d 'env-crate-$j' http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
+   curl -X PUT -d '$publicipKGCE' http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
+   
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
    echo ----
@@ -268,7 +277,8 @@ do
     echo SPAWN$i-$UUIDK >> /home/ec2-user/DMListK
     
     #registers Swarm Slave in Consul
-    curl -X PUT -d 'SPAWN$i-$UUIDK' http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/$publicipK/key?flags=$i
+    curl -X PUT -d 'SPAWN$i-$UUIDK' http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
+    curl -X PUT -d '$publicipK' http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/ip
     
     echo ----
     echo "$(tput setaf 1) Machine $publicipK connected to SWARM $(tput sgr 0)"
