@@ -112,6 +112,17 @@ Here are the details on how these variables are used:
 The code also uses another file: GCEkeyfile.json 
 - This contains data that is used for GCE authentication (Service account keys type in JSON format)
 
+
+## Service Discovery
+
+All the items created by the code are registered in the KV store of Consul to allw for further manipulation.
+
+Here are some examples of the notation used:
+
+![Alt text](ConsulRegistration.png "ConsulRegistration")
+
+![Alt text](ConsulRegistration-2.png "ConsulRegistration-2")
+
 ## NOTES ON Spawning to GCE
 
 To spawn VMs to GCE you need to Install the GCE SDK on your AMI image:
