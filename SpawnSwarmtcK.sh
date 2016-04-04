@@ -64,7 +64,7 @@ echo publicipCONSULK=$publicipCONSULK
 echo ----
 
 
-if [ $GCEKProvision -eq 1 ];
+if [ $GCEKProvision -eq 1 ]; then
 
   echo ""
   echo "$(tput setaf 2) Launching a Receiver Instance in GCE $(tput sgr 0)"
