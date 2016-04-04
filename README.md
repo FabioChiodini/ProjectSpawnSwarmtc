@@ -25,9 +25,9 @@ This script creates (leveraging Docker-Machine):
 
 - One VM in AWS hosting the Docker swarm in a Docker container
 
-- A number of VMs in AWS (specified in the variable export VM_InstancesK) as "slaves" that will host honeypots containers
+- A number of VMs in AWS (specified in the variable export VM_InstancesK) as "slaves" that will host honeypots containers. These are t2.micro VM types
 
-- A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" that will host honeypots containers
+- A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" that will host honeypots containers. These are g1-small VM types
 
 - [in the code there's a commented line to deploya dockerized nginx via DockerSwarm and opening the relevant port]  
 
