@@ -124,7 +124,7 @@ Main KV tree:
 
 ![Alt text](ConsulRegistration-3.png "ConsulRegistration-3")
 
-Example entry (with IP) for a Swarm "slave":
+Example entry (with IP) for the Docker Machine hosting the Receiver:
 
 ![Alt text](ConsulRegistration-4.png "ConsulRegistration-4")
 
