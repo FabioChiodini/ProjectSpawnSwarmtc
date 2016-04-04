@@ -58,11 +58,6 @@ publicipCONSULK=$(docker-machine ip SPAWN-CONSUL)
 docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
 
 
-#Register the tasks for this run in Consul
-curl -X PUT -d '$VM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/awsvms/key
-curl -X PUT -d '$GCEVM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/gcevms/key
-curl -X PUT -d '$Container_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots/key
-
 echo ----
 echo Consul RUNNING ON $publicipCONSULK:8500
 echo publicipCONSULK=$publicipCONSULK
@@ -137,6 +132,12 @@ else
   echo ----
 
 fi
+
+#Register the tasks for this run in Consul
+#Postponed as Consul takes some time to start up
+curl -X PUT -d '$VM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/awsvms/key
+curl -X PUT -d '$GCEVM_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/gcevms/key
+curl -X PUT -d '$Container_InstancesK' http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots/key
 
 
 #Jonas Style Launch Swarm
