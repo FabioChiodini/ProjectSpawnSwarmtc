@@ -223,6 +223,9 @@ if [ $GCEKProvision -eq 1 ]; then
    publicipKGCE=$(docker-machine ip env-crate-$j)
    echo $publicipKGCE >> /home/ec2-user/KProvisionedK
    echo env-crate-$j >> /home/ec2-user/DMListK
+   
+   #registers Swarm Slave in Consul
+   curl -X PUT -d 'env-crate-$j' http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/$publicipKGCE/key?flags=$j
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
    echo ----
