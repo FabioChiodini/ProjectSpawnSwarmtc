@@ -32,7 +32,7 @@ echo "AWS_DEFAULT_REGION=$K1_AWS_DEFAULT_REGION" >> ~/.aws/config
 echo ""
 
 rm -rf /home/ec2-user/ProvisionedK
-rm -rf /home/ec2-user/DM-ListK
+rm -rf /home/ec2-user/DMListK
 
 
 #echo $AWS_ACCESS_KEY_ID
@@ -191,7 +191,7 @@ if [ $GCEKProvision -eq 1 ]; then
   
    publicipKGCE=$(docker-machine ip env-crate-$j)
    echo $publicipKGCE >> /home/ec2-user/ProvisionedK
-   echo env-crate-$j >> /home/ec2-user/DM-ListK
+   echo env-crate-$j >> /home/ec2-user/DMListK
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
    echo ----
@@ -230,7 +230,7 @@ do
 
     publicipK=$(docker-machine ip SPAWN$i-$UUIDK)
     echo $publicipK >> /home/ec2-user/ProvisionedK
-    echo SPAWN$i-$UUIDK >> /home/ec2-user/DM-ListK
+    echo SPAWN$i-$UUIDK >> /home/ec2-user/DMListK
     echo ----
     echo "$(tput setaf 1) Machine $publicipK connected to SWARM $(tput sgr 0)"
     echo ----
@@ -307,7 +307,9 @@ echo "$publicipSWARMK"
 echo "$(tput setaf 6) Port $HoneypotPortK $(tput sgr 0)"
 echo ----
 echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
-echo "$(/home/ec2-user/DM-ListK)"
+#echo "$(/home/ec2-user/DMListK)"
+echo ----
+docker run swarm list token://$SwarmTokenK
 echo ----
 echo "******************************************"
 
