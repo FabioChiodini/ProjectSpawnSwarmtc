@@ -89,6 +89,9 @@ if [ $GCEKProvision -eq 1 ]; then
   . /home/ec2-user/spawn-receiver
 
   publicipspawnreceiver=$(docker-machine ip spawn-receiver)
+  
+  #registers receiver in Consul
+  curl -X PUT -d 'spawn-receiver' http://publicipCONSULK:8500/v1/kv/web/key2?flags=$publicipspawnreceiver
 
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
@@ -117,6 +120,9 @@ else
   . /home/ec2-user/spawn-receiver
 
   publicipspawnreceiver=$(docker-machine ip spawn-receiver)
+  
+  #registers receiver in Consul
+  curl -X PUT -d 'spawn-receiver' http://publicipCONSULK:8500/v1/kv/web/key2?flags=$publicipspawnreceiver
 
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
@@ -157,6 +163,8 @@ docker-machine env swarm-master > /home/ec2-user/SWARM1
 
 publicipSWARMK=$(docker-machine ip swarm-master)
 
+#registers Swarm master in Consul
+curl -X PUT -d 'swarm-master' http://publicipCONSULK:8500/v1/kv/web/key1?flags=$publicipSWARMK
 
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
@@ -249,6 +257,11 @@ do
     publicipK=$(docker-machine ip SPAWN$i-$UUIDK)
     echo $publicipK >> /home/ec2-user/KProvisionedK
     echo SPAWN$i-$UUIDK >> /home/ec2-user/DMListK
+    
+    #registers Swarm Slave in Consul
+    g=3+$i
+    curl -X PUT -d 'swarm-master' http://publicipCONSULK:8500/v1/kv/web/key$g?flags=$publicipSWARMK
+    
     echo ----
     echo "$(tput setaf 1) Machine $publicipK connected to SWARM $(tput sgr 0)"
     echo ----
