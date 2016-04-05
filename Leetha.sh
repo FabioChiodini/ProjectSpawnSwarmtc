@@ -53,6 +53,8 @@ Container_InstancesK=$3
 
 #Sets variables for launching honeypots that will connect to the receiver
 
+$publicipspawnreceiver
+
 
 
 LOG_HOST=$publicipspawnreceiver
@@ -82,7 +84,7 @@ if [ $GCEKProvision -eq 1 ]; then
   #Open ports for Swarm
   gcloud compute firewall-rules create swarm-machines --allow tcp:3376 --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   #Opens AppPortK for Docker machine on GCE
-  gcloud compute firewall-rules create http80-machines --allow tcp:$AppPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
+  #gcloud compute firewall-rules create http80-machines --allow tcp:$AppPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   #Opens HoneypotPortK for Docker machine on GCE
   gcloud compute firewall-rules create honey-machines --allow tcp:$HoneypotPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   
@@ -94,22 +96,22 @@ if [ $GCEKProvision -eq 1 ]; then
    # Makes sure the UUID is lowercase for GCE provisioning
    UUIDKL=${UUIDK,,}
    echo ""
-   echo Provisioning VM SPAWN-GCE$j-K
+   echo Provisioning VM env-crate-$j-$UUIDKL on GCE
    echo ""
   
    #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-image ubuntu-1510-wily-v20151114 --swarm --swarm-discovery token://$SwarmTokenK SPAWN-GCE$j-K
-   docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small --swarm --swarm-discovery token://$SwarmTokenK env-crate-$j
+   docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small --swarm --swarm-discovery token://$SwarmTokenK env-crate-$j-$UUIDKL
    #Stores ip of the VM
-   docker-machine env env-crate-$j > /home/ec2-user/Docker$j
+   docker-machine env env-crate-$j-$UUIDKL > /home/ec2-user/Docker$j
    . /home/ec2-user/Docker$j
   
-   publicipKGCE=$(docker-machine ip env-crate-$j)
+   publicipKGCE=$(docker-machine ip env-crate-$j-$UUIDKL)
    echo $publicipKGCE >> /home/ec2-user/KProvisionedK
-   echo env-crate-$j >> /home/ec2-user/DMListK
+   echo env-crate-$j-$UUIDKL >> /home/ec2-user/DMListK
    
    #registers Swarm Slave in Consul
-   curl -X PUT -d env-crate-$j http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
-   curl -X PUT -d $publicipKGCE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
+   curl -X PUT -d env-crate-$j-$UUIDKL http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j-$UUIDKL/name
+   curl -X PUT -d $publicipKGCE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j-$UUIDKL/ip
    
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
