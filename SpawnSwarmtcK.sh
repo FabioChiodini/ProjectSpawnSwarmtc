@@ -37,25 +37,44 @@ rm -rf /home/ec2-user/DMListK
 
 #echo $AWS_ACCESS_KEY_ID
 
-echo ""
-echo "$(tput setaf 2) Creating CONSUL VM $(tput sgr 0)"
-echo ""
-#Create Docker Consul VM 
-docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION SPAWN-CONSUL
+#proision Consul via Docker machine or locally 
+#depending on DynDDNS Usage variable ConsulDynDNSK
+if [ $ConsulDynDNSK -eq 0 ]; then
+  echo ""
+  echo "$(tput setaf 2) Creating CONSUL VM via Docker Machine $(tput sgr 0)"
+  echo ""
+  #Create Docker Consul VM 
+  docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION SPAWN-CONSUL
 
-#Opens Firewall Port for Consul
-aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 8500 --cidr 0.0.0.0/0
+  #Opens Firewall Port for Consul
+  aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 8500 --cidr 0.0.0.0/0
 
-#Connects to remote VM
+  #Connects to remote VM
 
-docker-machine env SPAWN-CONSUL > /home/ec2-user/CONSUL1
-. /home/ec2-user/CONSUL1
+  docker-machine env SPAWN-CONSUL > /home/ec2-user/CONSUL1
+  . /home/ec2-user/CONSUL1
 
-publicipCONSULK=$(docker-machine ip SPAWN-CONSUL)
+  publicipCONSULK=$(docker-machine ip SPAWN-CONSUL)
 
-#Launches a remote Consul instance
+  #Launches a remote Consul instance
 
-docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
+  docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
+
+else 
+  echo ""
+  echo "$(tput setaf 2) Creating a LOCAL CONSUL Container (DynDNS usage)  $(tput sgr 0)"
+  echo ""
+  publicipCONSULK=$dyndnsK
+
+  #Launches a local Consul instance
+  docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
+
+  #Manually open port 8500 on launcher AWS VM
+
+  publicipCONSULK=$dyndnsK
+
+fi
+
 
 
 echo ----
