@@ -66,7 +66,7 @@ else
   echo ""
   
   #Launches a local Consul instance
-  docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
+  docker run -d --name ConsulDynDNS -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
 
   #Manually open port 8500 on launcher AWS VM
 
