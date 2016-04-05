@@ -34,6 +34,23 @@ echo ""
 
 #Get data from file or service Discovery and displays it
 
+#Determines where to spawn
+
+#determines if it must spawn to GCE
+if [ $2 -eq 0 ]; then
+ GCEKProvision=0
+ else
+ GCEVM_InstancesK=$2
+fi
+
+#Sets the number of VMs to spawn to AWS
+VM_InstancesK=$1
+
+#Sets the number of Containers Honeypots to spawn
+Container_InstancesK=$3
+
+
+
 #Sets variables for launching honeypots that will connect to the receiver
 
 
