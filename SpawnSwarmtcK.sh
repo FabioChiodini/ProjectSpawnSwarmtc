@@ -64,14 +64,13 @@ else
   echo ""
   echo "$(tput setaf 2) Creating a LOCAL CONSUL Container (DynDNS usage)  $(tput sgr 0)"
   echo ""
-  publicipCONSULK=$dyndnsK
-
+  
   #Launches a local Consul instance
   docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
 
   #Manually open port 8500 on launcher AWS VM
 
-  publicipCONSULK=$dyndnsK
+  publicipCONSULK=$DynDNSK
 
 fi
 
