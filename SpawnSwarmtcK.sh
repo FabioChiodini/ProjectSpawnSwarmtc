@@ -325,14 +325,14 @@ done
 
 
 #Outputs final status
-stringk=$(eval $(docker-machine env --swarm swarm-master))
+eval $(docker-machine env --swarm swarm-master) > /home/ec2-user/OutputKK
 
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
 echo "$(tput setaf 1) Consul RUNNING ON $publicipCONSULK:8500 $(tput sgr 0)"
 echo ""
-echo "$(tput setaf 1) run $(tput sgr 0)"
-echo " eval $(docker-machine env --swarm swarm-master)"
+echo "$(tput setaf 1) Run $(tput sgr 0)"
+echo "$(</home/ec2-user/OutputKK )"
 echo "TO connect to the cluster "
 echo THEN run 
 echo "docker info" 
