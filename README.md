@@ -81,6 +81,9 @@ export ReceiverImageK=kiodo/receiver:latest
 export HoneypotPortK=8080
 export HoneypotImageK=kiodo/honeypot:latest
 
+export ConsulDynDNSK=1
+export DynDNSK=XXXX2.ddns.net
+
 ```
 
 Here are the details on how these variables are used:
@@ -106,6 +109,9 @@ Here are the details on how these variables are used:
 - **ReceiverPortK** and **ReceiverImageK** are the port used and the docker image for the receiver Application
 
 - **HoneypotPortK** and **HoneypotImageK** are the port used and the docker image for the honeypot Applications to launch via Docker swarm
+- **ConsulDynDNSK** is a flg to determine if the Consul Dockerized instance will be launched locally (to eventually leveragge a local dyndns setup
+
+- **DynDNSK** contains the dyndns name used for the host where this code is launched 8and where the Consul instance will be executed if ConsulDynDNSK=1
 
 
 ![Alt text](Cloud1.png "Cloud1")
