@@ -156,7 +156,13 @@ Then you need to perform these configurations in the /home/ec2-user/Cloud1 file:
 - Indicate a number of VMs to provision to GCE
 
 
+##Scale Out Code
+**Still TBI**
 
+Leetha.sh is the code that automates the scale out of the setup after the first deployment
+
+###How to launch
+./Leetha.sh instancestoaddAWS instancestoaddGCE HoneypotToSpawn 
 
 
 @FabioChiodini
