@@ -33,6 +33,12 @@ echo ""
 
 
 #Get data from file or service Discovery and displays it
+#Load file prepared during first run Cloud2
+. /home/ec2-user/Cloud2
+
+#Variables needed
+#$publicipspawnreceiver
+
 
 #Determines where to spawn
 
@@ -53,7 +59,7 @@ Container_InstancesK=$3
 
 #Sets variables for launching honeypots that will connect to the receiver
 
-$publicipspawnreceiver
+
 
 
 
