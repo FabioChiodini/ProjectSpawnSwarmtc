@@ -11,8 +11,9 @@ if [ $GCEKProvision -eq 1 ]; then
 fi
 echo "$(tput setaf 2) Starting $Container_InstancesK Container Instances $(tput sgr 0)"
 
-
-echo "Installing jq"
+echo ""
+echo "$(tput setaf 2) Installing jq $(tput sgr 0)"
+echo ""
 wget http://stedolan.github.io/jq/download/linux64/jq
 
 chmod +x ./jq
