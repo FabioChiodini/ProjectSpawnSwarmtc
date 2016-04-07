@@ -12,6 +12,13 @@ fi
 echo "$(tput setaf 2) Starting $Container_InstancesK Container Instances $(tput sgr 0)"
 
 
+echo "Installing jq"
+wget http://stedolan.github.io/jq/download/linux64/jq
+
+chmod +x ./jq
+
+sudo cp -p jq /usr/bin
+
 echo ""
 echo "STARTING"
 echo ""
