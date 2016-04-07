@@ -177,13 +177,9 @@ curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip -XPUT -d value=$publicip
 curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port -XPUT -d value=$ReceiverPortK
   
 #double check registrations writing in a file
-curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip | jq '.node.value' | sed 's/.//;s/.$//' > /home/ec2-user/ipreceiver.txt
-curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.node.value' | sed 's/.//;s/.$//' > /home/ec2-user/portreceiver.txt
+#curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip | jq '.node.value' | sed 's/.//;s/.$//' > /home/ec2-user/ipreceiver.txt
+#curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.node.value' | sed 's/.//;s/.$//' > /home/ec2-user/portreceiver.txt
   
-echo ""
-echoe "etcd Registration"
-curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip
-
 
 #Register the tasks for this run in Consul
 #Postponed as Consul takes some time to start up
@@ -229,6 +225,10 @@ curl -X PUT -d $publicipSWARMK http://$publicipCONSULK:8500/v1/kv/tc/swarm-maste
 curl -X PUT -d '8333' http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/port
 curl -X PUT -d $SwarmTokenK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/token
 
+#Register swarm-master in etcd
+curl -L http://127.0.0.1:4001/v2/keys/swarm-master/ip -XPUT -d value=$publicipSWARMK
+curl -L http://127.0.0.1:4001/v2/keys/swarm-master/port -XPUT -d value=8333
+curl -L http://127.0.0.1:4001/v2/keys/swarm-master/token -XPUT -d value=$SwarmTokenK
 
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
@@ -287,6 +287,10 @@ if [ $GCEKProvision -eq 1 ]; then
    curl -X PUT -d env-crate-$j http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
    curl -X PUT -d $publicipKGCE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
    
+   #Register Swarm slave in etcd
+   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name -XPUT -d value=env-crate-$j
+   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip -XPUT -d value=$publicipKGCE
+   
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
    echo ----
@@ -330,6 +334,11 @@ do
     #registers Swarm Slave in Consul
     curl -X PUT -d SPAWN$i-$UUIDK http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
     curl -X PUT -d $publicipK http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/ip
+    
+    #Register Swarm slave in etcd
+    curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name -XPUT -d value=SPAWN$i-$UUIDK
+    curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/ip -XPUT -d value=$publicipK
+    
     
     echo ----
     echo "$(tput setaf 1) Machine $publicipK connected to SWARM $(tput sgr 0)"
