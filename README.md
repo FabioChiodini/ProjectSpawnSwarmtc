@@ -12,8 +12,8 @@ https://github.com/FabioChiodini/AWSDockermachine
 
 ## Configuration Files
 To run this script you have to prepare two configuration files (in /home/ec2-user)
-- Cloud1 see below for syntax
-- GCEkeyfile.json used for GCE authentication
+- **Cloud1** see below for syntax
+- **GCEkeyfile.json** used for GCE authentication (see below for instructions)
 
 
 ## Script Flow
