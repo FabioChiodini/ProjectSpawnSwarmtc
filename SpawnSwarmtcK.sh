@@ -434,7 +434,12 @@ echo ""
 docker-machine rm swarm-master
 docker-machine rm SPAWN-CONSUL
 docker-machine rm spawn-receiver
-echo "$(tput setaf 2) About to tera down local docker CAUTION!!! $(tput sgr 0)"
+
+
+curl -L http://127.0.0.1:4001/v2/DM-AWS-0/name | jq '.node.value' | sed 's/.//;s/.$//' > DELMEK
+echo $DELMEK
+docker-machine rm $DELMEK
+echo "$(tput setaf 2) About to tear down local dockers CAUTION!!! $(tput sgr 0)"
 docker-machine rm SPAWN-FigureITOUT
 
 
