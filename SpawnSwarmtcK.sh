@@ -125,9 +125,6 @@ if [ $GCEKProvision -eq 1 ]; then
 
   publicipspawnreceiver=$(docker-machine ip spawn-receiver)
   
-  #registers receiver in Consul
-  curl -X PUT -d 'spawn-receiver' http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/$publicipspawnreceiver/key?flags=1
-
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
   echo ----
@@ -156,13 +153,7 @@ else
 
   publicipspawnreceiver=$(docker-machine ip spawn-receiver)
   
-  #registers receiver in Consul
-  curl -X PUT -d 'spawn-receiver' http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/name
-  curl -X PUT -d $publicipspawnreceiver http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/ip
-  curl -X PUT -d $ReceiverPortK http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/port
-  
-  
-  #starts the Receiver dockerized
+    #starts the Receiver dockerized
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
   echo ----
@@ -172,13 +163,19 @@ else
 
 fi
 
+
+echo ""
+echo "$(tput setaf 2) Registering Services in Consul and etcd  $(tput sgr 0)"
+echo ""
+
+#registers receiver in Consul
+  curl -X PUT -d 'spawn-receiver' http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/name
+  curl -X PUT -d $publicipspawnreceiver http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/ip
+  curl -X PUT -d $ReceiverPortK http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/port
+
 #Register Receiver in etcd
 curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip -XPUT -d value=$publicipspawnreceiver
 curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port -XPUT -d value=$ReceiverPortK
-  
-#double check registrations writing in a file
-#curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip | jq '.node.value' | sed 's/.//;s/.$//' > /home/ec2-user/ipreceiver.txt
-#curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.node.value' | sed 's/.//;s/.$//' > /home/ec2-user/portreceiver.txt
   
 
 #Register the tasks for this run in Consul
