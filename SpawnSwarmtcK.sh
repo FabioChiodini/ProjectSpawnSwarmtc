@@ -434,8 +434,13 @@ echo ""
 docker-machine rm swarm-master
 docker-machine rm SPAWN-CONSUL
 docker-machine rm spawn-receiver
+echo "$(tput setaf 2) About to tera down local docker CAUTION!!! $(tput sgr 0)"
 docker-machine rm SPAWN-FigureITOUT
 
+
+docker rm -f ConsulDynDNS
+docker rm -f receiverK
+docker rm -f etcdk
 
 #Displays Public IP
 
