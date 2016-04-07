@@ -124,9 +124,19 @@ The code also uses another file: GCEkeyfile.json
 
 ## Service Discovery
 
-All the items created by the code are registered in the KV store of **Consul** to allow for further manipulation.
+For demo purposes two service discovery services are used: Consul and etcd
 
-Following are some examples of the notation used.
+All the items created by the code are registered in the KV store of **etcd** to allow for further manipulation.
+
+**Consul** is used for demo purposes (GUI)
+
+### etcd
+etcd is launched as a local dockerized applications and stores variables that are used in the main Spawn code and in the scale up script
+
+**jq** is installed on the local AMI (automatically during Spawn execution) to manipulate JSON files in shell scripts
+
+### Consul
+Following are some examples of the Consul outputs.
 
 Main KV tree:
 
