@@ -195,7 +195,7 @@ curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=$Container_I
 
 echo ""
 echo "$(tput setaf 2) Creating Docker Swarm VM $(tput sgr 0)"
-
+echo ""
 #Creates swarm ID and stores it into file and variable
 docker run swarm create > /home/ec2-user/kiodo1
 tail -1 /home/ec2-user/kiodo1 > /home/ec2-user/SwarmToken
@@ -209,8 +209,9 @@ echo ----
 #Create Swarm Master
 docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION --swarm --swarm-master --swarm-discovery token://$SwarmTokenK swarm-master
 
+echo ""
 echo "$(tput setaf 2) Opening Ports for Docker Swarm$(tput sgr 0)"
-
+echo ""
 #Opens Firewall Port for Docker SWARM
 aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 8333 --cidr 0.0.0.0/0
 
