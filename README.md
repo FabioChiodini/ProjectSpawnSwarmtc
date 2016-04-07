@@ -20,9 +20,11 @@ To run this script you have to prepare two configuration files (in /home/ec2-use
 
 This script creates (leveraging Docker-Machine):
 
-- one VM in AWS with Consul in Docker (used also to prepare docker Discovery)
+- one VM in AWS with Consul in Docker (used also to prepare docker Discovery). There is an option to run this locally containerized (remember to open port 8500 if you run this locally)
 
 - One VM on GCE hosting the receiver application in a container
+
+- One local etcd instance containerized to store local variables (the etcd is not reachable from outside networks)
 
 - One VM in AWS hosting the Docker swarm in a Docker container
 
@@ -160,6 +162,8 @@ Then you need to perform these configurations in the /home/ec2-user/Cloud1 file:
 **Still TBI**
 
 Leetha.sh is the code that automates the scale out of the setup after the first deployment
+
+It reads configuration information from the etcd local instances (to connect to swarm, set up docker-machine and to launch honeypots)
 
 ###How to launch
 ./Leetha.sh instancestoaddAWS instancestoaddGCE HoneypotToSpawn 
