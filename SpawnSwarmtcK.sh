@@ -44,7 +44,7 @@ rm -rf /home/ec2-user/DMListK
 
 #echo $AWS_ACCESS_KEY_ID
 
-#proision Consul via Docker machine or locally 
+#provision Consul via Docker machine or locally 
 #depending on DynDDNS Usage variable ConsulDynDNSK
 if [ $ConsulDynDNSK -eq 0 ]; then
   echo ""
@@ -89,6 +89,23 @@ echo publicipCONSULK=$publicipCONSULK
 echo ----
 
 
+echo ""
+echo "$(tput setaf 2) Creating a LOCAL etcd instance  $(tput sgr 0)"
+echo ""
+
+docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 \
+ --name etcd quay.io/coreos/etcd \
+ -name etcd0 \
+ -advertise-client-urls http://${HostIP}:2379,http://${HostIP}:4001 \
+ -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 \
+ -initial-advertise-peer-urls http://${HostIP}:2380 \
+ -listen-peer-urls http://0.0.0.0:2380 \
+ -initial-cluster-token etcd-cluster-1 \
+ -initial-cluster etcd0=http://${HostIP}:2380 \
+ -initial-cluster-state new
+ 
+ 
+#Provisions Receiver instance in GCE or AWS
 if [ $GCEKProvision -eq 1 ]; then
 
   echo ""
@@ -151,7 +168,8 @@ else
   curl -X PUT -d $publicipspawnreceiver http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/ip
   curl -X PUT -d $ReceiverPortK http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/port
   
-
+  
+  #starts the Receiver dockerized
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
   echo ----
@@ -161,11 +179,26 @@ else
 
 fi
 
+#Register Receiver in etcd
+curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip -XPUT -d value=$publicipspawnreceiver
+curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port -XPUT -d value=$ReceiverPortK
+  
+#double check registrations writing in a file
+curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip | jq '.node.value' | sed 's/.//;s/.$//' > /home/ec2-user/ipreceiver.txt
+curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.node.value' | sed 's/.//;s/.$//' > /home/ec2-user/portreceiver.txt
+  
+echo ""
+echoe "etcd Registration"
+curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip
+
+
 #Register the tasks for this run in Consul
 #Postponed as Consul takes some time to start up
 curl -X PUT -d $VM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/awsvms
 curl -X PUT -d $GCEVM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/gcevms
 curl -X PUT -d $Container_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots
+
+
 
 
 #Jonas Style Launch Swarm
