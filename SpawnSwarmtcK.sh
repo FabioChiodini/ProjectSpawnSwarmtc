@@ -3,7 +3,8 @@
 #using /home/ec2-user/Cloud1
 #source /home/ec2-user/Cloud1
 . /home/ec2-user/Cloud1
-echo "loaded Config file"
+echo ""
+echo "Loaded Config file"
 echo ""
 echo "$(tput setaf 2) Starting $VM_InstancesK Instances in AWS $(tput sgr 0)"
 if [ $GCEKProvision -eq 1 ]; then
@@ -38,12 +39,6 @@ echo "AWS_SECRET_ACCESS_KEY=$K1_AWS_SECRET_KEY" >> ~/.aws/config
 echo "AWS_DEFAULT_REGION=$K1_AWS_DEFAULT_REGION" >> ~/.aws/config
 
 echo ""
-
-rm -rf /home/ec2-user/KProvisionedK
-rm -rf /home/ec2-user/DMListK
-
-
-#echo $AWS_ACCESS_KEY_ID
 
 #provision Consul via Docker machine or locally 
 #depending on DynDDNS Usage variable ConsulDynDNSK
@@ -282,8 +277,6 @@ if [ $GCEKProvision -eq 1 ]; then
    . /home/ec2-user/Docker$j
   
    publicipKGCE=$(docker-machine ip env-crate-$j)
-   echo $publicipKGCE >> /home/ec2-user/KProvisionedK
-   echo env-crate-$j >> /home/ec2-user/DMListK
    
    #registers Swarm Slave in Consul
    curl -X PUT -d env-crate-$j http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
@@ -330,8 +323,6 @@ do
     . /home/ec2-user/Docker$i
 
     publicipK=$(docker-machine ip SPAWN$i-$UUIDK)
-    echo $publicipK >> /home/ec2-user/KProvisionedK
-    echo SPAWN$i-$UUIDK >> /home/ec2-user/DMListK
     
     #registers Swarm Slave in Consul
     curl -X PUT -d SPAWN$i-$UUIDK http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
@@ -418,7 +409,7 @@ echo "$publicipSWARMK"
 echo "$(tput setaf 6) Port $HoneypotPortK $(tput sgr 0)"
 echo ----
 echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
-#echo "$(/home/ec2-user/DMListK)"
+echo TBD
 echo ----
 docker run swarm list token://$SwarmTokenK
 echo ----
@@ -448,7 +439,9 @@ docker-machine rm SPAWN-FigureITOUT
 
 
 docker rm -f ConsulDynDNS
+sleep 1
 docker rm -f receiverK
+sleep 1
 docker rm -f etcdk
 
 #Displays Public IP
