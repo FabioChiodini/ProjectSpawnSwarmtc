@@ -116,8 +116,15 @@ if [ $GCEKProvision -eq 1 ]; then
   gcloud compute firewall-rules create honey-machines --allow tcp:$HoneypotPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   
   #Loops for creating Swarm nodes
-  j=0
-  while [ $j -lt $GCEVM_InstancesK ]
+  
+  
+  
+  #changed to loop to o to preserve naming convention
+  #j keeps the count of total VMs consistent with previous run
+  
+  j=$prevgceVMs
+  o=0
+  while [ $o -lt $GCEVM_InstancesK ]
   do
    UUIDK=$(cat /proc/sys/kernel/random/uuid)
    # Makes sure the UUID is lowercase for GCE provisioning
@@ -145,7 +152,7 @@ if [ $GCEKProvision -eq 1 ]; then
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
    echo ----
-   true $(( j++ ))
+   true $(( o++ ))
   done
 fi
 
