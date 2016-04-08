@@ -50,9 +50,11 @@ prevawsvms=`(curl http://127.0.0.1:4001/v2/keys/awsvms | jq '.node.value' | sed 
 prevgcevms=`(curl http://127.0.0.1:4001/v2/keys/gcevms | jq '.node.value' | sed 's/.//;s/.$//')`
 prevhoneypots=`(curl http://127.0.0.1:4001/v2/keys/totalhoneypots | jq '.node.value' | sed 's/.//;s/.$//')`
 
+#swarm-master
+publicipSWARMK=`(http://127.0.0.1:4001/v2/keys/swarm-master/ip | jq '.node.value' | sed 's/.//;s/.$//')`
+SwarmTokenK=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/token | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #spawn-receiver
-
 ReceiverNameK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/name | jq '.node.value' | sed 's/.//;s/.$//')`
 publicipspawnreceiver=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/ip | jq '.node.value' | sed 's/.//;s/.$//')`
 ReceiverPortK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.node.value' | sed 's/.//;s/.$//')`
@@ -232,9 +234,9 @@ LOG_HOST=$publicipspawnreceiver
 LOG_PORT=$ReceiverPortK
 
 
-
-i=0
-while [ $i -lt $Container_InstancesK ]
+i=$prevhoneypots
+q=0
+while [ $q -lt $Container_InstancesK ]
 do
     echo "output: $i"
     UUIDK=$(cat /proc/sys/kernel/random/uuid)
@@ -245,7 +247,9 @@ do
     docker run -d --name honeypot-$i -e LOG_HOST=$publicipspawnreceiver -e LOG_PORT=$ReceiverPortK -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK 
     #launches nginx (optional)
     #docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
+    #Increments counter for honeypots
     true $(( i++ ))
+    true $(( q++ ))
 done
 
 
