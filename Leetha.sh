@@ -2,6 +2,7 @@
 #Still TBI
 
 #Must use Cloud1 for accounts (any way to change this?)
+#Some variables are modified later by fetching data from etcd
 . /home/ec2-user/Cloud1
 echo "loaded Config file"
 echo ""
@@ -43,6 +44,13 @@ echo ""
 
 
 #Variables needed
+
+#gets data from previous run
+prevawsvms=`(curl http://127.0.0.1:4001/v2/keys/awsvms | jq '.node.value' | sed 's/.//;s/.$//')`
+prevgcevms=`(curl http://127.0.0.1:4001/v2/keys/gcevms | jq '.node.value' | sed 's/.//;s/.$//')`
+prevhoneypots=`(curl http://127.0.0.1:4001/v2/keys/totalhoneypots | jq '.node.value' | sed 's/.//;s/.$//')`
+
+
 #spawn-receiver
 
 ReceiverNameK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/name | jq '.node.value' | sed 's/.//;s/.$//')`
@@ -122,15 +130,17 @@ if [ $GCEKProvision -eq 1 ]; then
   #changed to loop to o to preserve naming convention
   #j keeps the count of total VMs consistent with previous run
   
-  j=$prevgceVMs
+  j=$prevgcevms
   o=0
   while [ $o -lt $GCEVM_InstancesK ]
   do
+   #Increments counter for total GCE VMs
+   true $(( j++ ))
    UUIDK=$(cat /proc/sys/kernel/random/uuid)
    # Makes sure the UUID is lowercase for GCE provisioning
    UUIDKL=${UUIDK,,}
    echo ""
-   echo Provisioning VM SPAWN-GCE$j-K
+   echo "Provisioning VM env-crate-$j "
    echo ""
   
    #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-image ubuntu-1510-wily-v20151114 --swarm --swarm-discovery token://$SwarmTokenK SPAWN-GCE$j-K
@@ -169,11 +179,13 @@ echo ----
 #Opens Firewall Port for Honeypots
 aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port $HoneypotPortK --cidr 0.0.0.0/0
 
-
-i=0
-while [ $i -lt $VM_InstancesK ]
+i=$prevawsvms
+p=0
+while [ $p -lt $VM_InstancesK ]
 do
-    echo "output: $i"
+    #echo "output: $i"
+    #Increments countert for total AWS VMs
+    true $(( i++ ))
     UUIDK=$(cat /proc/sys/kernel/random/uuid)
     #echo Provisioning VM SPAWN$i-$UUIDK
     echo ""
@@ -199,10 +211,8 @@ do
     echo ----
     echo "$(tput setaf 1) Machine $publicipK connected to SWARM $(tput sgr 0)"
     echo ----
-    true $(( i++ ))
+    true $(( p++ ))
 done
-
-
 
 
 
