@@ -64,6 +64,12 @@ VM_InstancesK=$1
 #Sets the number of Containers Honeypots to spawn
 Container_InstancesK=$3
 
+echo ""
+echo "$(tput setaf 2) Scaling up $VM_InstancesK Instances in AWS $(tput sgr 0)"
+if [ $GCEKProvision -eq 1 ]; then
+  echo "$(tput setaf 2) Scaling up $GCEVM_InstancesK Instances in GCE $(tput sgr 0)"
+fi
+echo "$(tput setaf 2) Scaling up $Container_InstancesK Container Instances $(tput sgr 0)"
 
 
 #Sets variables for launching honeypots that will connect to the receiver
@@ -81,6 +87,8 @@ LOG_PORT=$ReceiverPortK
 
 #Loops for creating Swarm nodes
 
+# THIS IS THE SAME CODE AS THE MAIN SCRIPT
+# THIS IS THE SAME CODE AS THE MAIN SCRIPT
 # THIS IS THE SAME CODE AS THE MAIN SCRIPT
 
 echo ""
@@ -223,9 +231,9 @@ do
 done
 
 
-# ENDS CODE THAT IS THE SAME AS THE MAIN SCRIPT
-
-
+# END OF CODE THAT IS THE SAME AS THE MAIN SCRIPT
+# END OF CODE THAT IS THE SAME AS THE MAIN SCRIPT
+# END OF CODE THAT IS THE SAME AS THE MAIN SCRIPT
 
 
 echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
