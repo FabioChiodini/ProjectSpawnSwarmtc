@@ -169,6 +169,7 @@ echo ""
   curl -X PUT -d $ReceiverPortK http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/port
 
 #Register Receiver in etcd
+curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/name -XPUT -d value=spawn-receiver
 curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip -XPUT -d value=$publicipspawnreceiver
 curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port -XPUT -d value=$ReceiverPortK
   
