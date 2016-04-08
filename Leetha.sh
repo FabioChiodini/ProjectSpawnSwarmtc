@@ -77,9 +77,11 @@ LOG_PORT=$ReceiverPortK
 
 #create new Docker-machines
 
+
+
 #Loops for creating Swarm nodes
 
-#this is the ssame code as the main script
+# THIS IS THE SAME CODE AS THE MAIN SCRIPT
 
 echo ""
 echo "$(tput setaf 2) Creating Swarm Nodes $(tput sgr 0)"
@@ -101,7 +103,7 @@ if [ $GCEKProvision -eq 1 ]; then
   #Open ports for Swarm
   gcloud compute firewall-rules create swarm-machines --allow tcp:3376 --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   #Opens AppPortK for Docker machine on GCE
-  #gcloud compute firewall-rules create http80-machines --allow tcp:$AppPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
+  gcloud compute firewall-rules create http80-machines --allow tcp:$AppPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   #Opens HoneypotPortK for Docker machine on GCE
   gcloud compute firewall-rules create honey-machines --allow tcp:$HoneypotPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   
@@ -113,22 +115,24 @@ if [ $GCEKProvision -eq 1 ]; then
    # Makes sure the UUID is lowercase for GCE provisioning
    UUIDKL=${UUIDK,,}
    echo ""
-   echo Provisioning VM env-crate-$j-$UUIDKL on GCE
+   echo Provisioning VM SPAWN-GCE$j-K
    echo ""
   
    #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-image ubuntu-1510-wily-v20151114 --swarm --swarm-discovery token://$SwarmTokenK SPAWN-GCE$j-K
-   docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small --swarm --swarm-discovery token://$SwarmTokenK env-crate-$j-$UUIDKL
+   docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small --swarm --swarm-discovery token://$SwarmTokenK env-crate-$j
    #Stores ip of the VM
-   docker-machine env env-crate-$j-$UUIDKL > /home/ec2-user/Docker$j
+   docker-machine env env-crate-$j > /home/ec2-user/Docker$j
    . /home/ec2-user/Docker$j
   
-   publicipKGCE=$(docker-machine ip env-crate-$j-$UUIDKL)
-   echo $publicipKGCE >> /home/ec2-user/KProvisionedK
-   echo env-crate-$j-$UUIDKL >> /home/ec2-user/DMListK
+   publicipKGCE=$(docker-machine ip env-crate-$j)
    
    #registers Swarm Slave in Consul
-   curl -X PUT -d env-crate-$j-$UUIDKL http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j-$UUIDKL/name
-   curl -X PUT -d $publicipKGCE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j-$UUIDKL/ip
+   curl -X PUT -d env-crate-$j http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
+   curl -X PUT -d $publicipKGCE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
+   
+   #Register Swarm slave in etcd
+   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name -XPUT -d value=env-crate-$j
+   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip -XPUT -d value=$publicipKGCE
    
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
@@ -167,12 +171,15 @@ do
     . /home/ec2-user/Docker$i
 
     publicipK=$(docker-machine ip SPAWN$i-$UUIDK)
-    echo $publicipK >> /home/ec2-user/KProvisionedK
-    echo SPAWN$i-$UUIDK >> /home/ec2-user/DMListK
     
     #registers Swarm Slave in Consul
     curl -X PUT -d SPAWN$i-$UUIDK http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
     curl -X PUT -d $publicipK http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/ip
+    
+    #Register Swarm slave in etcd
+    curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name -XPUT -d value=SPAWN$i-$UUIDK
+    curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/ip -XPUT -d value=$publicipK
+    
     
     echo ----
     echo "$(tput setaf 1) Machine $publicipK connected to SWARM $(tput sgr 0)"
@@ -194,6 +201,10 @@ echo ""
 eval $(docker-machine env --swarm swarm-master)
 
 
+#Sets variables for launching honeypots that will connect to the receiver
+LOG_HOST=$publicipspawnreceiver
+LOG_PORT=$ReceiverPortK
+
 
 
 i=0
@@ -202,7 +213,9 @@ do
     echo "output: $i"
     UUIDK=$(cat /proc/sys/kernel/random/uuid)
     echo Provisioning Container $i
+    
     #Launches Honeypots
+    #docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
     docker run -d --name honeypot-$i -e LOG_HOST=$publicipspawnreceiver -e LOG_PORT=$ReceiverPortK -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK 
     #launches nginx (optional)
     #docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
@@ -210,25 +223,11 @@ do
 done
 
 
+# ENDS CODE THAT IS THE SAME AS THE MAIN SCRIPT
 
 
 
-echo ----
-echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
-echo "$(tput setaf 1) Consul RUNNING ON $publicipCONSULK:8500 $(tput sgr 0)"
-echo "$(tput setaf 1) Check swarm token on https://discovery.hub.docker.com/v1/clusters/$SwarmTokenK $(tput sgr 0)"
-echo ----
-echo "*****************************************"
-echo ----
-echo "$(tput setaf 6) Receiver RUNNING ON $publicipspawnreceiver  Port $ReceiverPortK $(tput sgr 0)"
-echo ----
-echo ----
-echo ----
-echo "$(tput setaf 6) Honeypots RUNNING ON $(tput sgr 0)"
-echo "$(</home/ec2-user/KProvisionedK )"
-echo "$publicipSWARMK"
-echo "$(tput setaf 6) Port $HoneypotPortK $(tput sgr 0)"
-echo ----
+
 echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
 #echo "$(/home/ec2-user/DMListK)"
 echo ----
