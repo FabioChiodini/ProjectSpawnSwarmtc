@@ -34,11 +34,20 @@ echo ""
 
 #Get data from file or service Discovery and displays it
 #Load file prepared during first run Cloud2
-. /home/ec2-user/Cloud2
+#. /home/ec2-user/Cloud2
+
+#Load variable from previous run
+#curl http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
+#curl http://127.0.0.1:4001/v2/keys/gcevms -XPUT -d value=$GCEVM_InstancesK
+#curl http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=$Container_InstancesK
+
 
 #Variables needed
-#$publicipspawnreceiver
+#spawn-receiver
 
+ReceiverNameK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/name | jq '.node.value' | sed 's/.//;s/.$//')`
+publicipspawnreceiver=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/ip | jq '.node.value' | sed 's/.//;s/.$//')`
+ReceiverPortK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #Determines where to spawn
 
@@ -69,6 +78,8 @@ LOG_PORT=$ReceiverPortK
 #create new Docker-machines
 
 #Loops for creating Swarm nodes
+
+#this is the ssame code as the main script
 
 echo ""
 echo "$(tput setaf 2) Creating Swarm Nodes $(tput sgr 0)"
