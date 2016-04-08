@@ -134,8 +134,7 @@ if [ $GCEKProvision -eq 1 ]; then
   o=0
   while [ $o -lt $GCEVM_InstancesK ]
   do
-   #Increments counter for total GCE VMs
-   true $(( j++ ))
+   
    UUIDK=$(cat /proc/sys/kernel/random/uuid)
    # Makes sure the UUID is lowercase for GCE provisioning
    UUIDKL=${UUIDK,,}
@@ -162,6 +161,8 @@ if [ $GCEKProvision -eq 1 ]; then
    echo ----
    echo "$(tput setaf 1) Machine $publicipKGCE in GCE connected to SWARM $(tput sgr 0)"
    echo ----
+   #Increments counter for total GCE VMs
+   true $(( j++ ))
    true $(( o++ ))
   done
 fi
@@ -184,9 +185,7 @@ p=0
 while [ $p -lt $VM_InstancesK ]
 do
     #echo "output: $i"
-    #Increments countert for total AWS VMs
-    true $(( i++ ))
-    UUIDK=$(cat /proc/sys/kernel/random/uuid)
+        UUIDK=$(cat /proc/sys/kernel/random/uuid)
     #echo Provisioning VM SPAWN$i-$UUIDK
     echo ""
     echo "$(tput setaf 1) Provisioning VM SPAWN$i-$UUIDK $(tput sgr 0)"
@@ -211,6 +210,8 @@ do
     echo ----
     echo "$(tput setaf 1) Machine $publicipK connected to SWARM $(tput sgr 0)"
     echo ----
+    #Increments countert for total AWS VMs
+    true $(( i++ ))
     true $(( p++ ))
 done
 
