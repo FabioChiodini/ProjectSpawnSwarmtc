@@ -1,6 +1,6 @@
 # ProjectSpawnSwarmtc
 Project to Spawn a titanium crucible (receiver + multiple honeypots) installation in an automated way accross different Clouds (AWS and optionally GCE) using Docker Machine, Docker Swarm and Docker Discovery. 
-A dockerized Consul instance is used to store variables in a KV store.
+A dockerized Consul and etcd instances are used to store variables in a KV store.
 
 Tested on a t1.micro AMI
 
@@ -32,7 +32,7 @@ This script creates (leveraging Docker-Machine):
 
 - A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" that will host honeypots containers. These are g1-small VM types
 
-- [in the code there's a commented line to deploya dockerized nginx via DockerSwarm and opening the relevant port]  
+- [in the code there are commented lines to deploy a dockerized nginx via DockerSwarm and opening the relevant port]  
 
 
 It then starts many Docker Containers (honeypots) via Docker Swarm (the number of instances is specified in the variable InstancesK in the main configuration file)
@@ -111,9 +111,10 @@ Here are the details on how these variables are used:
 - **ReceiverPortK** and **ReceiverImageK** are the port used and the docker image for the receiver Application
 
 - **HoneypotPortK** and **HoneypotImageK** are the port used and the docker image for the honeypot Applications to launch via Docker swarm
+
 - **ConsulDynDNSK** is a flg to determine if the Consul Dockerized instance will be launched locally (to eventually leveragge a local dyndns setup
 
-- **DynDNSK** contains the dyndns name used for the host where this code is launched 8and where the Consul instance will be executed if ConsulDynDNSK=1
+- **DynDNSK** contains the dyndns name used for the host where this code is launched (ie where the Consul instance will be executed if ConsulDynDNSK=1)
 
 
 ![Alt text](Cloud1.png "Cloud1")
