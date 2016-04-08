@@ -20,6 +20,7 @@ echo ""
 
 echo ""
 echo "$(tput setaf 2) Setting env variables for AWS CLI $(tput sgr 0)"
+echo ""
 rm -rf ~/.aws/config
 mkdir ~/.aws
 
@@ -31,18 +32,8 @@ echo "AWS_SECRET_ACCESS_KEY=$K1_AWS_SECRET_KEY" >> ~/.aws/config
 echo "AWS_DEFAULT_REGION=$K1_AWS_DEFAULT_REGION" >> ~/.aws/config
 
 echo ""
-
-
-#Get data from file or service Discovery and displays it
-#Load file prepared during first run Cloud2
-#. /home/ec2-user/Cloud2
-
-#Load variable from previous run
-#curl http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
-#curl http://127.0.0.1:4001/v2/keys/gcevms -XPUT -d value=$GCEVM_InstancesK
-#curl http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=$Container_InstancesK
-
-
+echo "$(tput setaf 2) Loading env variables from etcd $(tput sgr 0)"
+echo ""
 #Variables needed
 
 #gets data from previous run
@@ -53,6 +44,11 @@ prevhoneypots=`(curl http://127.0.0.1:4001/v2/keys/totalhoneypots | jq '.node.va
 #swarm-master
 publicipSWARMK=`(http://127.0.0.1:4001/v2/keys/swarm-master/ip | jq '.node.value' | sed 's/.//;s/.$//')`
 SwarmTokenK=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/token | jq '.node.value' | sed 's/.//;s/.$//')`
+
+#SPAWN_CONSUL
+ConsulVMNameK=`(http://127.0.0.1:4001/v2/keys/SPAWN-CONSUL/name | jq '.node.value' | sed 's/.//;s/.$//')`
+publicipCONSULK=`(http://127.0.0.1:4001/v2/keys/SPAWN-CONSUL/ip | jq '.node.value' | sed 's/.//;s/.$//')`
+ConsulPortK=`(http://127.0.0.1:4001/v2/keys/SPAWN-CONSUL/port | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #spawn-receiver
 ReceiverNameK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/name | jq '.node.value' | sed 's/.//;s/.$//')`
