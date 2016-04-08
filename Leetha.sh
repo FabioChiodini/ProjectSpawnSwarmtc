@@ -164,7 +164,8 @@ if [ $GCEKProvision -eq 1 ]; then
    true $(( o++ ))
   done
 fi
-
+#Writes total GCE VMs provisioned
+GCEVM_InstancesK=$J
 
 echo ""
 echo "$(tput setaf 2) Creating swarm Nodes on AWS $(tput sgr 0)"
@@ -212,7 +213,8 @@ do
     true $(( i++ ))
     true $(( p++ ))
 done
-
+#Writes total AWS VMs provisioned
+VM_InstancesK=$i
 
 
 #Launches $instancesK Containers using SWARM
@@ -247,7 +249,25 @@ do
     true $(( i++ ))
     true $(( q++ ))
 done
+#Writes total Honeypots provisioned
+Container_InstancesK=$i
 
+#Writes the final total setup in etcd for further scaling
+
+curl -L http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
+curl -L http://127.0.0.1:4001/v2/keys/gcevms -XPUT -d value=$GCEVM_InstancesK
+curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=$Container_InstancesK
+
+#Totals provisioned
+echo "Total provisioned"
+echo "AWS VMs = $VM_InstancesK "
+echo "GCE VMs = $GCEVM_InstancesK "
+echo "Honeypots = $Container_InstancesK "
+
+#Del this
+echo "checking etcd"
+prevawsvms=`(curl http://127.0.0.1:4001/v2/keys/awsvms | jq '.node.value' | sed 's/.//;s/.$//')`
+echo $prevawsvms
 
 # END OF CODE THAT IS THE SAME AS THE MAIN SCRIPT
 # END OF CODE THAT IS THE SAME AS THE MAIN SCRIPT
