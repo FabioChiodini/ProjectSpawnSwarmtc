@@ -452,8 +452,12 @@ docker run swarm list token://$SwarmTokenK
 echo ----
 docker-machine ls
 echo ----
+echo "$(tput setaf 6) Docker provisioned locally $(tput sgr 0)"
+docker ps
+echo ""
 if [ $etcdbrowserprovision -eq 1 ]; then
   echo "$(tput setaf 6) etcd-browser RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
+  echo ""
 fi
 echo "******************************************"
 
