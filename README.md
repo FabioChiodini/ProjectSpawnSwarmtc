@@ -197,6 +197,17 @@ It then launches a number of Docker VMs and honeypot containers as specified wit
 ```
 During the launch it also respawns Honeypots containers that were already started in previous runs as these are ephemeral workloads (Still TBI, now it just adds containers specified in launch parameters)
 
+##Tear Down Code
+
+Malebolgia.sh is the code that automates the environment teardown
+
+It reads configuration information from the etcd local instances (to connect to swarm, set up docker-machine and to launch honeypots).
+
+It then destroys:
+- Docker machine VMs provisioned (by doing so kills all honeypot instances)
+- Infrastructure Components (Docker Swarm, Receiver and Consul)
+- it then destroys local Docker instances (etcd and eventually Consul if local)
+
 
 @FabioChiodini
 
