@@ -49,7 +49,7 @@ echo ""
 
 j=0
 while [ $j -lt $prevgcevms ]
-  do
+do
    echo ""
    echo "Destroying VM env-crate-$j "
    echo ""
