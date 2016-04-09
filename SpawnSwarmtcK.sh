@@ -452,6 +452,9 @@ docker run swarm list token://$SwarmTokenK
 echo ----
 docker-machine ls
 echo ----
+if [ $etcdbrowserprovision -eq 1 ]; then
+  echo "$(tput setaf 6) etcd-browser RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
+fi
 echo "******************************************"
 
 
