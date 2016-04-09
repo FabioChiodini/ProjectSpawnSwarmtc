@@ -201,10 +201,13 @@ It then launches a number of Docker VMs and honeypot containers as specified wit
 
 ```
 
-./Leetha.sh instancestoaddAWS instancestoaddGCE HoneypotToSpawn 
+./Leetha.sh instancestoaddAWS instancestoaddGCE HoneypotsToSpawn 
 
 ```
 During the launch it also respawns Honeypots containers that were already started in previous runs as these are ephemeral workloads (Still TBI, now it just adds containers specified in launch parameters)
+
+Added value (:P) : If launched without parameters the code opens up all firewall port needed by the application
+
 
 ##Tear Down Code
 
