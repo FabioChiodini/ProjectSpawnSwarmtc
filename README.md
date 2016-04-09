@@ -43,6 +43,8 @@ This script creates (leveraging Docker-Machine):
 
 - A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" that will host honeypots containers. These are g1-small VM types
 
+- [Optional] One VM on GCE hosting an etcd browser GUI (to display the data stored in etcd)
+
 - [in the code there are commented lines to deploy a dockerized nginx via DockerSwarm and opening the relevant port]  
 
 
