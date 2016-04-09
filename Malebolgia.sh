@@ -44,9 +44,9 @@ ReceiverNameK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/name | jq '.no
 
 #Kill Docker Machines
 echo ""
-echo "$(tput setaf 1)Destroying GCE VMs $(tput sgr 0)"
+echo "$(tput setaf 1)Destroying GCE VMs ( $prevgcevms ) $(tput sgr 0)"
 echo ""
-echo "pregcevms $prevgcevms"
+
 j=0
 while [ $j -lt $prevgcevms ]
 do
@@ -64,7 +64,7 @@ do
 
 
 echo ""
-echo "$(tput setaf 1)Destroying AWS VMs $(tput sgr 0)"
+echo "$(tput setaf 1)Destroying AWS VMs ( $prevawsvms ) $(tput sgr 0)"
 echo ""
 
 i=0
@@ -94,6 +94,7 @@ echo ""
 docker-machine rm -f swarm-master
 docker-machine rm -f SPAWN-CONSUL
 docker-machine rm -f spawn-receiver
+docker-machine rm -f etcd-browserk
 
 #Kill local containers
 echo ""
