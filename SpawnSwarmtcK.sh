@@ -450,6 +450,8 @@ echo TBD
 echo ----
 docker run swarm list token://$SwarmTokenK
 echo ----
+docker-machine ls
+echo ----
 echo "******************************************"
 
 
