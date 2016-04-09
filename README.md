@@ -143,7 +143,7 @@ For demo purposes two service discovery services are used: Consul and etcd
 
 All the items created by the code are registered in the KV store of **etcd** to allow for further manipulation.
 
-**Consul** is used for demo purposes (GUI)
+**Consul** is used only for demo purposes (GUI)
 
 ### etcd
 etcd is launched as a local dockerized applications and stores variables that are used in the main Spawn, in the scale up and tear down code
@@ -155,6 +155,10 @@ etcd is launched as a local dockerized applications and stores variables that ar
 An application (etcd-browser) has been added for showing in a web GUI the data that gets stored to etcd:
 
 ![Alt text](etcd-browser.png "etcd-browser")
+
+To enable the use of this application it is necessary to **manually** open port 4001 on the VM where the main script is launched. App port (8000) for etcd-browser is opend up automatically.
+
+
 
 ### Consul
 Following are some examples of the Consul outputs.
