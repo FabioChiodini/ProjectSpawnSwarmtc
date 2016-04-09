@@ -10,10 +10,21 @@ https://github.com/FabioChiodini/AWSDockermachine
 
 [the script is run in the context of ec2-user account]
 
+###How to launch
+
+Launch the main script with no parameters (all parameters are stored in the configuration file **Cloud1)
+
+```
+
+./SpawntcK.sh
+
+```
+
 ## Configuration Files
 To run this script you have to prepare two configuration files (in /home/ec2-user)
 - **Cloud1** see below for syntax
 - **GCEkeyfile.json** used for GCE authentication (see below for instructions)
+
 
 
 ## Script Flow
