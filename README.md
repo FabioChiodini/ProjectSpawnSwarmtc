@@ -16,7 +16,7 @@ Launch the main script with no parameters (all parameters are stored in the conf
 
 ```
 
-./SpawntcK.sh
+./SpawnSwarmtcK.sh
 
 ```
 
@@ -56,7 +56,7 @@ Currently it opens all ports for Docker Swarm, Docker Machine and SSH plus ports
 
 Here's an high level diagram: 
 
-![Alt text](Main.png "Main")
+![Alt text](/images/Main.png "Main")
 
 ## Environment Variables
 
@@ -133,7 +133,7 @@ Here are the details on how these variables are used:
 - **etcdbrowserprovision** is a flag to determine if an etcd-browser containerized instance will be launched in GCE 
 
 
-![Alt text](Cloud1.png "Cloud1")
+![Alt text](/images/Cloud1.png "Cloud1")
 
 The code also uses another file: GCEkeyfile.json 
 - This contains data that is used for GCE authentication (Service account keys type in JSON format)
@@ -156,7 +156,7 @@ etcd is launched as a local dockerized applications and stores variables that ar
 
 An application (etcd-browser) has been added for showing in a web GUI the data that gets stored to etcd:
 
-![Alt text](etcd-browser.png "etcd-browser")
+![Alt text](/images/etcd-browser.png "etcd-browser")
 
 To enable the use of this application it is necessary to **manually** open port 4001 on the VM where the main script is launched. App port (8000) for etcd-browser is opend up automatically.
 
@@ -168,11 +168,11 @@ Following are some examples of the Consul outputs.
 
 Main KV tree:
 
-![Alt text](ConsulRegistration-3.png "ConsulRegistration-3")
+![Alt text](/images/ConsulRegistration-3.png "ConsulRegistration-3")
 
 Example entry (with IP) for the Docker Machine hosting the Receiver:
 
-![Alt text](ConsulRegistration-4.png "ConsulRegistration-4")
+![Alt text](/images/ConsulRegistration-4.png "ConsulRegistration-4")
 
 ## NOTES ON Spawning to GCE
 
