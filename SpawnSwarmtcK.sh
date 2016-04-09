@@ -121,6 +121,10 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   #launches etcd-browser containerized
   docker run -d --name etcd-browserk -p 0.0.0.0:8000:8000 --env ETCD_HOST=$DynDNSK kiodo/etcd-browser:latest
   
+  #Register etcd-browser in etcd
+  curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/name -XPUT -d value=etcd-browserk
+  curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/ip -XPUT -d value=$publicipetcdbrowser
+  curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/port -XPUT -d value=8000
   echo ----
   echo etcd-browser RUNNING ON $publicipetcdbrowser:8000
   echo publicipetcdbrowser=$publicipetcdbrowser
