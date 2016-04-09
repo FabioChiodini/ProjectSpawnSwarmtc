@@ -96,6 +96,9 @@ echo ""
 echo "$(tput setaf 2) Creating a LOCAL etcd-browser instance  $(tput sgr 0)"
 echo ""
 
+echo ""
+echo "$(tput setaf 1) Still TBI  $(tput sgr 0)"
+echo ""
 sudo docker run -d --name etcd-browserk -p 0.0.0.0:8000:8000 --env ETCD_HOST=${HostIP} kiodo/etcd-browser:latest
  
 #Provisions Receiver instance in GCE or AWS
