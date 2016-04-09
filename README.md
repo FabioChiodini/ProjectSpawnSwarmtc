@@ -159,6 +159,7 @@ An application (etcd-browser) has been added for showing in a web GUI the data t
 To enable the use of this application it is necessary to **manually** open port 4001 on the VM where the main script is launched. App port (8000) for etcd-browser is opend up automatically.
 
 
+![Alt text](/images/Port4001.png "Port4001")
 
 ### Consul
 Following are some examples of the Consul outputs.
