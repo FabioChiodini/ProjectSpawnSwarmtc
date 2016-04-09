@@ -33,7 +33,7 @@ This script creates (leveraging Docker-Machine):
 
 - one VM in AWS with Consul in Docker (used also to prepare docker Discovery). There is an option to run this locally containerized (remember to open port 8500 if you run this locally)
 
-- One VM on GCE hosting the receiver application in a container
+- One VM on GCE (g1-small VM type) hosting the receiver application in a container
 
 - One local etcd instance containerized to store local variables (the etcd is not reachable from outside networks)
 
@@ -43,7 +43,7 @@ This script creates (leveraging Docker-Machine):
 
 - A number of VMs in GCE (specified in the variable export GCEVM_InstancesK) as "slaves" that will host honeypots containers. These are g1-small VM types
 
-- [Optional] One VM on GCE hosting an etcd browser GUI (to display the data stored in etcd)
+- [Optional] One VM on GCE (g1-small VM type) hosting an etcd browser GUI (to display the data stored in etcd)
 
 - [in the code there are commented lines to deploy a dockerized nginx via DockerSwarm and opening the relevant port]  
 
