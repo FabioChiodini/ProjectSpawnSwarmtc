@@ -77,6 +77,15 @@ else
 
 fi
 
+#Register Consul in etcd
+if [ $ConsulDynDNSK -eq 0 ]; then
+  curl -L http://127.0.0.1:4001/v2/keys/consul/name -XPUT -d value=SPAWN-CONSUL
+  curl -L http://127.0.0.1:4001/v2/keys/consul/ip -XPUT -d value=$publicipCONSULK
+else
+  curl -L http://127.0.0.1:4001/v2/keys/consul/name -XPUT -d value=ConsulDynDNS
+  curl -L http://127.0.0.1:4001/v2/keys/consul/ip -XPUT -d value=$DynDNSK
+fi
+curl -L http://127.0.0.1:4001/v2/keys/consul/port -XPUT -d value=8500
 
 
 echo ----
