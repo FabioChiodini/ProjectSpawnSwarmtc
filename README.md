@@ -97,6 +97,7 @@ export HoneypotImageK=kiodo/honeypot:latest
 export ConsulDynDNSK=1
 export DynDNSK=XXXX2.ddns.net
 
+export etcdbrowserprovision=0
 ```
 
 Here are the details on how these variables are used:
@@ -123,9 +124,11 @@ Here are the details on how these variables are used:
 
 - **HoneypotPortK** and **HoneypotImageK** are the port used and the docker image for the honeypot Applications to launch via Docker swarm
 
-- **ConsulDynDNSK** is a flg to determine if the Consul Dockerized instance will be launched locally (to eventually leveragge a local dyndns setup
+- **ConsulDynDNSK** is a flag to determine if the Consul Dockerized instance will be launched locally (to eventually leveragge a local dyndns setup
 
 - **DynDNSK** contains the dyndns name used for the host where this code is launched (ie where the Consul instance will be executed if ConsulDynDNSK=1)
+
+- **etcdbrowserprovision** is a flag to determine if an etcd-browser containerized instance will be launched in GCE 
 
 
 ![Alt text](Cloud1.png "Cloud1")
