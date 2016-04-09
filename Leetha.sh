@@ -115,9 +115,6 @@ if [ $GCEKProvision -eq 1 ]; then
   gcloud compute firewall-rules create honey-machines --allow tcp:$HoneypotPortK --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
   
   #Loops for creating Swarm nodes
-  
-  
-  
   #changed to loop to o to preserve naming convention
   #j keeps the count of total VMs consistent with previous run
   
@@ -209,9 +206,8 @@ done
 #Writes total AWS VMs provisioned
 VM_InstancesK=$i
 
-
 #Launches $instancesK Containers using SWARM
-
+#deploy more containers via Docker Swarm
 echo ""
 echo "$(tput setaf 2) Launching Honeypots instances via Docker Swarm $(tput sgr 0)"
 echo ""
@@ -219,11 +215,9 @@ echo ""
 #Connects to Swarm
 eval $(docker-machine env --swarm swarm-master)
 
-
 #Sets variables for launching honeypots that will connect to the receiver
 LOG_HOST=$publicipspawnreceiver
 LOG_PORT=$ReceiverPortK
-
 
 i=$prevhoneypots
 q=0
@@ -252,20 +246,16 @@ curl -L http://127.0.0.1:4001/v2/keys/gcevms -XPUT -d value=$GCEVM_InstancesK
 curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=$Container_InstancesK
 
 #Totals provisioned
-echo "Total provisioned"
-echo "AWS VMs = $VM_InstancesK "
-echo "GCE VMs = $GCEVM_InstancesK "
-echo "Honeypots = $Container_InstancesK "
+echo ""
+echo "$(tput setaf 6) Total provisioned $(tput sgr 0)"
+echo "$(tput setaf 6) AWS VMs = $VM_InstancesK $(tput sgr 0)"
+echo "$(tput setaf 6) GCE VMs = $GCEVM_InstancesK $(tput sgr 0)"
+echo "$(tput setaf 6) Honeypots = $Container_InstancesK $(tput sgr 0)"
 
 #Del this
-echo "checking etcd"
-prevawsvms=`(curl http://127.0.0.1:4001/v2/keys/awsvms | jq '.node.value' | sed 's/.//;s/.$//')`
-echo $prevawsvms
-
-# END OF CODE THAT IS THE SAME AS THE MAIN SCRIPT
-# END OF CODE THAT IS THE SAME AS THE MAIN SCRIPT
-# END OF CODE THAT IS THE SAME AS THE MAIN SCRIPT
-
+#echo "checking etcd"
+#prevawsvms=`(curl http://127.0.0.1:4001/v2/keys/awsvms | jq '.node.value' | sed 's/.//;s/.$//')`
+#echo $prevawsvms
 
 echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
 #echo "$(/home/ec2-user/DMListK)"
@@ -274,7 +264,3 @@ docker run swarm list token://$SwarmTokenK
 echo ----
 echo "******************************************"
 
-
-
-
-#deploy more containers via Docker Swarm
