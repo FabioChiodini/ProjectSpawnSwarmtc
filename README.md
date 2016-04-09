@@ -170,14 +170,21 @@ Then you need to perform these configurations in the /home/ec2-user/Cloud1 file:
 
 
 ##Scale Out Code
-**Still TBI**
 
 Leetha.sh is the code that automates the scale out of the setup after the first deployment
 
-It reads configuration information from the etcd local instances (to connect to swarm, set up docker-machine and to launch honeypots)
+It reads configuration information from the etcd local instances (to connect to swarm, set up docker-machine and to launch honeypots).
+
+It then launches a number of Docker VMs and honeypot containers as specified with the following launch parameters
 
 ###How to launch
+
+```
+
 ./Leetha.sh instancestoaddAWS instancestoaddGCE HoneypotToSpawn 
+
+```
+During the launch it also respawns Honeypots containers that were already started in previous runs as these are ephemeral workloads (Still TBI, now it just adds containers specified in launch parameters)
 
 
 @FabioChiodini
