@@ -96,9 +96,6 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   echo "$(tput setaf 2) Creating a etcd-browser instance in GCE $(tput sgr 0)"
   echo ""
 
-  echo ""
-  echo "$(tput setaf 1) Still TBI  $(tput sgr 0)"
-  echo ""
   #Create Docker Receiver Instance in GCE
   #gcloud auth login
   gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
