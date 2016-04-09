@@ -100,7 +100,7 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   #gcloud auth login
   gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT etcd-browserk
+  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small etcd-browserk
 
   #
   #Open port for etcd-browser on GCE
@@ -141,7 +141,7 @@ if [ $GCEKProvision -eq 1 ]; then
   #gcloud auth login
   gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT spawn-receiver
+  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small spawn-receiver
 
   #
   #Open port for Receiver on GCE
