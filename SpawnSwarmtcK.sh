@@ -91,15 +91,42 @@ echo ""
 
 docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 --name etcdk quay.io/coreos/etcd -name etcd0 -advertise-client-urls http://${HostIP}:2379,http://${HostIP}:4001 -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 -initial-advertise-peer-urls http://${HostIP}:2380 -listen-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster-1 -initial-cluster etcd0=http://${HostIP}:2380 -initial-cluster-state new
 
+if [ $etcdbrowserprovision -eq 1 ]; then
+  echo ""
+  echo "$(tput setaf 2) Creating a etcd-browser instance in GCE $(tput sgr 0)"
+  echo ""
 
-echo ""
-echo "$(tput setaf 2) Creating a LOCAL etcd-browser instance  $(tput sgr 0)"
-echo ""
+  echo ""
+  echo "$(tput setaf 1) Still TBI  $(tput sgr 0)"
+  echo ""
+  #Create Docker Receiver Instance in GCE
+  #gcloud auth login
+  gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-echo ""
-echo "$(tput setaf 1) Still TBI  $(tput sgr 0)"
-echo ""
-sudo docker run -d --name etcd-browserk -p 0.0.0.0:8000:8000 --env ETCD_HOST=${HostIP} kiodo/etcd-browser:latest
+  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT etcd-browserk
+
+  #
+  #Open port for etcd-browser on GCE
+  gcloud compute firewall-rules create etcd-browserk --allow tcp:8000 --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
+
+  #gcloud compute firewall-rules list docker-machine
+
+  #Connects to remote VM
+
+  docker-machine env etcd-browserk > /home/ec2-user/etcd-browserk
+  . /home/ec2-user/etcd-browserk
+
+  publicipetcdbrowser=$(docker-machine ip etcd-browserk)
+  
+  #launches etcd-browser containerized
+  docker run -d --name etcd-browserk -p 0.0.0.0:8000:8000 --env ETCD_HOST=$DynDNSK kiodo/etcd-browser:latest
+  
+  echo ----
+  echo etcd-browser RUNNING ON $publicipetcdbrowser:8000
+  echo publicipetcdbrowser=$publicipetcdbrowser
+  echo ----
+ fi
+ 
  
 #Provisions Receiver instance in GCE or AWS
 if [ $GCEKProvision -eq 1 ]; then
