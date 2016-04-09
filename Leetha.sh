@@ -165,7 +165,7 @@ if [ $GCEKProvision -eq 1 ]; then
   done
 fi
 #Writes total GCE VMs provisioned
-GCEVM_InstancesK=$J
+GCEVM_InstancesK=$j
 
 echo ""
 echo "$(tput setaf 2) Creating swarm Nodes on AWS $(tput sgr 0)"
