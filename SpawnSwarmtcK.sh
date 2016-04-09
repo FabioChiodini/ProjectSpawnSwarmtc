@@ -92,6 +92,11 @@ echo ""
 docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 --name etcdk quay.io/coreos/etcd -name etcd0 -advertise-client-urls http://${HostIP}:2379,http://${HostIP}:4001 -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 -initial-advertise-peer-urls http://${HostIP}:2380 -listen-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster-1 -initial-cluster etcd0=http://${HostIP}:2380 -initial-cluster-state new
 
 
+echo ""
+echo "$(tput setaf 2) Creating a LOCAL etcd-browser instance  $(tput sgr 0)"
+echo ""
+
+sudo docker run -d --name etcd-browserk -p 0.0.0.0:8000:8000 --env ETCD_HOST=${HostIP} kiodo/etcd-browser:latest
  
 #Provisions Receiver instance in GCE or AWS
 if [ $GCEKProvision -eq 1 ]; then
