@@ -106,6 +106,9 @@ docker rm -f receiverK
 sleep 1
 docker rm -f etcdk
 
+echo Docker machine still alive:
+docker-machine ls
+
 echo ""
 echo "$(tput setaf 1) Everything has been destroyed by Malebolgia ;) $(tput sgr 0)"
 echo ""
