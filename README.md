@@ -146,7 +146,7 @@ All the items created by the code are registered in the KV store of **etcd** to 
 **Consul** is used for demo purposes (GUI)
 
 ### etcd
-etcd is launched as a local dockerized applications and stores variables that are used in the main Spawn code and in the scale up script
+etcd is launched as a local dockerized applications and stores variables that are used in the main Spawn, in the scale up and tear down code
 
 **jq** is installed on the local AMI (automatically during Spawn execution) to manipulate JSON files in shell scripts
 
