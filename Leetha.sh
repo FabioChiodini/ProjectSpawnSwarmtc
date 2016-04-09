@@ -262,5 +262,7 @@ echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
 echo ----
 docker run swarm list token://$SwarmTokenK
 echo ----
+docker-machine ls
+echo ----
 echo "******************************************"
 
