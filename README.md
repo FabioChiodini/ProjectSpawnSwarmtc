@@ -150,6 +150,12 @@ etcd is launched as a local dockerized applications and stores variables that ar
 
 **jq** is installed on the local AMI (automatically during Spawn execution) to manipulate JSON files in shell scripts
 
+#### etcd-browser
+
+An application (etcd-browser) has been added for showing in a web GUI the data that gets stored to etcd:
+
+![Alt text](etcd-browser.png "etcd-browser")
+
 ### Consul
 Following are some examples of the Consul outputs.
 
