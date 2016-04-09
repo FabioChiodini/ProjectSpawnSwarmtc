@@ -109,6 +109,9 @@ docker rm -f etcdk
 echo Docker machine still alive:
 docker-machine ls
 
+echo Local Docker Containers still alive:
+docker ps
+
 echo ""
 echo "$(tput setaf 1) Everything has been destroyed by Malebolgia ;) $(tput sgr 0)"
 echo ""
