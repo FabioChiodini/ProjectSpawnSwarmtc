@@ -46,7 +46,7 @@ ReceiverNameK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/name | jq '.no
 echo ""
 echo "$(tput setaf 1)Destroying GCE VMs $(tput sgr 0)"
 echo ""
-
+echo $prevgcevms
 j=0
 while [ $j -lt $prevgcevms ]
 do
