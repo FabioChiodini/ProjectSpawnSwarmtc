@@ -229,6 +229,26 @@ It then destroys:
 - Infrastructure Components (Docker Swarm, Receiver and Consul)
 - it then destroys local Docker instances (etcd and eventually Consul if local)
 
+# Minimal Launch Instructions
+
+- Start a t1.small on AWS
+
+- Open ports for this VM on AWS
+ - 22 (to reach it ;) )
+ - 4001 (all IPs) for etcd-browser
+ - 8500 (all IPs) for Consul
+
+- Get PuTTy configured with AWS key
+
+- Run AWSDockermachine code
+
+- Populate /home/ec2-user/Cloud1
+
+- Populate /home/ec2-user/GCE JSON (if using GCE)
+
+- git clone this code : https://github.com/FabioChiodini/ProjectSpawnSwarmtc.git
+
+- Launch script
 
 @FabioChiodini
 
