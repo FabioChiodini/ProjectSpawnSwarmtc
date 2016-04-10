@@ -106,6 +106,9 @@ docker rm -f receiverK
 sleep 1
 docker rm -f etcdk
 
+#Clean firewall Rules
+# Still TBI
+
 echo Docker machine still alive:
 docker-machine ls
 
