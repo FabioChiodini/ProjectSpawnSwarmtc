@@ -32,9 +32,14 @@ echo ""
 #Variables needed
 
 #gets data from previous run
-prevawsvms=`(curl http://127.0.0.1:4001/v2/keys/awsvms | jq '.node.value' | sed 's/.//;s/.$//')`
-prevgcevms=`(curl http://127.0.0.1:4001/v2/keys/gcevms | jq '.node.value' | sed 's/.//;s/.$//')`
-prevhoneypots=`(curl http://127.0.0.1:4001/v2/keys/totalhoneypots | jq '.node.value' | sed 's/.//;s/.$//')`
+prevawsvmsK=`(curl http://127.0.0.1:4001/v2/keys/awsvms | jq '.node.value' | sed 's/.//;s/.$//')`
+prevgcevmsK=`(curl http://127.0.0.1:4001/v2/keys/gcevms | jq '.node.value' | sed 's/.//;s/.$//')`
+prevhoneypotsK=`(curl http://127.0.0.1:4001/v2/keys/totalhoneypots | jq '.node.value' | sed 's/.//;s/.$//')`
+
+#Storing as numbers
+prevawsvms=`expr "$prevawsvms" + 0`
+prevgcevms=`expr "$prevgcevmsK" + 0`
+prevhoneypots=`expr "$prevhoneypotsK" + 0`
 
 #swarm-master
 publicipSWARMK=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/ip | jq '.node.value' | sed 's/.//;s/.$//')`
