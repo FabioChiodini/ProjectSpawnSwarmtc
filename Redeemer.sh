@@ -160,7 +160,8 @@ if [ $GCEKProvision -eq 1 ]; then
    #DeRegisters Swarm slave in etcd
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip
-   curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j
+   curl 'http://127.0.0.1:4001/v2/DM-GCE-$j?dir=true' -XDELETE
+   #curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j
    
    echo ----
    echo "$(tput setaf 1) Machine env-crate-$j in GCE removed from SWARM $(tput sgr 0)"
