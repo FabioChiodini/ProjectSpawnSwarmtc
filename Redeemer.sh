@@ -36,7 +36,7 @@ prevawsvmsK=`(curl http://127.0.0.1:4001/v2/keys/awsvms | jq '.node.value' | sed
 prevgcevmsK=`(curl http://127.0.0.1:4001/v2/keys/gcevms | jq '.node.value' | sed 's/.//;s/.$//')`
 prevhoneypotsK=`(curl http://127.0.0.1:4001/v2/keys/totalhoneypots | jq '.node.value' | sed 's/.//;s/.$//')`
 
-#Storing as numbers
+#Storing parameters as numbers
 prevawsvms=`expr "$prevawsvms" + 0`
 prevgcevms=`expr "$prevgcevmsK" + 0`
 prevhoneypots=`expr "$prevhoneypotsK" + 0`
@@ -155,10 +155,12 @@ if [ $GCEKProvision -eq 1 ]; then
       #DEregisters Swarm Slave in Consul
    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
+   curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j
    
    #DeRegisters Swarm slave in etcd
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip
+   curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j
    
    echo ----
    echo "$(tput setaf 1) Machine env-crate-$j in GCE removed from SWARM $(tput sgr 0)"
@@ -199,6 +201,7 @@ do
     #DE registers Swarm Slave in Consul
     curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
     curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/ip
+    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK
     
     #DERegister Swarm slave in etcd
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name
@@ -218,7 +221,6 @@ curl -X PUT -d $VM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/awsvms
 curl -L http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
 
 #Respawns honeypots
-
 #Launches $Container_InstancesK Containers using SWARM
 
 echo ""
