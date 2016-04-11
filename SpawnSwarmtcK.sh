@@ -431,6 +431,7 @@ echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
 echo "$(tput setaf 1) Consul RUNNING ON $publicipCONSULK:8500 $(tput sgr 0)"
 echo ""
+echo `eval $(docker-machine env --swarm swarm-master)`
 echo "$(tput setaf 1) Run $(tput sgr 0)"
 echo "$(</home/ec2-user/OutputKK )"
 echo "TO connect to the cluster "
@@ -462,7 +463,7 @@ docker run swarm list token://$SwarmTokenK
 echo ----
 docker-machine ls
 echo ----
-echo "$(tput setaf 6) Docker provisioned locally $(tput sgr 0)"
+echo "$(tput setaf 6) Docker instances running $(tput sgr 0)"
 docker ps
 echo ""
 if [ $etcdbrowserprovision -eq 1 ]; then
