@@ -134,10 +134,10 @@ if [ $GCEKProvision -eq 1 ]; then
   echo ""
   
   #Loops for destroying Swarm nodes
-  # a=$(($a1+$a2))
+ 
   #a=`expr "$a" + "$num"`
   j=`expr "$prevgcevms" - "$GCEDestroyK"`
-  #j=$(($prevgcevms" + "$GCEDestroyK"`
+  
   while [ $j -lt $prevgcevms ]
    do
    echo ""
@@ -163,7 +163,7 @@ if [ $GCEKProvision -eq 1 ]; then
    done
 fi
 #Writes total active GCE VMs 
-GCEVM_InstancesK=$j
+GCEVM_InstancesK=`expr "$prevgcevms" - "$GCEDestroyK"`
 
 #Writes data to Consul
 curl -X PUT -d $GCEVM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/gcevms
@@ -179,7 +179,8 @@ echo ""
 
 #Destroys $AWSDestroyK VMs on AWS 
 #a=$(($a1+$a2))
-i=$(($prevawsvms-$AWSDestroyK))
+#a=`expr "$a" + "$num"`
+i=`expr "$prevawsvms" - "$AWSDestroyK"`
 while [ $i -lt $prevawsvms ]
 do
   #UUIDK=$(cat /proc/sys/kernel/random/uuid)
@@ -201,7 +202,7 @@ do
     true $(( i++ ))
 done
 #Writes total AWS VMs provisioned
-VM_InstancesK=$i
+VM_InstancesK=`expr "$prevawsvms" - "$AWSDestroyK"`
 
 #Writes the stuff in etcd
 curl -X PUT -d $VM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/awsvms
