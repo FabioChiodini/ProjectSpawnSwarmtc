@@ -229,7 +229,7 @@ It reads configuration information from the etcd local instances (to connect to 
 
 It then destroys the specified Docker machine instances in GCE or AWS.
 
-It then launches restarts honeypot containers as specified with the following launch parameters
+It then restarts honeypot containers to matche the number specified with the following launch parameters
 
 ###How to launch
 
