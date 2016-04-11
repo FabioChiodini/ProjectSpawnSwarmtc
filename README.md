@@ -221,6 +221,28 @@ During the launch it also respawns Honeypots containers that were already starte
 Added value (:P) : If launched without parameters the code opens up all firewall port needed by the application
 
 
+##Scale Down Code
+
+Redeemer.sh is the code that automates the scale down of the setup after the first deployment
+
+It reads configuration information from the etcd local instances (to connect to swarm, set up docker-machine, gets the number of Docker machines and honeypots and to restart honeypots).
+
+It then destroys the specified Docker machine instances in GCE or AWS.
+
+It then launches restarts honeypot containers as specified with the following launch parameters
+
+###How to launch
+
+```
+
+./Redeemer.sh instancestoremoveinAWS instancestoremoveinGCE HoneypotsToremove 
+
+```
+During the launch it also respawns Honeypots containers that were already started in previous runs as these are ephemeral workloads.
+
+This code does NOT reopen firewall ports in GCE or AWs.
+
+
 ##Tear Down Code
 
 Malebolgia.sh is the code that automates the environment teardown
