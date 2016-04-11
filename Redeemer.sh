@@ -160,7 +160,7 @@ if [ $GCEKProvision -eq 1 ]; then
    #DeRegisters Swarm slave in etcd
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip
-   curl 'http://127.0.0.1:4001/v2/DM-GCE-$j?dir=true' -XDELETE
+   curl 'http://127.0.0.1:4001/v2/keys/DM-GCE-$j?dir=true' -XDELETE
    #curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j
    
    echo ----
@@ -189,6 +189,10 @@ echo ""
 #a=$(($a1+$a2))
 #a=`expr "$a" + "$num"`
 i=`expr "$prevawsvms" - "$AWSDestroyK"`
+echo ""
+echo pre cycle
+echo i =$i
+echo ""
 while [ $i -lt $prevawsvms ]
 do
     VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name | jq '.node.value' | sed 's/.//;s/.$//')`
@@ -198,7 +202,7 @@ do
     echo "$(tput setaf 1) Destroying VM $VMKill $(tput sgr 0)"
     echo ""
     docker-machine rm -f $VMKill
-
+    echo i =$i
     #DE registers Swarm Slave in Consul
     curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
     curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/ip
