@@ -93,10 +93,10 @@ LOG_HOST=$publicipspawnreceiver
 LOG_PORT=$ReceiverPortK
 
 i=0
-while [ $q -lt $prevhoneypots ]
+while [ $i -lt $prevhoneypots ]
 do
     echo "output: $i"
-    UUIDK=$(cat /proc/sys/kernel/random/uuid)
+    #UUIDK=$(cat /proc/sys/kernel/random/uuid)
     echo Destroying Container $i
     
     #Launches Honeypots
@@ -114,18 +114,151 @@ ContainersDestroyK=$i
 #Writes the final total setup in etcd for further scaling
 curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=0
 
+#writes the sme in Consul
+curl -X PUT -d '0' http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots
 
 #Destroys N-x GCE VMs
 
+echo ""
+echo "$(tput setaf 2) Scaling down Swarm Nodes in GCE $(tput sgr 0)"
 
-curl -L -X DELETE http://127.0.0.1:2379/v2/keys/message
+#destroys $GCEDestroyK VMs on GCE using Docker machine and connects them to Swarm
+# Spawns to GCE
+if [ $GCEKProvision -eq 1 ]; then
+  echo ""
+  echo "$(tput setaf 1)Spawning to GCE $(tput sgr 0)"
+  echo ""
+  
+  #Loops for destroying Swarm nodes
+  j=$prevgcevms-$GCEDestroyK
+  while [ $j -lt $prevgcevms ]
+   do
+   
+  
+   echo ""
+   echo "Destroying VM env-crate-$j "
+   echo ""
+  
+   #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-image ubuntu-1510-wily-v20151114 --swarm --swarm-discovery token://$SwarmTokenK SPAWN-GCE$j-K
+   docker-machine rm -f env-crate-$j
+   
+   
+   #DEregisters Swarm Slave in Consul
+   curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
+   curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
+   
+   #DeRegisters Swarm slave in etcd
+   curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name
+   curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip
+   
+   echo ----
+   echo "$(tput setaf 1) Machine $publicipKGCE in GCE removed SWARM $(tput sgr 0)"
+   echo ----
+   #Increments counter for total GCE VMs
+   true $(( j++ ))
+   done
+fi
+#Writes total active GCE VMs 
+GCEVM_InstancesK=$j
 
+#Writes data to Consul
+curl -X PUT -d $GCEVM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/gcevms
+
+#Writes data to etcd
+curl -L http://127.0.0.1:4001/v2/keys/gcevms -XPUT -d value=$GCEVM_InstancesK
 
 #Destroys N-y AWS DM
 
+echo ""
+echo "$(tput setaf 2) Scaling down swarm Nodes on AWS $(tput sgr 0)"
+echo ""
+
+#Destroys $AWSDestroyK VMs on AWS 
+
+i=$prevawsvms-$AWSDestroyK
+while [ $i -lt $prevawsvms ]
+do
+  #UUIDK=$(cat /proc/sys/kernel/random/uuid)
+ #echo Provisioning VM SPAWN$i-$UUIDK
+    echo ""
+    echo "$(tput setaf 1) Destroying VM SPAWN$i-$UUIDK $(tput sgr 0)"
+    echo ""
+    docker-machine rm -f SPAWN$i-$UUIDK
+
+    #DE registers Swarm Slave in Consul
+    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
+    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/ip
+    
+    #DERegister Swarm slave in etcd
+    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name
+    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/ip
+    
+    #Increments counter for total AWS VMs
+    true $(( i++ ))
+done
+#Writes total AWS VMs provisioned
+VM_InstancesK=$i
+
+#Writes the stuff in etcd
+curl -X PUT -d $VM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/awsvms
+
+#Writes the data in consul
+curl -L http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
+
 #Respawns honeypots
 
+#Launches $instancesK Containers using SWARM
+
+echo ""
+echo "$(tput setaf 2) Launching Honeypots instances via Docker Swarm $(tput sgr 0)"
+echo ""
+
+#Connects to Swarm
+eval $(docker-machine env --swarm swarm-master)
+
+
+#Sets variables for launching honeypots that will connect to the receiver
+LOG_HOST=$publicipspawnreceiver
+LOG_PORT=$ReceiverPortK
+
+
+
+i=0
+while [ $i -lt $Container_InstancesK ]
+do
+    echo "output: $i"
+    UUIDK=$(cat /proc/sys/kernel/random/uuid)
+    echo Provisioning Container $i
+    
+    #Launches Honeypots
+    #docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
+    docker run -d --name honeypot-$i -e LOG_HOST=$publicipspawnreceiver -e LOG_PORT=$ReceiverPortK -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK 
+    #launches nginx (optional)
+    #docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
+    true $(( i++ ))
+done
+
+
 #Updates etcd with new totals (DM VMs and Honeypots)
+#Register the tasks for this run in Consul
+
+#curl -X PUT -d $VM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/awsvms
+#curl -X PUT -d $GCEVM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/gcevms
+curl -X PUT -d $Container_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots
+
+#Register the tasks for this run in etcd
+#curl -L http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
+#curl -L http://127.0.0.1:4001/v2/keys/gcevms -XPUT -d value=$GCEVM_InstancesK
+curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=$Container_InstancesK
 
 
 #Outputs results
+echo ----
+echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
+echo TBD
+echo ----
+docker run swarm list token://$SwarmTokenK
+echo ----
+docker-machine ls
+echo ----
+
