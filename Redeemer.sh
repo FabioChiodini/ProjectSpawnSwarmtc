@@ -134,7 +134,8 @@ if [ $GCEKProvision -eq 1 ]; then
   echo ""
   
   #Loops for destroying Swarm nodes
-  j=$prevgcevms-$GCEDestroyK
+  # a=$(($a1+$a2))
+  j=$(($prevgcevms-$GCEDestroyK))
   while [ $j -lt $prevgcevms ]
    do
    echo ""
@@ -175,8 +176,8 @@ echo "$(tput setaf 2) Scaling down swarm Nodes on AWS $(tput sgr 0)"
 echo ""
 
 #Destroys $AWSDestroyK VMs on AWS 
-
-i=$prevawsvms-$AWSDestroyK
+#a=$(($a1+$a2))
+i=$(($prevawsvms-$AWSDestroyK))
 while [ $i -lt $prevawsvms ]
 do
   #UUIDK=$(cat /proc/sys/kernel/random/uuid)
