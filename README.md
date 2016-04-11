@@ -167,7 +167,8 @@ To enable the use of this application it is necessary to **manually** open port 
 
 ### Consul
 
-If Consul is launched locally (DynDNS option)  it is necessary to **manually** open port 8500 on the VM where the main script is launched.
+**Important note**: If Consul is launched locally (DynDNS option)  it is necessary to **manually** open port 8500 on the VM where the main script is launched.
+
 Following are some examples of the Consul outputs.
 
 Main KV tree:
