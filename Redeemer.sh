@@ -282,3 +282,11 @@ echo ----
 docker-machine ls
 echo ----
 
+#Connects to Swarm Cluster
+eval $(docker-machine env --swarm swarm-master)
+
+echo ----
+echo "$(tput setaf 6) Docker instances running $(tput sgr 0)"
+docker ps
+echo ""
+
