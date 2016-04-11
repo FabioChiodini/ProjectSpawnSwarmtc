@@ -189,6 +189,8 @@ echo ""
 #a=`expr "$a" + "$num"`
 i=`expr "$prevawsvms" - "$AWSDestroyK"`
 echo ""
+echo prevawsvms = $prevawsvms
+echo AWSDestroyK = $AWSDestroyK
 echo i= $i
 echo ""
 while [ $i -lt $prevawsvms ]
