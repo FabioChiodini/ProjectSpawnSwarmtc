@@ -238,6 +238,8 @@ It then destroys:
  - 4001 (all IPs) for etcd-browser
  - 8500 (all IPs) for Consul
 
+![Alt text](/images/MainInboundRules.png "MainInboundRules")
+
 - Get PuTTy configured with AWS key
 
 - Run AWSDockermachine code
