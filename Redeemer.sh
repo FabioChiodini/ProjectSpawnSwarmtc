@@ -37,7 +37,7 @@ prevgcevmsK=`(curl http://127.0.0.1:4001/v2/keys/gcevms | jq '.node.value' | sed
 prevhoneypotsK=`(curl http://127.0.0.1:4001/v2/keys/totalhoneypots | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #Storing parameters as numbers
-prevawsvms=`expr "$prevawsvms" + 0`
+prevawsvms=`expr "$prevawsvmsK" + 0`
 prevgcevms=`expr "$prevgcevmsK" + 0`
 prevhoneypots=`expr "$prevhoneypotsK" + 0`
 
@@ -149,10 +149,9 @@ if [ $GCEKProvision -eq 1 ]; then
    echo "Destroying VM env-crate-$j "
    echo ""
   
-   #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-image ubuntu-1510-wily-v20151114 --swarm --swarm-discovery token://$SwarmTokenK SPAWN-GCE$j-K
    docker-machine rm -f env-crate-$j
    
-      #DEregisters Swarm Slave in Consul
+   #DEregisters Swarm Slave in Consul
    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j
@@ -160,7 +159,8 @@ if [ $GCEKProvision -eq 1 ]; then
    #DeRegisters Swarm slave in etcd
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip
-   curl 'http://127.0.0.1:4001/v2/keys/DM-GCE-$j?dir=true' -XDELETE
+   DirDeleteK=DM-GCE-$j
+   curl 'http://127.0.0.1:4001/v2/keys/$DirDeleteK?dir=true' -XDELETE
    #curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j
    
    echo ----
@@ -186,13 +186,8 @@ echo "$(tput setaf 2) Scaling down swarm Nodes on AWS $(tput sgr 0)"
 echo ""
 
 #Destroys $AWSDestroyK VMs on AWS 
-#a=$(($a1+$a2))
 #a=`expr "$a" + "$num"`
 i=`expr "$prevawsvms" - "$AWSDestroyK"`
-echo ""
-echo pre cycle
-echo i =$i
-echo ""
 while [ $i -lt $prevawsvms ]
 do
     VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name | jq '.node.value' | sed 's/.//;s/.$//')`
