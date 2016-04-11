@@ -109,10 +109,10 @@ docker rm -f etcdk
 #Clean firewall Rules
 # Still TBI
 
-echo Docker machine still alive:
+echo "$(tput setaf 6) Docker machine still alive: $(tput sgr 0)"
 docker-machine ls
 
-echo Local Docker Containers still alive:
+echo "$(tput setaf 6) Local Docker Containers still alive:$(tput sgr 0)"
 docker ps
 
 echo ""
