@@ -183,12 +183,13 @@ echo ""
 i=`expr "$prevawsvms" - "$AWSDestroyK"`
 while [ $i -lt $prevawsvms ]
 do
-  #UUIDK=$(cat /proc/sys/kernel/random/uuid)
- #echo Provisioning VM SPAWN$i-$UUIDK
+    VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name | jq '.node.value' | sed 's/.//;s/.$//')`
+    #http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name -XPUT
+    #echo Provisioning VM SPAWN$i-$UUIDK
     echo ""
-    echo "$(tput setaf 1) Destroying VM SPAWN$i-$UUIDK $(tput sgr 0)"
+    echo "$(tput setaf 1) Destroying VM $VMKill $(tput sgr 0)"
     echo ""
-    docker-machine rm -f SPAWN$i-$UUIDK
+    docker-machine rm -f $VMKill
 
     #DE registers Swarm Slave in Consul
     curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
@@ -197,6 +198,7 @@ do
     #DERegister Swarm slave in etcd
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/ip
+    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i
     
     #Increments counter for total AWS VMs
     true $(( i++ ))
