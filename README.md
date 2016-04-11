@@ -234,6 +234,8 @@ It then destroys:
 
 # Minimal Launch Instructions
 
+Following are high level notes on how to get this running quickly:
+
 - Start a t1.small on AWS
 
 - Open ports for this VM on AWS
@@ -243,7 +245,7 @@ It then destroys:
 
 ![Alt text](/images/MainInboundRules.png "MainInboundRules")
 
-- Get PuTTy configured with AWS key
+- Connect via SSH to your AWS instance (ie in my case: Get PuTTy configured with AWS key :P )
 
 - Run AWSDockermachine code
 
