@@ -80,7 +80,7 @@ fi
 
 
 echo ----
-echo Consul RUNNING ON $publicipCONSULK:8500
+echo "$(tput setaf 6) Consul RUNNING ON $publicipCONSULK:8500 $(tput sgr 0)"
 echo publicipCONSULK=$publicipCONSULK
 echo ----
 
@@ -123,8 +123,8 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/ip -XPUT -d value=$publicipetcdbrowser
   curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/port -XPUT -d value=8000
   echo ----
-  echo "$(tput setaf 2) etcd-browser RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
-  echo "$(tput setaf 2) publicipetcdbrowser=$publicipetcdbrowser $(tput sgr 0)"
+  echo "$(tput setaf 6) etcd-browser RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
+  echo "$(tput setaf 4) publicipetcdbrowser=$publicipetcdbrowser $(tput sgr 0)"
   echo ----
  fi
  
@@ -169,7 +169,7 @@ if [ $GCEKProvision -eq 1 ]; then
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
   echo ----
-  echo "$(tput setaf 2) Receiver RUNNING ON $publicipspawnreceiver  Port $ReceiverPortK ON GCE $(tput sgr 0)"
+  echo "$(tput setaf 6) Receiver RUNNING ON $publicipspawnreceiver  Port $ReceiverPortK ON GCE $(tput sgr 0)"
   echo publicipspawnreceiver=$publicipspawnreceiver
   echo ----
 
