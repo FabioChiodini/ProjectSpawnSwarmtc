@@ -188,9 +188,15 @@ echo ""
 #Destroys $AWSDestroyK VMs on AWS 
 #a=`expr "$a" + "$num"`
 i=`expr "$prevawsvms" - "$AWSDestroyK"`
+echo ""
+echo i= $i
+echo ""
 while [ $i -lt $prevawsvms ]
 do
     VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name | jq '.node.value' | sed 's/.//;s/.$//')`
+    echo ""
+    echo VMKill $VMKill 
+    echo ""
     #http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name -XPUT
     #echo Provisioning VM SPAWN$i-$UUIDK
     echo ""
