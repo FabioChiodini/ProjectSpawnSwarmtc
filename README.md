@@ -163,6 +163,8 @@ To enable the use of this application it is necessary to **manually** open port 
 
 ![Alt text](/images/Port4001.png "Port4001")
 
+**Added value**: The etcd broswer is also useful for testing this code as you can change values inside etcd directly from its web interface
+
 ### Consul
 
 If Consul is launched locally (DynDNS option)  it is necessary to **manually** open port 8500 on the VM where the main script is launched.
