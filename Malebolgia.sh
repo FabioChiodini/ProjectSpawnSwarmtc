@@ -115,6 +115,15 @@ docker-machine ls
 echo "$(tput setaf 6) Local Docker Containers still alive:$(tput sgr 0)"
 docker ps
 
+#Connects to Swarm Cluster
+eval $(docker-machine env --swarm swarm-master)
+
+echo ----
+echo "$(tput setaf 6) Docker instances running $(tput sgr 0)"
+docker ps
+echo ""
+
+
 echo ""
 echo "$(tput setaf 1) Everything has been destroyed by Malebolgia ;) $(tput sgr 0)"
 echo ""
