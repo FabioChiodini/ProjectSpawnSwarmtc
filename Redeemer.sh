@@ -111,6 +111,10 @@ done
 #Writes total Honeypots destroyed
 ContainersDestroyK=$i
 
+echo ""
+echo "$(tput setaf 6) Destroyed $ContainersDestroyK Honeypots $(tput sgr 0)"
+echo ""
+
 #Writes the final total setup in etcd for further scaling
 curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=0
 
@@ -121,20 +125,18 @@ curl -X PUT -d '0' http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots
 
 echo ""
 echo "$(tput setaf 2) Scaling down Swarm Nodes in GCE $(tput sgr 0)"
-
+echo ""
 #destroys $GCEDestroyK VMs on GCE using Docker machine and connects them to Swarm
 # Spawns to GCE
 if [ $GCEKProvision -eq 1 ]; then
   echo ""
-  echo "$(tput setaf 1)Spawning to GCE $(tput sgr 0)"
+  echo "$(tput setaf 1) Spawning to GCE $(tput sgr 0)"
   echo ""
   
   #Loops for destroying Swarm nodes
   j=$prevgcevms-$GCEDestroyK
   while [ $j -lt $prevgcevms ]
    do
-   
-  
    echo ""
    echo "Destroying VM env-crate-$j "
    echo ""
@@ -142,8 +144,7 @@ if [ $GCEKProvision -eq 1 ]; then
    #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-image ubuntu-1510-wily-v20151114 --swarm --swarm-discovery token://$SwarmTokenK SPAWN-GCE$j-K
    docker-machine rm -f env-crate-$j
    
-   
-   #DEregisters Swarm Slave in Consul
+      #DEregisters Swarm Slave in Consul
    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
    
@@ -152,7 +153,7 @@ if [ $GCEKProvision -eq 1 ]; then
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip
    
    echo ----
-   echo "$(tput setaf 1) Machine $publicipKGCE in GCE removed SWARM $(tput sgr 0)"
+   echo "$(tput setaf 1) Machine env-crate-$j in GCE removed from SWARM $(tput sgr 0)"
    echo ----
    #Increments counter for total GCE VMs
    true $(( j++ ))
@@ -207,7 +208,7 @@ curl -L http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
 
 #Respawns honeypots
 
-#Launches $instancesK Containers using SWARM
+#Launches $Container_InstancesK Containers using SWARM
 
 echo ""
 echo "$(tput setaf 2) Launching Honeypots instances via Docker Swarm $(tput sgr 0)"
@@ -241,14 +242,9 @@ done
 
 #Updates etcd with new totals (DM VMs and Honeypots)
 #Register the tasks for this run in Consul
-
-#curl -X PUT -d $VM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/awsvms
-#curl -X PUT -d $GCEVM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/gcevms
 curl -X PUT -d $Container_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots
 
 #Register the tasks for this run in etcd
-#curl -L http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
-#curl -L http://127.0.0.1:4001/v2/keys/gcevms -XPUT -d value=$GCEVM_InstancesK
 curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=$Container_InstancesK
 
 
