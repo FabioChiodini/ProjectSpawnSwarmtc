@@ -135,7 +135,9 @@ if [ $GCEKProvision -eq 1 ]; then
   
   #Loops for destroying Swarm nodes
   # a=$(($a1+$a2))
-  j=$(($prevgcevms-$GCEDestroyK))
+  #a=`expr "$a" + "$num"`
+  j=`expr "$prevgcevms" - "$GCEDestroyK"`
+  #j=$(($prevgcevms" + "$GCEDestroyK"`
   while [ $j -lt $prevgcevms ]
    do
    echo ""
