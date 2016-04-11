@@ -227,9 +227,9 @@ Redeemer.sh is the code that automates the scale down of the setup after the fir
 
 It reads configuration information from the etcd local instances (to connect to swarm, set up docker-machine, gets the number of Docker machines and honeypots and to restart honeypots).
 
-It then destroys the specified Docker machine instances in GCE or AWS.
+It then destroys the specified Docker machine instances in GCE or AWS. It also cleans up the relevant registrations in etcd and Consul (Consul TBI).
 
-It then restarts honeypot containers to matche the number specified with the following launch parameters
+It then restarts honeypot containers to match the number specified with the following launch parameters
 
 ###How to launch
 
