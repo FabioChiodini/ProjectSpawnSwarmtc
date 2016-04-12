@@ -72,10 +72,8 @@ else
   docker run -d --name ConsulDynDNS -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
 
   #Stores local ip in a variable
-  myipk=$( dig +short $DynDNSK @8.8.8.8)
-  #publicipCONSULK=$DynDNSK
-  publicipCONSULK=$myipk
-
+  publicipCONSULK=$DynDNSK
+  
 fi
 
 
@@ -138,6 +136,18 @@ fi
 curl -L http://127.0.0.1:4001/v2/keys/consul/ip -XPUT -d value=$publicipCONSULK
 curl -L http://127.0.0.1:4001/v2/keys/consul/port -XPUT -d value=8500
 
+#register local ip and dns name in etcd
+myipK=$( dig +short $DynDNSK @8.8.8.8)
+curl -L http://127.0.0.1:4001/v2/keys/maininstance/ip -XPUT -d value=$myipK
+fqnK=$(nslookup $myipK)
+fqnK=${fqnK##*name = }
+fqnK=${fqnK%.*}
+#echo $fqn
+curl -L http://127.0.0.1:4001/v2/keys/maininstance/name -XPUT -d value=$fqnK
+
+#register local ip and dns name in Consul
+curl -X PUT -d $fqnK http://$publicipCONSULK:8500/v1/kv/tc/maininstance/name
+curl -X PUT -d $myipK http://$publicipCONSULK:8500/v1/kv/tc/maininstance/ip
  
 #Provisions Receiver instance in GCE or AWS
 if [ $GCEKProvision -eq 1 ]; then
