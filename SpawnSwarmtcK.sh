@@ -144,10 +144,16 @@ fqnK=${fqnK##*name = }
 fqnK=${fqnK%.*}
 #echo $fqn
 curl -L http://127.0.0.1:4001/v2/keys/maininstance/name -XPUT -d value=$fqnK
+if [ $ConsulDynDNSK -eq 1 ]; then
+  curl -L http://127.0.0.1:4001/v2/keys/maininstance/dyndns -XPUT -d value=$DynDNSK
+fi
 
 #register local ip and dns name in Consul
 curl -X PUT -d $fqnK http://$publicipCONSULK:8500/v1/kv/tc/maininstance/name
 curl -X PUT -d $myipK http://$publicipCONSULK:8500/v1/kv/tc/maininstance/ip
+if [ $ConsulDynDNSK -eq 1 ]; then
+  curl -X PUT -d $DynDNSK http://$publicipCONSULK:8500/v1/kv/tc/maininstance/dyndns
+fi
  
 #Provisions Receiver instance in GCE or AWS
 if [ $GCEKProvision -eq 1 ]; then
