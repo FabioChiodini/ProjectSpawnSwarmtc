@@ -131,7 +131,7 @@ if [ $etcdbrowserprovision -eq 1 ]; then
 if [ $ConsulDynDNSK -eq 0 ]; then
   curl -L http://127.0.0.1:4001/v2/keys/consul/name -XPUT -d value=SPAWN-CONSUL
 else
-  curl -L http://127.0.0.1:4001/v2/keys/consul/ip -XPUT -d value=$DynDNSK
+  curl -L http://127.0.0.1:4001/v2/keys/consul/name -XPUT -d value=$DynDNSK
 fi
 curl -L http://127.0.0.1:4001/v2/keys/consul/ip -XPUT -d value=$publicipCONSULK
 curl -L http://127.0.0.1:4001/v2/keys/consul/port -XPUT -d value=8500
