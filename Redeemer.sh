@@ -71,7 +71,8 @@ fi
 AWSDestroyK=$1
 
 #Sets the number of Containers Honeypots to spawn
-Container_InstancesK=$prevhoneypots-$3
+#a=`expr "$a" + "$num"`
+Container_InstancesK=`expr "$prevhoneypots" - "$3"`
 
 echo ""
 
@@ -104,9 +105,9 @@ do
     #UUIDK=$(cat /proc/sys/kernel/random/uuid)
     echo Destroying Container $i
     
-    #Launches Honeypots
-    #docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
+    #Destroys Honeypots
     docker rm -f honeypot-$i 
+    
     #destroys nginx (optional)
     #docker rm -f www-$i 
     #Increments counter for honeypots
@@ -249,6 +250,9 @@ LOG_PORT=$ReceiverPortK
 
 
 i=0
+echo ""
+echo Spawning $Container_InstancesK Honeypots
+echo ""
 while [ $i -lt $Container_InstancesK ]
 do
     echo "output: $i"
