@@ -71,9 +71,10 @@ else
   #Launches a local Consul instance
   docker run -d --name ConsulDynDNS -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h node1 progrium/consul -server -bootstrap
 
-  #Manually open port 8500 on launcher AWS VM
-
-  publicipCONSULK=$DynDNSK
+  #Stores local ip in a variable
+  myipk=$( dig +short $DynDNSK @8.8.8.8)
+  #publicipCONSULK=$DynDNSK
+  publicipCONSULK=$myipk
 
 fi
 
