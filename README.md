@@ -27,7 +27,7 @@ To run this script you have to prepare two configuration files (in /home/ec2-use
 
 
 
-## Script Flow
+## Script Flow 
 
 This script creates (leveraging Docker-Machine):
 
