@@ -39,9 +39,9 @@ publicipSWARMK=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/ip | jq '.node.
 SwarmTokenK=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/token | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #SPAWN_CONSUL
-ConsulVMNameK=`(curl http://127.0.0.1:4001/v2/keys/SPAWN-CONSUL/name | jq '.node.value' | sed 's/.//;s/.$//')`
-publicipCONSULK=`(curl http://127.0.0.1:4001/v2/keys/SPAWN-CONSUL/ip | jq '.node.value' | sed 's/.//;s/.$//')`
-ConsulPortK=`(curl http://127.0.0.1:4001/v2/keys/SPAWN-CONSUL/port | jq '.node.value' | sed 's/.//;s/.$//')`
+ConsulVMNameK=`(curl http://127.0.0.1:4001/v2/keys/consul/name | jq '.node.value' | sed 's/.//;s/.$//')`
+publicipCONSULK=`(curl http://127.0.0.1:4001/v2/keys/consul/ip | jq '.node.value' | sed 's/.//;s/.$//')`
+ConsulPortK=`(curl http://127.0.0.1:4001/v2/keys/consul/port | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #spawn-receiver
 ReceiverNameK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/name | jq '.node.value' | sed 's/.//;s/.$//')`
