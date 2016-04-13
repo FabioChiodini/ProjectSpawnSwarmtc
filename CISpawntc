@@ -5,8 +5,12 @@
 #gets data on setup from etcd
 
 
-#Tests Honeypots
 
+
+
+#Tests Honeypots
+#remember that honeypots could also live on swarm-master
+#limit that by launching a fake container locking the port used by Honepots??
 
 #Tests Receiver
 
