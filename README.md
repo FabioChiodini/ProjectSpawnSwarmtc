@@ -254,6 +254,17 @@ It then destroys:
 - Infrastructure Components (Docker Swarm, Receiver and Consul)
 - it then destroys local Docker instances (etcd and eventually Consul if local)
 
+##Continous Integration Code
+
+This code is meant to help in testing the elements deployed by the main code and validate that any change to the base code has been successful (still TBI)
+
+The code tests these components:
+- Data written in etcd
+- Honeypots
+- Receiver Instance
+
+Still TBI
+
 # Minimal Launch Instructions
 
 Following are high level notes on how to get this running quickly:
