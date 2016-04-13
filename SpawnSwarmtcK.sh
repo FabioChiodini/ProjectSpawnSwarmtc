@@ -492,30 +492,31 @@ echo "******************************************"
 #Optionally close all non useful ports
 #Still TBI
 
-echo ""
-echo "$(tput setaf 2) Preparing for Clean UP $(tput sgr 0)"
-echo ""
+# Clean up is now performed by another script
+#echo ""
+#echo "$(tput setaf 2) Preparing for Clean UP $(tput sgr 0)"
+#echo ""
 
 #KILLS SWARM (Testing purposes cleanup)
-docker-machine rm swarm-master
-docker-machine rm SPAWN-CONSUL
-docker-machine rm spawn-receiver
+#docker-machine rm swarm-master
+#docker-machine rm SPAWN-CONSUL
+#docker-machine rm spawn-receiver
 
 
 #curl http://127.0.0.1:4001/v2/keys/DM-AWS-0/name | jq '.node.value' | sed 's/.//;s/.$//' > DELMEK
 #Extract a variable from etcd
-DELMEK=`(curl http://127.0.0.1:4001/v2/keys/DM-AWS-0/name | jq '.node.value' | sed 's/.//;s/.$//')`
-echo $DELMEK
-docker-machine rm $DELMEK
-echo "$(tput setaf 2) About to tear down local dockers CAUTION!!! $(tput sgr 0)"
-docker-machine rm SPAWN-FigureITOUT
+#DELMEK=`(curl http://127.0.0.1:4001/v2/keys/DM-AWS-0/name | jq '.node.value' | sed 's/.//;s/.$//')`
+#echo $DELMEK
+#docker-machine rm $DELMEK
+#echo "$(tput setaf 2) About to tear down local dockers CAUTION!!! $(tput sgr 0)"
+#docker-machine rm SPAWN-FigureITOUT
 
 
-docker rm -f ConsulDynDNS
-sleep 1
-docker rm -f receiverK
-sleep 1
-docker rm -f etcdk
+#docker rm -f ConsulDynDNS
+#sleep 1
+#docker rm -f receiverK
+#sleep 1
+#docker rm -f etcdk
 
 #Displays Public IP
 
