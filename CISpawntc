@@ -1,0 +1,16 @@
+#Loads variables
+
+
+
+#gets data on setup from etcd
+
+
+#Tests Honeypots
+
+
+#Tests Receiver
+
+
+
+
+#Provide a status
