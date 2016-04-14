@@ -263,6 +263,8 @@ The code tests these components:
 - Honeypots
 - Receiver Instance
 
+After getting the setup details from etcd it tests if the ports are open for the honeypots and receiver containers and basically test the application.
+
 Still TBI
 
 # Minimal Launch Instructions
