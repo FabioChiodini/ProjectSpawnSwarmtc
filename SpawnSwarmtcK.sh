@@ -280,6 +280,10 @@ docker-machine env swarm-master > /home/ec2-user/SWARM1
 
 publicipSWARMK=$(docker-machine ip swarm-master)
 
+#launches a container to prevent Honeypots to run on swarm-master
+docker run -d --name www-8080 -p $HoneypotPortK:$HoneypotPortK nginx
+
+
 #registers Swarm master in Consul
 curl -X PUT -d 'swarm-master' http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/name
 curl -X PUT -d $publicipSWARMK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/ip
