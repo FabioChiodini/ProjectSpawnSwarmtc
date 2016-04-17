@@ -256,14 +256,21 @@ It then destroys:
 
 ##Continous Integration Code
 
-This code is meant to help in testing the elements deployed by the main code and validate that any change to the base code has been successful (still TBI)
+This code is meant to help in testing the elements deployed by the main code and validate that any change to the base code has been successful
 
 The code tests these components:
 - Data written in etcd
 - Honeypots
 - Receiver Instance
+- Consul
 
-After getting the setup details from etcd it tests if the ports are open for the honeypots and receiver containers and basically test the application.
+After getting the setup details from etcd it tests if the ports are open for the components listed and basically test the application.
+
+The results of teh tests are written in etcd:
+
+
+
+Running these tests multiple times updates the test flags value in etcd.
 
 Still TBI
 
