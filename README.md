@@ -266,7 +266,13 @@ The code tests these components:
 
 After getting the setup details from etcd it tests if the ports are open for the components listed and basically test the application.
 
-The results of teh tests are written in etcd:
+How to launch:
+
+```
+./CISpawntc
+```
+
+The results of the tests are written in etcd:
 
 
 
