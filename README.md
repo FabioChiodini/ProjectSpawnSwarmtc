@@ -253,6 +253,13 @@ It then destroys:
 - Docker machine VMs provisioned (by doing so kills all honeypot instances)
 - Infrastructure Components (Docker Swarm, Receiver and Consul)
 - it then destroys local Docker instances (etcd and eventually Consul if local)
+- 
+
+###How to launch
+
+```
+./Malebolgia.sh
+```
 
 ##Continous Integration Code
 
@@ -266,7 +273,7 @@ The code tests these components:
 
 After getting the setup details from etcd it tests if the ports are open for the components listed and basically test the application.
 
-How to launch:
+###How to launch:
 
 ```
 ./CISpawntc
