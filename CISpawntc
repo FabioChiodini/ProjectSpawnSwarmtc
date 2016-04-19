@@ -71,8 +71,8 @@ do
    searchString="result"
    case $curltestk in
     #"$searchString") echo YES;;
-    *"$searchString"*) curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/CURLTEST -XPUT -d value=PASSED;;
-    *) curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/CURLTEST -XPUT -d value=FAILED ;;
+    *"$searchString"*) curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/SYNTHETICTEST -XPUT -d value=PASSED;;
+    *) curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/SYNTHETICTEST -XPUT -d value=FAILED ;;
    esac
    echo ""
    echo ""
@@ -119,8 +119,8 @@ do
    searchString="result"
    case $curltestk in
     #"$searchString") echo YES;;
-    *"$searchString"*) curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/CURLTEST -XPUT -d value=PASSED;;
-    *) curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/CURLTEST -XPUT -d value=FAILED ;;
+    *"$searchString"*) curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/SYNTHETICTEST -XPUT -d value=PASSED;;
+    *) curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/SYNTHETICTEST -XPUT -d value=FAILED ;;
    esac
    echo ""
    echo ""
