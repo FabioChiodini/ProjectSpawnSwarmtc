@@ -37,6 +37,7 @@ prevhoneypots=`(curl http://127.0.0.1:4001/v2/keys/totalhoneypots | jq '.node.va
 #swarm-master
 publicipSWARMK=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/ip | jq '.node.value' | sed 's/.//;s/.$//')`
 SwarmTokenK=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/token | jq '.node.value' | sed 's/.//;s/.$//')`
+SwarmVMName=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/name | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #SPAWN_CONSUL
 ConsulVMNameK=`(curl http://127.0.0.1:4001/v2/keys/consul/name | jq '.node.value' | sed 's/.//;s/.$//')`
@@ -49,7 +50,7 @@ publicipspawnreceiver=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/ip | j
 ReceiverPortK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #etcd
-$etcdbrowserkVMName=`(curl http://127.0.0.1:4001/v2/keys/etcd-browser/name | jq '.node.value' | sed 's/.//;s/.$//')`
+etcdbrowserkVMName=`(curl http://127.0.0.1:4001/v2/keys/etcd-browser/name | jq '.node.value' | sed 's/.//;s/.$//')`
 
 
 #Determines where to spawn
@@ -229,7 +230,7 @@ echo "$(tput setaf 2) Launching Honeypots instances via Docker Swarm $(tput sgr 
 echo ""
 
 #Connects to Swarm
-eval $(docker-machine env --swarm swarm-master)
+eval $(docker-machine env --swarm $SwarmVMName)
 
 #Sets variables for launching honeypots that will connect to the receiver
 LOG_HOST=$publicipspawnreceiver
