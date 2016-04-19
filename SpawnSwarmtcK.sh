@@ -99,7 +99,7 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   #gcloud auth login
   gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small etcd-browserk-$instidk
+  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small etcd-browserk$instidk
 
   #
   #Open port for etcd-browser on GCE
@@ -109,20 +109,20 @@ if [ $etcdbrowserprovision -eq 1 ]; then
 
   #Connects to remote VM
 
-  docker-machine env etcd-browserk-$instidk > /home/ec2-user/etcd-browserk-$instidk
-  . /home/ec2-user/etcd-browserk-$instidk
+  docker-machine env etcd-browserk$instidk > /home/ec2-user/etcd-browserk$instidk
+  . /home/ec2-user/etcd-browserk$instidk
 
-  publicipetcdbrowser=$(docker-machine ip etcd-browserk-$instidk)
+  publicipetcdbrowser=$(docker-machine ip etcd-browserk$instidk)
   
   #launches etcd-browser containerized
   docker run -d --name etcd-browserk -p 0.0.0.0:8000:8000 --env ETCD_HOST=$DynDNSK kiodo/etcd-browser:latest
   
   #Register etcd-browser in etcd
-  curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/name -XPUT -d value=etcd-browserk-$instidk
+  curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/name -XPUT -d value=etcd-browserk$instidk
   curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/ip -XPUT -d value=$publicipetcdbrowser
   curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/port -XPUT -d value=8000
   echo ----
-  echo "$(tput setaf 6) etcd-browser-$instidk RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
+  echo "$(tput setaf 6) etcd-browser$instidk RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
   echo "$(tput setaf 4) publicipetcdbrowser=$publicipetcdbrowser $(tput sgr 0)"
   echo ----
  fi
@@ -173,7 +173,7 @@ if [ $GCEKProvision -eq 1 ]; then
   #gcloud auth login
   gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small spawn-receiver-$instidk
+  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small spawn-receiver$instidk
 
   #
   #Open port for Receiver on GCE
@@ -183,10 +183,10 @@ if [ $GCEKProvision -eq 1 ]; then
 
   #Connects to remote VM
 
-  docker-machine env spawn-receiver-$instidk > /home/ec2-user/spawn-receiver-$instidk
-  . /home/ec2-user/spawn-receiver-$instidk
+  docker-machine env spawn-receiver$instidk > /home/ec2-user/spawn-receiver$instidk
+  . /home/ec2-user/spawn-receiver$instidk
 
-  publicipspawnreceiver=$(docker-machine ip spawn-receiver-$instidk)
+  publicipspawnreceiver=$(docker-machine ip spawn-receiver$instidk)
   
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
@@ -203,7 +203,7 @@ else
 
 
   #Create Docker Receiver Instance in AWS
-  docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION spawn-receiver-$instidk
+  docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION spawn-receiver$instidk
 
   echo "$(tput setaf 2) Opening Ports for Receiver on AWS $(tput sgr 0)"
   #Opens Firewall Port for Receiver on AWS
@@ -211,10 +211,10 @@ else
 
   #Connects to remote VM
 
-  docker-machine env spawn-receiver-$instidk > /home/ec2-user/spawn-receiver-$instidk
-  . /home/ec2-user/spawn-receiver-$instidk
+  docker-machine env spawn-receiver$instidk > /home/ec2-user/spawn-receiver$instidk
+  . /home/ec2-user/spawn-receiver$instidk
 
-  publicipspawnreceiver=$(docker-machine ip spawn-receiver-$instidk)
+  publicipspawnreceiver=$(docker-machine ip spawn-receiver$instidk)
   
     #starts the Receiver dockerized
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
@@ -232,12 +232,12 @@ echo "$(tput setaf 2) Registering Services in Consul and etcd  $(tput sgr 0)"
 echo ""
 
 #registers receiver in Consul
-  curl -X PUT -d spawn-receiver-$instidk http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/name
+  curl -X PUT -d spawn-receiver$instidk http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/name
   curl -X PUT -d $publicipspawnreceiver http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/ip
   curl -X PUT -d $ReceiverPortK http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/port
 
 #Register Receiver in etcd
-curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/name -XPUT -d value=spawn-receiver-$instidk
+curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/name -XPUT -d value=spawn-receiver$instidk
 curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip -XPUT -d value=$publicipspawnreceiver
 curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port -XPUT -d value=$ReceiverPortK
   
@@ -272,7 +272,7 @@ echo "$(tput setaf 1) Check swarm token on https://discovery.hub.docker.com/v1/c
 echo ----
 
 #Create Swarm Master
-docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION --swarm --swarm-master --swarm-discovery token://$SwarmTokenK swarm-master-$instidk
+docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION --swarm --swarm-master --swarm-discovery token://$SwarmTokenK swarm-master$instidk
 
 echo ""
 echo "$(tput setaf 2) Opening Ports for Docker Swarm$(tput sgr 0)"
@@ -281,17 +281,17 @@ echo ""
 aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 8333 --cidr 0.0.0.0/0
 
 #Connects to remote VM
-docker-machine env swarm-master-$instidk > /home/ec2-user/SWARM1
+docker-machine env swarm-master$instidk > /home/ec2-user/SWARM1
 . /home/ec2-user/SWARM1
 
-publicipSWARMK=$(docker-machine ip swarm-master-$instidk)
+publicipSWARMK=$(docker-machine ip swarm-master$instidk)
 
 #launches a container to prevent Honeypots to run on swarm-master
 docker run -d --name www-8080 -p $HoneypotPortK:$HoneypotPortK nginx
 
 
 #registers Swarm master in Consul
-curl -X PUT -d swarm-master-$instidk http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/name
+curl -X PUT -d swarm-master$instidk http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/name
 curl -X PUT -d $publicipSWARMK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/ip
 curl -X PUT -d '8333' http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/port
 curl -X PUT -d $SwarmTokenK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/token
@@ -300,10 +300,10 @@ curl -X PUT -d $SwarmTokenK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/t
 curl -L http://127.0.0.1:4001/v2/keys/swarm-master/ip -XPUT -d value=$publicipSWARMK
 curl -L http://127.0.0.1:4001/v2/keys/swarm-master/port -XPUT -d value=8333
 curl -L http://127.0.0.1:4001/v2/keys/swarm-master/token -XPUT -d value=$SwarmTokenK
-curl -L http://127.0.0.1:4001/v2/keys/swarm-master/name -XPUT -d value=swarm-master-$instidk
+curl -L http://127.0.0.1:4001/v2/keys/swarm-master/name -XPUT -d value=swarm-master$instidk
 
 #defines SwarmVMName
-SwarmVMName=swarm-master-$instidk
+SwarmVMName=swarm-master$instidk
 
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
@@ -352,7 +352,7 @@ if [ $GCEKProvision -eq 1 ]; then
    #a=2
    #a+=4
    VMGCEnameK=env-crate-$j
-   VMGCEnameK+="-"
+   #VMGCEnameK+="-"
    VMGCEnameK+=$instidk
    echo ""
    echo Provisioning VM $VMGCEnameK
@@ -517,6 +517,7 @@ echo ""
 echo "$(tput setaf 6) Swarm VM Name $(tput sgr 0)"
 echo "$(tput setaf 6) $SwarmVMName $(tput sgr 0)"
 echo ""
+echo "eval ``$``(docker-machine env --swarm $SwarmVMName) "
 echo "******************************************"
 
 
