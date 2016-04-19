@@ -302,6 +302,9 @@ curl -L http://127.0.0.1:4001/v2/keys/swarm-master/port -XPUT -d value=8333
 curl -L http://127.0.0.1:4001/v2/keys/swarm-master/token -XPUT -d value=$SwarmTokenK
 curl -L http://127.0.0.1:4001/v2/keys/swarm-master/name -XPUT -d value=swarm-master-$instidk
 
+#defines SwarmVMName
+SwarmVMName=swarm-master-$instidk
+
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
 echo publicipSWARMK=$publicipSWARMK
@@ -438,7 +441,7 @@ echo "$(tput setaf 2) Launching Honeypots instances via Docker Swarm $(tput sgr 
 echo ""
 
 #Connects to Swarm
-eval $(docker-machine env --swarm swarm-master)
+eval $(docker-machine env --swarm $SwarmVMName)
 
 
 #Sets variables for launching honeypots that will connect to the receiver
@@ -465,16 +468,15 @@ done
 
 
 
-#Outputs final status
-eval $(docker-machine env --swarm swarm-master) > /home/ec2-user/OutputKK
+
 
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
 echo "$(tput setaf 1) Consul RUNNING ON $publicipCONSULK:8500 $(tput sgr 0)"
 echo ""
-echo `eval $(docker-machine env --swarm swarm-master)`
 echo "$(tput setaf 1) Run $(tput sgr 0)"
-echo "$(</home/ec2-user/OutputKK )"
+echo ""
+echo "eval ``$``(docker-machine env --swarm $SwarmVMName) "
 echo "TO connect to the cluster "
 echo THEN run 
 echo "docker info" 
@@ -511,6 +513,10 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   echo "$(tput setaf 6) etcd-browser RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
   echo ""
 fi
+echo ""
+echo "$(tput setaf 6) Swarm VM Name $(tput sgr 0)"
+echo "$(tput setaf 6) $SwarmVMName $(tput sgr 0)"
+echo ""
 echo "******************************************"
 
 
