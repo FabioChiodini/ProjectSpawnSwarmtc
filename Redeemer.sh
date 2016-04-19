@@ -44,6 +44,7 @@ prevhoneypots=`expr "$prevhoneypotsK" + 0`
 #swarm-master
 publicipSWARMK=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/ip | jq '.node.value' | sed 's/.//;s/.$//')`
 SwarmTokenK=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/token | jq '.node.value' | sed 's/.//;s/.$//')`
+SwarmVMName=`(curl http://127.0.0.1:4001/v2/keys/swarm-master/name | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #SPAWN_CONSUL
 ConsulVMNameK=`(curl http://127.0.0.1:4001/v2/keys/consul/name | jq '.node.value' | sed 's/.//;s/.$//')`
@@ -92,7 +93,7 @@ echo "$(tput setaf 2) Destroying Honeypots instances via Docker Swarm $(tput sgr
 echo ""
 
 #Connects to Swarm
-eval $(docker-machine env --swarm swarm-master)
+eval $(docker-machine env --swarm $SwarmVMName)
 
 #Sets variables for launching honeypots that will connect to the receiver
 LOG_HOST=$publicipspawnreceiver
@@ -146,26 +147,31 @@ if [ $GCEKProvision -eq 1 ]; then
   
   while [ $j -lt $prevgcevms ]
    do
+   #VMGCEnameK=env-crate-$j
+   #VMGCEnameK+="-"
+   #VMGCEnameK+=$instidk
+   VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-GCE-$i/name | jq '.node.value' | sed 's/.//;s/.$//')`
    echo ""
-   echo "Destroying VM env-crate-$j "
+   echo "Destroying VM $VMKill "
    echo ""
   
-   docker-machine rm -f env-crate-$j
+   docker-machine rm -f $VMKill
    
    #DEregisters Swarm Slave in Consul
-   curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
-   curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
-   curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j
+   curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/DM-GCE-$j/name
+   curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/DM-GCE-$j/ip
+   curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/DM-GCE-$j
    
    #DeRegisters Swarm slave in etcd
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip
+   curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/TEST
    DirDeleteK=DM-GCE-$j
    curl 'http://127.0.0.1:4001/v2/keys/$DirDeleteK?dir=true' -XDELETE
    #curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j
    
    echo ----
-   echo "$(tput setaf 1) Machine env-crate-$j in GCE removed from SWARM $(tput sgr 0)"
+   echo "$(tput setaf 1) Machine $VMKill in GCE removed from SWARM $(tput sgr 0)"
    echo ----
    #Increments counter for total GCE VMs
    true $(( j++ ))
@@ -211,13 +217,14 @@ do
     docker-machine rm -f $VMKill
     echo i =$i
     #DE registers Swarm Slave in Consul
-    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
-    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/ip
-    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK
+    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/DM-AWS-$i/name
+    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/DM-AWS-$i/ip
+    curl -X DELETE http://$publicipCONSULK:8500/v1/kv/tc/DM-AWS-$i
     
     #DERegister Swarm slave in etcd
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/ip
+    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/TEST
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i
     
     #Increments counter for total AWS VMs
@@ -240,7 +247,7 @@ echo "$(tput setaf 2) Launching Honeypots instances via Docker Swarm $(tput sgr 
 echo ""
 
 #Connects to Swarm
-eval $(docker-machine env --swarm swarm-master)
+eval $(docker-machine env --swarm $SwarmVMName)
 
 
 #Sets variables for launching honeypots that will connect to the receiver
@@ -287,7 +294,7 @@ docker-machine ls
 echo ----
 
 #Connects to Swarm Cluster
-eval $(docker-machine env --swarm swarm-master)
+eval $(docker-machine env --swarm $SwarmVMName)
 
 echo ----
 echo "$(tput setaf 6) Docker instances running $(tput sgr 0)"
