@@ -68,7 +68,7 @@ do
    curltestk=`(curl ${REMOTEHOST}:${REMOTEPORT})`
    echo $curltestk
    #searchString="result":" ok"
-   searchString="result": "ok" 
+   searchString="result" "ok" 
    case $curltestk in
     "$searchString") echo YES;;
     *"$searchString"*) echo SOMEWHERE;;
