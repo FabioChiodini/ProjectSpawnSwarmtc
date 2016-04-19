@@ -100,6 +100,8 @@ export ConsulDynDNSK=1
 export DynDNSK=XXXX2.ddns.net
 
 export etcdbrowserprovision=0
+
+export instidk=2
 ```
 
 Here are the details on how these variables are used:
@@ -131,6 +133,9 @@ Here are the details on how these variables are used:
 - **DynDNSK** contains the dyndns name used for the host where this code is launched (ie where the Consul instance will be executed if ConsulDynDNSK=1)
 
 - **etcdbrowserprovision** is a flag to determine if an etcd-browser containerized instance will be launched in GCE 
+
+- **instidk** is a string (that will be added as a prefix to all names of items created) to allow for multiple deployment of tc in the same AWS and GCE instances (avoiding duplicate names)  
+
 
 
 ![Alt text](/images/Cloud1.png "Cloud1")
