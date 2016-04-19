@@ -166,7 +166,7 @@ fi
 GCEVM_InstancesK=$j
 #bandaid
 if [ $2 -eq 0 ]; then GCEVM_InstancesK=$prevgcevms
-
+fi
 
 echo ""
 echo "$(tput setaf 2) Creating swarm Nodes on AWS $(tput sgr 0)"
@@ -221,7 +221,7 @@ done
 VM_InstancesK=$i
 #bandaid
 if [ $1 -eq 0 ]; then VM_InstancesK=$prevawsvms
-
+fi
 
 #Launches $instancesK Containers using SWARM
 #deploy more containers via Docker Swarm
