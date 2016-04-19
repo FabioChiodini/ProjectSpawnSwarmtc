@@ -149,9 +149,7 @@ if [ $GCEKProvision -eq 1 ]; then
   
   while [ $j -lt $prevgcevms ]
    do
-   #VMGCEnameK=env-crate-$j
-   #VMGCEnameK+="-"
-   #VMGCEnameK+=$instidk
+   
    VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-GCE-$i/name | jq '.node.value' | sed 's/.//;s/.$//')`
    echo ""
    echo "Destroying VM $VMKill "
