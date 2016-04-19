@@ -99,7 +99,7 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   #gcloud auth login
   gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small $instidk-etcd-browserk
+  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small $instidketcd-browserk
 
   #
   #Open port for etcd-browser on GCE
@@ -109,20 +109,20 @@ if [ $etcdbrowserprovision -eq 1 ]; then
 
   #Connects to remote VM
 
-  docker-machine env $instidk-etcd-browserk > /home/ec2-user/$instidk-etcd-browserk
-  . /home/ec2-user/$instidk-etcd-browserk
+  docker-machine env $instidketcd-browserk > /home/ec2-user/$instidketcd-browserk
+  . /home/ec2-user/$instidketcd-browserk
 
-  publicipetcdbrowser=$(docker-machine ip $instidk-etcd-browserk)
+  publicipetcdbrowser=$(docker-machine ip $instidketcd-browserk)
   
   #launches etcd-browser containerized
   docker run -d --name etcd-browserk -p 0.0.0.0:8000:8000 --env ETCD_HOST=$DynDNSK kiodo/etcd-browser:latest
   
   #Register etcd-browser in etcd
-  curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/name -XPUT -d value=$instidk-etcd-browserk
+  curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/name -XPUT -d value=$instidketcd-browserk
   curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/ip -XPUT -d value=$publicipetcdbrowser
   curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/port -XPUT -d value=8000
   echo ----
-  echo "$(tput setaf 6) $instidk-etcd-browser RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
+  echo "$(tput setaf 6) $instidketcd-browser RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
   echo "$(tput setaf 4) publicipetcdbrowser=$publicipetcdbrowser $(tput sgr 0)"
   echo ----
  fi
@@ -149,7 +149,7 @@ if [ $ConsulDynDNSK -eq 1 ]; then
 fi
 
 #register instance id in etcd
-curl -L http://127.0.0.1:4001/v2/keys/maininstance/instanceid -XPUT -d value=$instidk
+curl -L http://127.0.0.1:4001/v2/keys/maininstance/uniqueinstanceid -XPUT -d value=$instidk
 
 #register local ip and dns name in Consul
 curl -X PUT -d $fqnK http://$publicipCONSULK:8500/v1/kv/tc/maininstance/name
@@ -159,7 +159,7 @@ if [ $ConsulDynDNSK -eq 1 ]; then
 fi
 
 #register instance id in Consul
-curl -X PUT -d $instidk http://$publicipCONSULK:8500/v1/kv/tc/maininstance/instanceid
+curl -X PUT -d $instidk http://$publicipCONSULK:8500/v1/kv/tc/maininstance/uniqueinstanceid
 
 #Provisions Receiver instance in GCE or AWS
 if [ $GCEKProvision -eq 1 ]; then
@@ -173,7 +173,7 @@ if [ $GCEKProvision -eq 1 ]; then
   #gcloud auth login
   gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small $instidk-spawn-receiver
+  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small $instidkspawn-receiver
 
   #
   #Open port for Receiver on GCE
@@ -183,10 +183,10 @@ if [ $GCEKProvision -eq 1 ]; then
 
   #Connects to remote VM
 
-  docker-machine env $instidk-spawn-receiver > /home/ec2-user/$instidk-spawn-receiver
-  . /home/ec2-user/$instidk-spawn-receiver
+  docker-machine env $instidkspawn-receiver > /home/ec2-user/$instidkspawn-receiver
+  . /home/ec2-user/$instidkspawn-receiver
 
-  publicipspawnreceiver=$(docker-machine ip $instidk-spawn-receiver)
+  publicipspawnreceiver=$(docker-machine ip $instidkspawn-receiver)
   
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
 
@@ -203,7 +203,7 @@ else
 
 
   #Create Docker Receiver Instance in AWS
-  docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION $instidk-spawn-receiver
+  docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION $instidkspawn-receiver
 
   echo "$(tput setaf 2) Opening Ports for Receiver on AWS $(tput sgr 0)"
   #Opens Firewall Port for Receiver on AWS
@@ -211,10 +211,10 @@ else
 
   #Connects to remote VM
 
-  docker-machine env $instidk-spawn-receiver > /home/ec2-user/$instidk-spawn-receiver
-  . /home/ec2-user/$instidk-spawn-receiver
+  docker-machine env $instidkspawn-receiver > /home/ec2-user/$instidkspawn-receiver
+  . /home/ec2-user/$instidkspawn-receiver
 
-  publicipspawnreceiver=$(docker-machine ip $instidk-spawn-receiver)
+  publicipspawnreceiver=$(docker-machine ip $instidkspawn-receiver)
   
     #starts the Receiver dockerized
   docker run -d --name receiverK -p $ReceiverPortK:$ReceiverPortK $ReceiverImageK
@@ -232,12 +232,12 @@ echo "$(tput setaf 2) Registering Services in Consul and etcd  $(tput sgr 0)"
 echo ""
 
 #registers receiver in Consul
-  curl -X PUT -d $instidk-spawn-receiver http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/name
+  curl -X PUT -d $instidkspawn-receiver http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/name
   curl -X PUT -d $publicipspawnreceiver http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/ip
   curl -X PUT -d $ReceiverPortK http://$publicipCONSULK:8500/v1/kv/tc/spawn-receiver/port
 
 #Register Receiver in etcd
-curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/name -XPUT -d value=$instidk-spawn-receiver
+curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/name -XPUT -d value=$instidkspawn-receiver
 curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/ip -XPUT -d value=$publicipspawnreceiver
 curl -L http://127.0.0.1:4001/v2/keys/spawn-receiver/port -XPUT -d value=$ReceiverPortK
   
@@ -346,19 +346,19 @@ if [ $GCEKProvision -eq 1 ]; then
    echo ""
   
    #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-image ubuntu-1510-wily-v20151114 --swarm --swarm-discovery token://$SwarmTokenK SPAWN-GCE$j-K
-   docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small --swarm --swarm-discovery token://$SwarmTokenK $instidk-env-crate-$j
+   docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small --swarm --swarm-discovery token://$SwarmTokenK $instidkenv-crate-$j
    #Stores ip of the VM
-   docker-machine env $instidk-env-crate-$j > /home/ec2-user/$instidk-Docker$j
-   . /home/ec2-user/$instidk-Docker$j
+   docker-machine env $instidkenv-crate-$j > /home/ec2-user/$instidkDocker$j
+   . /home/ec2-user/$instidkDocker$j
   
-   publicipKGCE=$(docker-machine ip $instidk-env-crate-$j)
+   publicipKGCE=$(docker-machine ip $instidkenv-crate-$j)
    
    #registers Swarm Slave in Consul
-   curl -X PUT -d $instidk-env-crate-$j http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
-   curl -X PUT -d $publicipKGCE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
+   curl -X PUT -d $instidkenv-crate-$j http://$publicipCONSULK:8500/v1/kv/tc/DM-GCE-$j/name
+   curl -X PUT -d $publicipKGCE http://$publicipCONSULK:8500/v1/kv/tc/DM-GCE-$j/ip
    
    #Register Swarm slave in etcd
-   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name -XPUT -d value=$instidk-env-crate-$j
+   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name -XPUT -d value=$instidkenv-crate-$j
    curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip -XPUT -d value=$publicipKGCE
    
    echo ----
