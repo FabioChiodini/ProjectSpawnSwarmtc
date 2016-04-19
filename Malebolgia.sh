@@ -120,7 +120,7 @@ echo "$(tput setaf 6) Local Docker Containers still alive:$(tput sgr 0)"
 docker ps
 
 #Connects to Swarm Cluster
-eval $(docker-machine env --swarm swarm-master)
+eval $(docker-machine env --swarm $SwarmVMName)
 
 echo ----
 echo "$(tput setaf 6) Docker instances running $(tput sgr 0)"
