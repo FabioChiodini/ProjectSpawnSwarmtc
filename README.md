@@ -134,7 +134,7 @@ Here are the details on how these variables are used:
 
 - **etcdbrowserprovision** is a flag to determine if an etcd-browser containerized instance will be launched in GCE 
 
-- **instidk** is a string (that will be added as a prefix to all names of items created) to allow for multiple deployment of tc in the same AWS and GCE instances (avoiding duplicate names)  
+- **instidk** is a string (that will be added as a prefix to all names of items created) to allow for multiple deployment of tc in the same AWS and GCE instances (avoiding duplicate names)  (**use lowercase string due to GCE docker machine command line limitations**)
 
 
 
