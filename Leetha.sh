@@ -48,6 +48,10 @@ ReceiverNameK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/name | jq '.no
 publicipspawnreceiver=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/ip | jq '.node.value' | sed 's/.//;s/.$//')`
 ReceiverPortK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.node.value' | sed 's/.//;s/.$//')`
 
+#etcd
+$etcdbrowserkVMName=`(curl http://127.0.0.1:4001/v2/keys/etcd-browser/name | jq '.node.value' | sed 's/.//;s/.$//')`
+
+
 #Determines where to spawn
 
 #determines if it must spawn to GCE
@@ -126,24 +130,27 @@ if [ $GCEKProvision -eq 1 ]; then
    UUIDK=$(cat /proc/sys/kernel/random/uuid)
    # Makes sure the UUID is lowercase for GCE provisioning
    UUIDKL=${UUIDK,,}
+   VMGCEnameK=env-crate-$j
+   VMGCEnameK+="-"
+   VMGCEnameK+=$instidk
    echo ""
-   echo "Provisioning VM env-crate-$j "
+   echo "Provisioning VM $VMGCEnameK "
    echo ""
   
    #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-image ubuntu-1510-wily-v20151114 --swarm --swarm-discovery token://$SwarmTokenK SPAWN-GCE$j-K
-   docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small --swarm --swarm-discovery token://$SwarmTokenK env-crate-$j
+   docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small --swarm --swarm-discovery token://$SwarmTokenK $VMGCEnameK
    #Stores ip of the VM
-   docker-machine env env-crate-$j > /home/ec2-user/Docker$j
+   docker-machine env $VMGCEnameK > /home/ec2-user/Docker$j
    . /home/ec2-user/Docker$j
   
-   publicipKGCE=$(docker-machine ip env-crate-$j)
+   publicipKGCE=$(docker-machine ip $VMGCEnameK)
    
    #registers Swarm Slave in Consul
-   curl -X PUT -d env-crate-$j http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
+   curl -X PUT -d $VMGCEnameK http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/name
    curl -X PUT -d $publicipKGCE http://$publicipCONSULK:8500/v1/kv/tc/env-crate-$j/ip
    
    #Register Swarm slave in etcd
-   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name -XPUT -d value=env-crate-$j
+   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name -XPUT -d value=$VMGCEnameK
    curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip -XPUT -d value=$publicipKGCE
    
    echo ----
@@ -156,6 +163,9 @@ if [ $GCEKProvision -eq 1 ]; then
 fi
 #Writes total GCE VMs provisioned
 GCEVM_InstancesK=$j
+#bandaid
+if [ $2 -eq 0 ]; then GCEVM_InstancesK=$prevgcevms
+
 
 echo ""
 echo "$(tput setaf 2) Creating swarm Nodes on AWS $(tput sgr 0)"
@@ -174,25 +184,28 @@ p=0
 while [ $p -lt $VM_InstancesK ]
 do
     #echo "output: $i"
-        UUIDK=$(cat /proc/sys/kernel/random/uuid)
+    UUIDK=$(cat /proc/sys/kernel/random/uuid)
+    VMAWSnameK=SPAWN$i-$UUIDK
+    VMAWSnameK+="-"
+    VMAWSnameK+=$instidk
     #echo Provisioning VM SPAWN$i-$UUIDK
     echo ""
-    echo "$(tput setaf 1) Provisioning VM SPAWN$i-$UUIDK $(tput sgr 0)"
+    echo "$(tput setaf 1) Provisioning VM $VMAWSnameK $(tput sgr 0)"
     echo ""
-    docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION --swarm --swarm-discovery token://$SwarmTokenK SPAWN$i-$UUIDK
+    docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION --swarm --swarm-discovery token://$SwarmTokenK $VMAWSnameK
 
     #Stores ip of the VM
-    docker-machine env SPAWN$i-$UUIDK > /home/ec2-user/Docker$i
+    docker-machine env $VMAWSnameK > /home/ec2-user/Docker$i
     . /home/ec2-user/Docker$i
 
-    publicipK=$(docker-machine ip SPAWN$i-$UUIDK)
+    publicipK=$(docker-machine ip $VMAWSnameK)
     
     #registers Swarm Slave in Consul
-    curl -X PUT -d SPAWN$i-$UUIDK http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
+    curl -X PUT -d $VMAWSnameK http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/name
     curl -X PUT -d $publicipK http://$publicipCONSULK:8500/v1/kv/tc/SPAWN$i-$UUIDK/ip
     
     #Register Swarm slave in etcd
-    curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name -XPUT -d value=SPAWN$i-$UUIDK
+    curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name -XPUT -d value=$VMAWSnameK
     curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i/ip -XPUT -d value=$publicipK
     
     
@@ -205,6 +218,9 @@ do
 done
 #Writes total AWS VMs provisioned
 VM_InstancesK=$i
+#bandaid
+if [ $1 -eq 0 ]; then VM_InstancesK=$prevawsvms
+
 
 #Launches $instancesK Containers using SWARM
 #deploy more containers via Docker Swarm
