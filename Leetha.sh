@@ -132,7 +132,7 @@ if [ $GCEKProvision -eq 1 ]; then
    # Makes sure the UUID is lowercase for GCE provisioning
    UUIDKL=${UUIDK,,}
    VMGCEnameK=env-crate-$j
-   VMGCEnameK+="-"
+   #VMGCEnameK+="-"
    VMGCEnameK+=$instidk
    echo ""
    echo "Provisioning VM $VMGCEnameK "
