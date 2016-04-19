@@ -478,18 +478,6 @@ done
 echo ----
 echo "$(tput setaf 1) SWARM  RUNNING ON $publicipSWARMK $(tput sgr 0)"
 echo "$(tput setaf 1) Consul RUNNING ON $publicipCONSULK:8500 $(tput sgr 0)"
-echo ""
-echo "$(tput setaf 1) Run $(tput sgr 0)"
-echo ""
-echo "eval ``$``(docker-machine env --swarm $SwarmVMName) "
-echo "TO connect to the cluster "
-echo THEN run 
-echo "docker info" 
-echo TO check swarm status
-echo ----
-echo RUN 
-echo "docker ps"
-echo TO check which containers are running
 echo ----
 echo "$(tput setaf 1) Check swarm token on https://discovery.hub.docker.com/v1/clusters/$SwarmTokenK $(tput sgr 0)"
 echo ----
@@ -520,9 +508,10 @@ if [ $etcdbrowserprovision -eq 1 ]; then
 fi
 echo ""
 echo "$(tput setaf 6) Swarm VM Name $(tput sgr 0)"
-echo "$(tput setaf 6) $SwarmVMName $(tput sgr 0)"
+echo " $SwarmVMName "
 echo ""
 echo "eval ``$``(docker-machine env --swarm $SwarmVMName) "
+echo ""
 echo "******************************************"
 
 
