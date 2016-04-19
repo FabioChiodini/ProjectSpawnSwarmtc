@@ -127,7 +127,7 @@ echo ""
 #Writes the final total setup in etcd for further scaling
 curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=0
 
-#writes the sme in Consul
+#writes the same info in Consul
 curl -X PUT -d '0' http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots
 
 #Destroys N-x GCE VMs
@@ -150,7 +150,7 @@ if [ $GCEKProvision -eq 1 ]; then
   while [ $j -lt $prevgcevms ]
    do
    
-   VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-GCE-$i/name | jq '.node.value' | sed 's/.//;s/.$//')`
+   VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name | jq '.node.value' | sed 's/.//;s/.$//')`
    echo ""
    echo "Destroying VM $VMKill "
    echo ""
