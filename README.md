@@ -31,13 +31,13 @@ To run this script you have to prepare two configuration files (in /home/ec2-use
 
 This script creates (leveraging Docker-Machine):
 
-- one VM in AWS with Consul in Docker (used also to prepare docker Discovery). There is an option to run this locally containerized (**remember to open port 8500 if you run this locally**)
+- one VM in AWS with Consul in a Docker container  (used also to prepare docker Discovery). There is an option to run this instance  locally containerized (**remember to open port 8500 if you run this locally**)
 
 - One VM on GCE (g1-small VM type) hosting the receiver application in a container
 
-- One local etcd instance containerized to store local variables (the etcd is not reachable from outside networks)
+- One local etcd instance containerized to store deployment variables <-> Service Discovery (the etcd is not reachable from outside networks if you do not open port 4001 in your relevant AWS security group)
 
-- One VM in AWS hosting the Docker swarm in a Docker container
+- One VM in AWS hosting the Docker swarm main instance in a Docker container
 
 - A number of VMs in AWS (specified in the variable export VM_InstancesK) as "slaves" that will host honeypots containers. These are t2.micro VM types
 
@@ -45,7 +45,7 @@ This script creates (leveraging Docker-Machine):
 
 - [Optional] One VM on GCE (g1-small VM type) hosting an etcd browser GUI (to display the data stored in etcd). **Remember to open port 4001 locally (ie on main VM) if you want to be able to access etcd data**
 
-- [in the code there are commented lines to deploy a dockerized nginx via DockerSwarm and opening the relevant port]  
+- [in the code there are commented lines to deploy (along with honeypots) a dockerized nginx via DockerSwarm and opening the relevant port]  
 
 
 It then starts many Docker Containers (honeypots) via Docker Swarm (the number of instances is specified in the variable InstancesK in the main configuration file)
