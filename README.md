@@ -286,7 +286,7 @@ After getting the setup details from etcd it tests if the ports are open for the
 
 The results of the tests are written in etcd:
 
-
+![Alt text](/images/CICD.png "CICD")
 
 Running these tests multiple times updates the test flags value in etcd.
 
