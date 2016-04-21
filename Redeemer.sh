@@ -166,8 +166,10 @@ if [ $GCEKProvision -eq 1 ]; then
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/TEST
-   DirDeleteK=DM-GCE-$j
-   curl 'http://127.0.0.1:4001/v2/keys/$DirDeleteK?dir=true' -XDELETE
+   curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/SYNTHETICTEST
+   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j\?recursive\=true
+   #DirDeleteK=DM-GCE-$j
+   #curl 'http://127.0.0.1:4001/v2/keys/$DirDeleteK?dir=true' -XDELETE
    #curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j
    
    echo ----
@@ -225,7 +227,9 @@ do
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/name
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/ip
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/TEST
-    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i
+    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/SYNTHETICTEST
+    curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i\?recursive\=true
+    #curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i
     
     #Increments counter for total AWS VMs
     true $(( i++ ))
@@ -292,7 +296,7 @@ echo "$(tput setaf 6) Honeypots = $Container_InstancesK $(tput sgr 0)"
 #Outputs results
 echo ----
 echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
-echo TBD
+echo ----
 echo ----
 docker run swarm list token://$SwarmTokenK
 echo ----
@@ -306,6 +310,7 @@ echo ----
 echo "$(tput setaf 6) Docker instances running $(tput sgr 0)"
 docker ps
 echo ""
+echo "$(tput setaf 6) Check etcd-browser RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
 echo ""
 echo "eval ``$``(docker-machine env --swarm $SwarmVMName) "
 echo ""
