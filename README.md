@@ -256,9 +256,10 @@ It reads configuration information from the etcd local instances (to connect to 
 
 It then destroys:
 - Docker machine VMs provisioned (by doing so kills all honeypot instances)
-- Infrastructure Components (Docker Swarm, Receiver and Consul)
-- it then destroys local Docker instances (etcd and eventually Consul if local)
-- 
+- Infrastructure Components (Docker Swarm, Receiver, etcd-browser and Consul)
+- Local Docker instances (etcd and eventually Consul if local)
+
+
 
 ###How to launch
 
