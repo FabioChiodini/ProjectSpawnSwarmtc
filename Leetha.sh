@@ -289,5 +289,8 @@ docker run swarm list token://$SwarmTokenK
 echo ----
 docker-machine ls
 echo ----
+echo ""
+echo "eval ``$``(docker-machine env --swarm $SwarmVMName) "
+echo ""
 echo "******************************************"
 
