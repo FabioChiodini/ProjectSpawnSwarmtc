@@ -256,12 +256,18 @@ curl -X PUT -d $GCEVM_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/gcevms
 curl -X PUT -d $Container_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/totalhoneypots
 curl -X PUT -d $HoneypotPortK http://$publicipCONSULK:8500/v1/kv/tc/HoneypotPort
 
+
 #Register the tasks for this run in etcd
 curl -L http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
 curl -L http://127.0.0.1:4001/v2/keys/gcevms -XPUT -d value=$GCEVM_InstancesK
 curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=$Container_InstancesK
 curl -L http://127.0.0.1:4001/v2/keys/HoneypotPort -XPUT -d value=$HoneypotPortK
 
+#Adds total VM instances
+#a=`expr "$a" + "$num"`
+TotalVMInstancesK=`expr "$GCEVM_InstancesK" + "$VM_InstancesK"`
+curl -L http://127.0.0.1:4001/v2/keys/totalvms -XPUT -d value=$TotalVMInstancesK
+curl -X PUT -d $TotalVMInstancesK http://$publicipCONSULK:8500/v1/kv/tc/totalvms
 
 #Jonas Style Launch Swarm
 
@@ -436,9 +442,6 @@ do
 done
 
 
-
-
-
 #Launches $instancesK Containers using SWARM
 
 echo ""
@@ -492,7 +495,7 @@ echo "$(</home/ec2-user/KProvisionedK )"
 echo "$publicipSWARMK"
 echo "$(tput setaf 6) Port $HoneypotPortK $(tput sgr 0)"
 echo ----
-echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
+echo "$(tput setaf 6) Docker Machine ( $TotalVMInstancesK ) provisioned List (includes $SwarmVMName )  : $(tput sgr 0)"
 echo TBD
 echo ----
 docker run swarm list token://$SwarmTokenK
