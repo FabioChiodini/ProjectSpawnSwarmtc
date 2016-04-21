@@ -167,10 +167,9 @@ if [ $GCEKProvision -eq 1 ]; then
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/ip
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/TEST
    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j/SYNTHETICTEST
-   curl -L http://127.0.0.1:4001/v2/keys/DM-GCE-$j\?recursive\=true
-   #DirDeleteK=DM-GCE-$j
-   #curl 'http://127.0.0.1:4001/v2/keys/$DirDeleteK?dir=true' -XDELETE
-   #curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j
+   #deletes entire Key
+   curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-GCE-$j\?recursive\=true
+   
    
    echo ----
    echo "$(tput setaf 1) Machine $VMKill in GCE removed from SWARM $(tput sgr 0)"
@@ -228,8 +227,9 @@ do
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/ip
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/TEST
     curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i/SYNTHETICTEST
-    curl -L http://127.0.0.1:4001/v2/keys/DM-AWS-$i\?recursive\=true
-    #curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i
+    #deletes entire Key
+    curl -L -X DELETE http://127.0.0.1:4001/v2/keys/DM-AWS-$i\?recursive\=true
+    
     
     #Increments counter for total AWS VMs
     true $(( i++ ))
