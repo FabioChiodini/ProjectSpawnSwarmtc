@@ -255,6 +255,13 @@ done
 #Writes total Honeypots provisioned
 Container_InstancesK=$i
 
+#Adds total VM instances
+#a=`expr "$a" + "$num"`
+TotalVMInstancesK=`expr "$GCEVM_InstancesK" + "$VM_InstancesK"`
+curl -L http://127.0.0.1:4001/v2/keys/totalvms -XPUT -d value=$TotalVMInstancesK
+curl -X PUT -d $TotalVMInstancesK http://$publicipCONSULK:8500/v1/kv/tc/totalvms
+
+
 #Writes the final total setup in etcd for further scaling
 
 curl -L http://127.0.0.1:4001/v2/keys/awsvms -XPUT -d value=$VM_InstancesK
@@ -278,7 +285,7 @@ echo "$(tput setaf 6) Honeypots = $Container_InstancesK $(tput sgr 0)"
 
 
 echo ----
-echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
+echo "$(tput setaf 6) Docker Machine provisioned ( $TotalVMInstancesK ) List (includes $SwarmVMName) : $(tput sgr 0)"
 echo ----
 docker run swarm list token://$SwarmTokenK
 echo ----
