@@ -495,7 +495,7 @@ echo "$(</home/ec2-user/KProvisionedK )"
 echo "$publicipSWARMK"
 echo "$(tput setaf 6) Port $HoneypotPortK $(tput sgr 0)"
 echo ----
-echo "$(tput setaf 6) Docker Machine ( $TotalVMInstancesK ) provisioned List (includes $SwarmVMName )  : $(tput sgr 0)"
+echo "$(tput setaf 6) Docker Machine ( $TotalVMInstancesK ) provisioned List (includes $SwarmVMName $publicipSWARMK )  : $(tput sgr 0)"
 echo TBD
 echo ----
 docker run swarm list token://$SwarmTokenK
