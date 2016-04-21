@@ -53,7 +53,7 @@ j=0
 while [ $j -lt $prevgcevms ]
 do
    #Reads VM Name from etcd
-   VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-GCE-$i/name | jq '.node.value' | sed 's/.//;s/.$//')`
+   VMKill=`(curl http://127.0.0.1:4001/v2/keys/DM-GCE-$j/name | jq '.node.value' | sed 's/.//;s/.$//')`
    echo ""
    echo "Destroying VM $VMKill "
    echo ""
