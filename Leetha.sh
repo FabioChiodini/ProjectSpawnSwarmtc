@@ -132,7 +132,7 @@ if [ $GCEKProvision -eq 1 ]; then
    # Makes sure the UUID is lowercase for GCE provisioning
    UUIDKL=${UUIDK,,}
    VMGCEnameK=env-crate-$j
-   #VMGCEnameK+="-"
+   #VMGCEnameK+="-" #Not used as GCE does not like it
    VMGCEnameK+=$instidk
    echo ""
    echo "Provisioning VM $VMGCEnameK "
@@ -245,8 +245,7 @@ do
     echo Provisioning Container $i
     
     #Launches Honeypots
-    #docker run -d --name honeypot-$i -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK
-    docker run -d --name honeypot-$i -e LOG_HOST=$publicipspawnreceiver -e LOG_PORT=$ReceiverPortK -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK 
+        docker run -d --name honeypot-$i -e LOG_HOST=$publicipspawnreceiver -e LOG_PORT=$ReceiverPortK -p $HoneypotPortK:$HoneypotPortK $HoneypotImageK 
     #launches nginx (optional)
     #docker run -d --name www-$i -p $AppPortK:$AppPortK nginx
     #Increments counter for honeypots
@@ -277,13 +276,9 @@ echo "$(tput setaf 6) AWS VMs = $VM_InstancesK $(tput sgr 0)"
 echo "$(tput setaf 6) GCE VMs = $GCEVM_InstancesK $(tput sgr 0)"
 echo "$(tput setaf 6) Honeypots = $Container_InstancesK $(tput sgr 0)"
 
-#Del this
-#echo "checking etcd"
-#prevawsvms=`(curl http://127.0.0.1:4001/v2/keys/awsvms | jq '.node.value' | sed 's/.//;s/.$//')`
-#echo $prevawsvms
 
+echo ----
 echo "$(tput setaf 6) Docker Machine provisioned List: $(tput sgr 0)"
-#echo "$(/home/ec2-user/DMListK)"
 echo ----
 docker run swarm list token://$SwarmTokenK
 echo ----
