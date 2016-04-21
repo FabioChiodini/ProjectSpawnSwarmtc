@@ -134,7 +134,7 @@ Here are the details on how these variables are used:
 
 - **etcdbrowserprovision** is a flag to determine if an etcd-browser containerized instance will be launched in GCE 
 
-- **instidk** is a string (that will be added as a prefix to all names of items created) to allow for multiple deployment of tc in the same AWS and GCE instances (avoiding duplicate names)  (**use lowercase string due to GCE docker machine command line limitations**)
+- **instidk** is a string (that will be added as a prefix to all names of items created) to allow for multiple deployment of tc in the same AWS and GCE instances (avoiding duplicate names)  (**you MUST use lowercase string due to GCE docker machine command line limitations**)
 
 
 
@@ -276,7 +276,7 @@ The code tests these components:
 - Receiver Instance
 - Consul
 
-After getting the setup details from etcd it tests if the ports are open for the components listed and basically test the application.
+After getting the setup details from etcd it tests if the ports are open for the components listed and basically test the Honeypots application (parsing a curl output).
 
 ###How to launch:
 
@@ -290,7 +290,7 @@ The results of the tests are written in etcd:
 
 Running these tests multiple times updates the test flags value in etcd.
 
-Still TBI
+
 
 # Minimal Launch Instructions
 
