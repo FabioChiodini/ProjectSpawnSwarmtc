@@ -282,6 +282,12 @@ curl -X PUT -d $Container_InstancesK http://$publicipCONSULK:8500/v1/kv/tc/total
 #Register the tasks for this run in etcd
 curl -L http://127.0.0.1:4001/v2/keys/totalhoneypots -XPUT -d value=$Container_InstancesK
 
+#Totals provisioned
+echo ""
+echo "$(tput setaf 6) Total provisioned $(tput sgr 0)"
+echo "$(tput setaf 6) AWS VMs = $VM_InstancesK $(tput sgr 0)"
+echo "$(tput setaf 6) GCE VMs = $GCEVM_InstancesK $(tput sgr 0)"
+echo "$(tput setaf 6) Honeypots = $Container_InstancesK $(tput sgr 0)"
 
 #Outputs results
 echo ----
@@ -300,4 +306,6 @@ echo ----
 echo "$(tput setaf 6) Docker instances running $(tput sgr 0)"
 docker ps
 echo ""
-
+echo ""
+echo "eval ``$``(docker-machine env --swarm $SwarmVMName) "
+echo ""
