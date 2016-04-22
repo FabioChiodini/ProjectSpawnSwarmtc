@@ -91,25 +91,27 @@ echo ""
 docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 --name etcdk quay.io/coreos/etcd -name etcd0 -advertise-client-urls http://${HostIP}:2379,http://${HostIP}:4001 -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 -initial-advertise-peer-urls http://${HostIP}:2380 -listen-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster-1 -initial-cluster etcd0=http://${HostIP}:2380 -initial-cluster-state new
 
 if [ $etcdbrowserprovision -eq 1 ]; then
-  echo ""
-  echo "$(tput setaf 2) Creating a etcd-browser instance in GCE $(tput sgr 0)"
-  echo ""
-
+  #echo ""
+  #echo "$(tput setaf 2) Creating a etcd-browser instance in GCE $(tput sgr 0)"
+  #echo ""
   #Create Docker etcdbrowser Instance in GCE
   #gcloud auth login
-  gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
-  
+  #gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
   #
   #Open port for etcd-browser on GCE
-  gcloud compute firewall-rules create etcd-browserk --allow tcp:8000 --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
+  #gcloud compute firewall-rules create etcd-browserk --allow tcp:8000 --source-ranges 0.0.0.0/0 --target-tags docker-machine --project $K2_GOOGLE_PROJECT
+  #creates name
+  #etcdbrowserkVMName=etcd-browserk$instidk
+  #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small $etcdbrowserkVMName
 
   #creates name
   etcdbrowserkVMName=etcd-browserk$instidk
-  
-  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small $etcdbrowserkVMName
+  #Create Docker Receiver Instance in AWS
+  docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION $etcdbrowserkVMName
 
-  
-  #gcloud compute firewall-rules list docker-machine
+  echo "$(tput setaf 2) Opening Ports for etcd-browser on AWS $(tput sgr 0)"
+  #Opens Firewall Port for Receiver on AWS
+  aws ec2 authorize-security-group-ingress --group-name docker-machine --protocol tcp --port 8000 --cidr 0.0.0.0/0
 
   #Connects to remote VM
 
@@ -137,7 +139,7 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   echo "$(tput setaf 6) $etcdbrowserkVMName RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
   echo "$(tput setaf 4) publicipetcdbrowser=$publicipetcdbrowser $(tput sgr 0)"
   echo ----
- fi
+fi
  
 #Register Consul in etcd
 if [ $ConsulDynDNSK -eq 0 ]; then
