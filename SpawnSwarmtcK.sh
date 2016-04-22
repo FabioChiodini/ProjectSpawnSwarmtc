@@ -177,6 +177,9 @@ curl -X PUT -d $instidk http://$publicipCONSULK:8500/v1/kv/tc/maininstance/uniqu
 #provisions External Receiver if ExternalReceiverK =0
 if [ $ExternalReceiverK -eq 0 ]; then 
  #Provisions a receiver on GCE or AWS depending on flags
+ echo ""
+ echo "$(tput setaf 2) Launching a Receiver Instance $(tput sgr 0)"
+ echo ""
  if [ $GCEKProvision -eq 1 ]; then
 
   echo ""
@@ -246,10 +249,16 @@ if [ $ExternalReceiverK -eq 0 ]; then
 else
  #using Extenal Receiver
  #Sets parameter for external receiver
+ echo ""
+ echo "$(tput setaf 2) using an EXTERNAL a Receiver Instance $(tput sgr 0)"
+ echo ""
  ReceiverNameK=$ExternalReceiverNameK
  publicipspawnreceiver=$ExternalReceiverIpK
  ReceiverPortK=$ExternalReceiverPortK
- 
+ echo ----
+ echo "$(tput setaf 2) EXTERNAL Receiver RUNNING ON $publicipspawnreceiver  Port $ReceiverPortK ON AWS $(tput sgr 0)"
+ echo publicipspawnreceiver=$publicipspawnreceiver
+ echo ----
 fi
 
 echo ""
