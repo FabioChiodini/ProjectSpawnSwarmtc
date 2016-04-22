@@ -174,13 +174,16 @@ fi
 curl -X PUT -d $instidk http://$publicipCONSULK:8500/v1/kv/tc/maininstance/uniqueinstanceid
 
 #Provisions Receiver instance in GCE or AWS
-if [ $GCEKProvision -eq 1 ]; then
+#provisions External Receiver if ExternalReceiverK =0
+if [ $ExternalReceiverK -eq 0 ]; then 
+ #Provisions a receiver on GCE or AWS depending on flags
+ if [ $GCEKProvision -eq 1 ]; then
 
   echo ""
   echo "$(tput setaf 2) Launching a Receiver Instance in GCE $(tput sgr 0)"
   echo ""
   #creates name
-  ReceiverNameK=spawn-receiver$instidk
+  ReceiverNameK=spawn-receiverGCE$instidk
 
   #Create Docker Receiver Instance in GCE
   #gcloud auth login
@@ -208,14 +211,14 @@ if [ $GCEKProvision -eq 1 ]; then
   echo publicipspawnreceiver=$publicipspawnreceiver
   echo ----
 
-else
+ else
 	
   echo ""
   echo "$(tput setaf 2) Launching a Receiver Instance in AWS $(tput sgr 0)"
   echo ""
   
   #creates name
-  ReceiverNameK=spawn-receiver$instidk
+  ReceiverNameK=spawn-receiverAWS$instidk
 
   #Create Docker Receiver Instance in AWS
   docker-machine create --driver amazonec2 --amazonec2-access-key $K1_AWS_ACCESS_KEY --amazonec2-secret-key $K1_AWS_SECRET_KEY --amazonec2-vpc-id  $K1_AWS_VPC_ID --amazonec2-zone $K1_AWS_ZONE --amazonec2-region $K1_AWS_DEFAULT_REGION $ReceiverNameK
@@ -239,8 +242,15 @@ else
   echo publicipspawnreceiver=$publicipspawnreceiver
   echo ----
 
+ fi
+else
+ #using Extenal Receiver
+ #Sets parameter for external receiver
+ ReceiverNameK=$ExternalReceiverNameK
+ publicipspawnreceiver=$ExternalReceiverIpK
+ ReceiverPortK=$ExternalReceiverPortK
+ 
 fi
-
 
 echo ""
 echo "$(tput setaf 2) Registering Services in Consul and etcd  $(tput sgr 0)"
