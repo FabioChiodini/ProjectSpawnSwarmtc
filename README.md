@@ -91,6 +91,11 @@ export GOOGLE_APPLICATION_CREDENTIALS="/home/ec2-user/GCEkeyfile.json"
 
 export AppPortK=80
 
+export ExternalReceiverK=0
+export ExternalReceiverNameK=Brian
+export ExternalReceiverIpK=54.186.230.14
+export ExternalReceiverPortK=5000
+
 export ReceiverPortK=61116
 export ReceiverImageK=kiodo/receiver:latest
 export HoneypotPortK=8080
@@ -123,6 +128,8 @@ Here are the details on how these variables are used:
 - **GOOGLE_APPLICATION_CREDENTIALS** maps to a file containing the Service account keys for your GCE login
 
 - [**AppPortK** is the port that is opened for (optional/code commented out) dockerized nginx instances launched via docker swarm]
+
+- **ExternalReceiverK** if set to 1 inhibts the provisioning of a receiver and uses an external one with ip and port as specified in the **ExternalReceiverIpK** and **ExternalReceiverPortK** variables
 
 - **ReceiverPortK** and **ReceiverImageK** are the port used and the docker image for the receiver Application
 
