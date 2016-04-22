@@ -125,6 +125,14 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/name -XPUT -d value=$etcdbrowserkVMName
   curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/ip -XPUT -d value=$publicipetcdbrowser
   curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/port -XPUT -d value=8000
+  curl -L http://127.0.0.1:4001/v2/keys/etcd-browser/address -XPUT -d value=$publicipetcdbrowser:8000
+  
+  #Register etcd-browser in Consul
+  curl -X PUT -d $etcdbrowserkVMName http://$publicipCONSULK:8500/v1/kv/tc/etcd-browser/name
+  curl -X PUT -d $publicipetcdbrowser http://$publicipCONSULK:8500/v1/kv/tc/etcd-browser/ip
+  curl -X PUT -d 8000 http://$publicipCONSULK:8500/v1/kv/tc/etcd-browser/port
+  curl -X PUT -d $publicipetcdbrowser:8000 http://$publicipCONSULK:8500/v1/kv/tc/etcd-browser/address
+  
   echo ----
   echo "$(tput setaf 6) $etcdbrowserkVMName RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
   echo "$(tput setaf 4) publicipetcdbrowser=$publicipetcdbrowser $(tput sgr 0)"
