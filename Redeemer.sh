@@ -302,7 +302,7 @@ echo "$(tput setaf 6) Honeypots = $Container_InstancesK $(tput sgr 0)"
 
 #Outputs results
 echo ----
-echo "$(tput setaf 6) Docker Machine ( $TotalVMInstancesK ) provisioned List (includes $SwarmVMName $publicipSWARMK ): $(tput sgr 0)"
+echo "$(tput setaf 6) Docker Machine ( $TotalVMInstancesK De-provisioned) provisioned List (includes $SwarmVMName $publicipSWARMK ): $(tput sgr 0)"
 echo ----
 echo ----
 docker run swarm list token://$SwarmTokenK
