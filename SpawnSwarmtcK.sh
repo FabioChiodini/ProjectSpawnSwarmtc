@@ -186,7 +186,7 @@ if [ $ExternalReceiverK -eq 0 ]; then
   echo "$(tput setaf 2) Launching a Receiver Instance in GCE $(tput sgr 0)"
   echo ""
   #creates name
-  ReceiverNameK=spawn-receiverGCE$instidk
+  ReceiverNameK=spawn-receivergce$instidk
 
   #Create Docker Receiver Instance in GCE
   #gcloud auth login
