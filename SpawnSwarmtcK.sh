@@ -339,6 +339,9 @@ curl -X PUT -d $SwarmTokenK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/t
 StringTokenK="https://discovery.hub.docker.com/v1/clusters/$SwarmTokenK"
 curl -X PUT -d $StringTokenK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/address
 StringEvalK="eval ``$``(docker-machine env --swarm $SwarmVMName)"
+echo ""
+echo "$(tput setaf 2) String Connect $StringEvalK $(tput sgr 0)"
+echo ""
 curl -X PUT -d $StringEvalK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/connect
 
 #Register swarm-master in etcd
