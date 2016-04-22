@@ -343,7 +343,9 @@ curl -X PUT -d '8333' http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/port
 curl -X PUT -d $SwarmTokenK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/token
 StringTokenK="https://discovery.hub.docker.com/v1/clusters/$SwarmTokenK"
 curl -X PUT -d $StringTokenK http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/address
-StringEvalK="eval ``$``(docker-machine env --swarm $SwarmVMName)"
+#Builds connection string
+StringEvalK="eval ``$``(docker-machine env ``--``swarm"
+StringEvalK+=" $SwarmVMName)"
 echo ""
 echo "$(tput setaf 2) String Connect $StringEvalK $(tput sgr 0)"
 echo ""
