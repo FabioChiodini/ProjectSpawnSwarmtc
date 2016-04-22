@@ -104,6 +104,9 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   #etcdbrowserkVMName=etcd-browserk$instidk
   #docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small $etcdbrowserkVMName
 
+  echo ""
+  echo "$(tput setaf 2) Creating a etcd-browser instance in AWS $(tput sgr 0)"
+  echo ""
   #creates name
   etcdbrowserkVMName=etcd-browserk$instidk
   #Create Docker Receiver Instance in AWS
