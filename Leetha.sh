@@ -51,7 +51,7 @@ ReceiverPortK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.no
 
 #etcd
 etcdbrowserkVMName=`(curl http://127.0.0.1:4001/v2/keys/etcd-browser/name | jq '.node.value' | sed 's/.//;s/.$//')`
-
+publicipetcdbrowser=`(curl http://127.0.0.1:4001/v2/keys/etcd-browser/address | jq '.node.value' | sed 's/.//;s/.$//')`
 
 #Determines where to spawn
 
@@ -291,6 +291,9 @@ docker run swarm list token://$SwarmTokenK
 echo ----
 docker-machine ls
 echo ----
+echo ""
+echo "$(tput setaf 6) Check etcd-browser RUNNING ON $publicipetcdbrowser:8000 $(tput sgr 0)"
+echo ""
 echo ""
 echo "eval ``$``(docker-machine env --swarm $SwarmVMName) "
 echo ""
