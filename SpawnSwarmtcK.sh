@@ -553,6 +553,7 @@ if [ $etcdbrowserprovision -eq 1 ]; then
   echo ""
 fi
 echo ""
+echo "$(tput setaf 6) EMCWorld Demo!!! $(tput sgr 0)"
 echo "$(tput setaf 6) Swarm VM Name $(tput sgr 0)"
 echo " $SwarmVMName "
 echo ""
