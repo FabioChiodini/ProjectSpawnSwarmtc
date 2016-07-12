@@ -378,7 +378,7 @@ StringEvalK+=" $SwarmVMName)"
 echo ""
 echo "$(tput setaf 2) String Connect $StringEvalK $(tput sgr 0)"
 echo ""
-curl -X PUT -d "$StringEvalK" http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/connect
+curl -X PUT --data-binary "$StringEvalK"  http://$publicipCONSULK:8500/v1/kv/tc/swarm-master/connect
 
 #Register swarm-master in etcd
 curl -L http://127.0.0.1:4001/v2/keys/swarm-master/name -XPUT -d value=$SwarmVMName
