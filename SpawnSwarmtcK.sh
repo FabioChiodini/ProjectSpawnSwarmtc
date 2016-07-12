@@ -303,6 +303,18 @@ curl -X PUT -d $TotalVMInstancesK http://$publicipCONSULK:8500/v1/kv/tc/totalvms
 
 #Jonas Style Launch Swarm
 
+#AASCI ART
+echo ""
+echo "  _______          __     _____  __  __ "
+echo " / ____\ \        / /\   |  __ \|  \/  |"
+echo "| (___  \ \  /\  / /  \  | |__) | \  / |"
+echo " \___ \  \ \/  \/ / /\ \ |  _  /| |\/| |"
+echo " ____) |  \  /\  / ____ \| | \ \| |  | |"
+echo "|_____/    \/  \/_/    \_\_|  \_\_|  |_|"
+echo ""      
+
+
+
 echo ""
 echo "$(tput setaf 2) Creating Docker Swarm VM$(tput sgr 0)"
 echo ""
