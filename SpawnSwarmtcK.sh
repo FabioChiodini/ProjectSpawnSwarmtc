@@ -178,6 +178,16 @@ fi
 #register instance id in Consul
 curl -X PUT -d $instidk http://$publicipCONSULK:8500/v1/kv/tc/maininstance/uniqueinstanceid
 
+
+echo ""
+echo "  _____  ______ _____ ______ _______      ________ _____  "
+echo " |  __ \|  ____/ ____|  ____|_   _\ \    / /  ____|  __ \ "
+echo " | |__) | |__ | |    | |__    | |  \ \  / /| |__  | |__) |"
+echo " |  _  /|  __|| |    |  __|   | |   \ \/ / |  __| |  _  / "
+echo " | | \ \| |___| |____| |____ _| |_   \  /  | |____| | \ \ "
+echo " |_|  \_\______\_____|______|_____|   \/   |______|_|  \_\"
+echo ""
+
 #Provisions Receiver instance in GCE or AWS
 #provisions External Receiver if ExternalReceiverK =0
 if [ $ExternalReceiverK -eq 0 ]; then 
