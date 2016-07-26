@@ -1,1 +1,42 @@
-TBD
+export K1_AWS_ACCESS_KEY=AKXXXXXX
+
+export K1_AWS_SECRET_KEY=LXXXXXXXXXX
+
+export K1_AWS_VPC_ID=vpc-XXXXXX
+
+export K1_AWS_ZONE=b
+
+export K1_AWS_DEFAULT_REGION=us-east-1
+
+export AWS_DEFAULT_REGION=us-east-1
+
+export VM_InstancesK=2
+export Container_InstancesK=3
+
+export GCEKProvision=1
+
+export GCEVM_InstancesK=1
+
+
+export K2_GOOGLE_AUTH_EMAIL=XXXXX@developer.gserviceaccount.com
+export K2_GOOGLE_PROJECT=XXXXXX
+export GOOGLE_APPLICATION_CREDENTIALS="/home/ec2-user/GCEkeyfile.json"
+
+export AppPortK=80
+
+export ExternalReceiverK=0
+export ExternalReceiverNameK=Brian
+export ExternalReceiverIpK=54.186.230.14
+export ExternalReceiverPortK=5000
+
+export ReceiverPortK=61116
+export ReceiverImageK=kiodo/receiver:latest
+export HoneypotPortK=8080
+export HoneypotImageK=kiodo/honeypot:latest
+
+export ConsulDynDNSK=1
+export DynDNSK=XXXX2.ddns.net
+
+export etcdbrowserprovision=0
+
+export instidk=2
