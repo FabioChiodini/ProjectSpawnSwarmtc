@@ -322,6 +322,8 @@ Following are high level notes on how to get this running quickly:
 
 - Populate /home/ec2-user/GCE JSON (if using GCE)
 
+- Validate GCE account [ gcloud auth activate-service-account --key-file /home/ec2-user/GCEkeyfile.json ]
+
 - git clone this code : https://github.com/FabioChiodini/ProjectSpawnSwarmtc.git
 
 - Launch script
