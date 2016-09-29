@@ -30,8 +30,14 @@ publicipspawnreceiver=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/ip | j
 ReceiverPortK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/port | jq '.node.value' | sed 's/.//;s/.$//')`
 
 
-
-
+echo " "
+echo "   _____ _____ "
+echo " / ____|_   _| "
+echo " | |      | |  "
+echo " | |      | |  "
+echo " | |____ _| |_ "
+echo "  \_____|_____|"
+echo " "
 
 #Tests Honeypots
 #remember that honeypots could also live on swarm-master
