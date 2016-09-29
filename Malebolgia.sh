@@ -44,6 +44,16 @@ ReceiverNameK=`(curl http://127.0.0.1:4001/v2/keys/spawn-receiver/name | jq '.no
 #etcd
 etcdbrowserkVMName=`(curl http://127.0.0.1:4001/v2/keys/etcd-browser/name | jq '.node.value' | sed 's/.//;s/.$//')`
 
+
+echo " "
+echo "  _______ ______          _____    _____   ______          ___   _ "
+echo " |__   __|  ____|   /\   |  __ \  |  __ \ / __ \ \        / / \ | |"
+echo "    | |  | |__     /  \  | |__) | | |  | | |  | \ \  /\  / /|  \| |"
+echo "    | |  |  __|   / /\ \ |  _  /  | |  | | |  | |\ \/  \/ / | . ` |"
+echo "    | |  | |____ / ____ \| | \ \  | |__| | |__| | \  /\  /  | |\  |"
+echo "    |_|  |______/_/    \_\_|  \_\ |_____/ \____/   \/  \/   |_| \_|"
+echo " "
+
 #Kill Docker Machines
 echo ""
 echo "$(tput setaf 1)Destroying GCE VMs ( $prevgcevms ) $(tput sgr 0)"
