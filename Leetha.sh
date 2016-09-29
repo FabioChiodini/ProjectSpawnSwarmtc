@@ -78,7 +78,17 @@ echo "$(tput setaf 2) Scaling up $Container_InstancesK Container Instances $(tpu
 
 #Sets variables for launching honeypots that will connect to the receiver
 
-
+echo " "
+echo "   _____  _____          _      ______   _    _ _____  "
+echo "  / ____|/ ____|   /\   | |    |  ____| | |  | |  __ \ "
+echo " | (___ | |       /  \  | |    | |__    | |  | | |__) |"
+echo "  \___ \| |      / /\ \ | |    |  __|   | |  | |  ___/ "
+echo "  ____) | |____ / ____ \| |____| |____  | |__| | |     "
+echo " |_____/ \_____/_/    \_\______|______|  \____/|_| "
+echo " "
+   
+                                                       
+                                                     
 
 
 
