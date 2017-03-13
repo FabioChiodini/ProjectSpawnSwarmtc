@@ -275,7 +275,9 @@ It then destroys:
 ./Malebolgia.sh
 ```
 
-##Continous Integration Code
+##Continuous Integration Code
+
+[This is more like Test Driven Deployment (TDD) :P ]
 
 This code is meant to help in testing the elements deployed by the main code and validate that any change to the base code has been successful
 
