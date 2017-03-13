@@ -216,7 +216,7 @@ Then you need to perform these configurations in the /home/ec2-user/Cloud1 file:
 Finally activate your service account by issuing this command:
 
 ```
-gcloud auth activate-service-account --key-file /home/ec2-user/GCEkeyfile.jso
+gcloud auth activate-service-account --key-file /home/ec2-user/GCEkeyfile.json
 ```
 
 ##Scale Out Code
