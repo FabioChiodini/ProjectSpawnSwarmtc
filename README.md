@@ -199,7 +199,7 @@ To spawn VMs to GCE you need to **Install the GCE SDK** on your AMI image:
 - exec -l $SHELL
 - gcloud init (this will start an interactive setup/configuration)
 
-You also need to propely set up your GCE account, following are the high level steps:
+You also need to properly set up your GCE account, following are the high level steps:
 
 - Enable the Compute Engine API
 
@@ -213,6 +213,11 @@ Then you need to perform these configurations in the /home/ec2-user/Cloud1 file:
 - Enable the flag to provision to GCE
 - Indicate a number of VMs to provision to GCE
 
+Finally activate your service account by issuing this command:
+
+```
+gcloud auth activate-service-account --key-file /home/ec2-user/GCEkeyfile.jso
+```
 
 ##Scale Out Code
 
