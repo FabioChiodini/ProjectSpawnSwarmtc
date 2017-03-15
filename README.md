@@ -92,6 +92,8 @@ export GOOGLE_APPLICATION_CREDENTIALS="/home/ec2-user/GCEkeyfile.json"
 
 export AppPortK=80
 
+export ReceiverKinGCE=0
+
 export ExternalReceiverK=0
 export ExternalReceiverNameK=Brian
 export ExternalReceiverIpK=54.186.230.14
@@ -127,6 +129,8 @@ Here are the details on how these variables are used:
 - **K2_GOOGLE_PROJECT** contains the project to targte for GCE
 
 - **GOOGLE_APPLICATION_CREDENTIALS** maps to a file containing the Service account keys for your GCE login
+
+- **ReceiverKinGCE** if set to 1 (*and* if provisioning to GCE is enabled) provisions the Receiver in GCE
 
 - [**AppPortK** is the port that is opened for (optional/code commented out) dockerized nginx instances launched via docker swarm]
 
