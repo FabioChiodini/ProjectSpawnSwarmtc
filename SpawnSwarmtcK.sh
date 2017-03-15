@@ -219,7 +219,7 @@ if [ $ExternalReceiverK -eq 0 ]; then
   #gcloud auth login
   gcloud auth activate-service-account $K2_GOOGLE_AUTH_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS --project $K2_GOOGLE_PROJECT
 
-  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1604-xenial-v20161205 $ReceiverNameK
+  docker-machine create -d google --google-project $K2_GOOGLE_PROJECT --google-machine-type g1-small $ReceiverNameK
 
   #
   #Open port for Receiver on GCE
