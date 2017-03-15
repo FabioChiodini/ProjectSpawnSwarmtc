@@ -207,7 +207,7 @@ if [ $ExternalReceiverK -eq 0 ]; then
  echo ""
  echo "$(tput setaf 2) Launching a Receiver Instance $(tput sgr 0)"
  echo ""
- if [ $GCEKProvision -eq 1 ]; then
+ if [ $GCEKProvision -eq 1 && $ReceiverKinGCE -eq 1 ]; then
 
   echo ""
   echo "$(tput setaf 2) Launching a Receiver Instance in GCE $(tput sgr 0)"
