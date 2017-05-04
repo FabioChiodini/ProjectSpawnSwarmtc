@@ -198,10 +198,11 @@ Example entry (with IP) for the Docker Machine hosting the Receiver:
 
 ## NOTES ON Spawning to GCE
 
-To spawn VMs to GCE you need to **Install the GCE SDK** on your AMI image:
+To spawn VMs to GCE you need to **Install the GCE SDK** on your AMI image (install and configure the SDK in the context of the ec2-user user):
 - curl https://sdk.cloud.google.com | bash
 - exec -l $SHELL
 - gcloud init (this will start an interactive setup/configuration)
+
 
 You also need to properly set up your GCE account, following are the high level steps:
 
