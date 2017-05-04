@@ -134,7 +134,7 @@ Here are the details on how these variables are used:
 
 - [**AppPortK** is the port that is opened for (optional/code commented out) dockerized nginx instances launched via docker swarm]
 
-- **ExternalReceiverK** if set to 1 inhibts the provisioning of a receiver and uses an external one with ip and port as specified in the **ExternalReceiverIpK** and **ExternalReceiverPortK** variables
+- **ExternalReceiverK** if set to 1 inhibts the provisioning of a receiver and uses an external one with ip and port as specified in the **ExternalReceiverIpK** and **ExternalReceiverPortK** variables. This is useful if you are running a receiver using an ELK stack
 
 - **ReceiverPortK** and **ReceiverImageK** are the port used and the docker image for the receiver Application
 
