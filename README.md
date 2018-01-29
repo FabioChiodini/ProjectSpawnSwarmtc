@@ -1,5 +1,5 @@
 # ProjectSpawnSwarmtc
-Project to Spawn a titanium crucible (receiver + multiple honeypots) installation in an automated way accross different Clouds (AWS and optionally GCE) using Docker Machine, Docker Swarm and Docker Discovery. 
+Project to Spawn a titanium crucible (receiver + multiple honeypots) installation in an automated way across different Clouds (AWS and optionally GCE) using Docker Machine, Docker Swarm and basic Service Discovery. 
 A dockerized Consul and etcd instances are used to store variables in a KV store.
 The code stores all application information in etcd and uses the data stored to scale up, scale down, perform a basic TDD/CI and eventually tear down the application.
 
